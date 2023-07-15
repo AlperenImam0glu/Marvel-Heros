@@ -1,8 +1,6 @@
 package com.example.marvelheroes.service
 
 import com.example.marvelheroes.Character
-import com.example.marvelheroes.models.Comic
-import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.http.GET
 

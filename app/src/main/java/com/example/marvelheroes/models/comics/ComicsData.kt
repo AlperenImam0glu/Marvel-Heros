@@ -1,14 +1,14 @@
-package com.example.marvelheroes.models.character
+package com.example.marvelheroes
 
-import com.example.marvelheroes.Results
 import com.google.gson.annotations.SerializedName
 
-data class Data (
+
+data class ComicsData (
 
   @SerializedName("offset"  ) var offset  : Int?               = null,
   @SerializedName("limit"   ) var limit   : Int?               = null,
   @SerializedName("total"   ) var total   : Int?               = null,
   @SerializedName("count"   ) var count   : Int?               = null,
-  @SerializedName("results" ) var results : ArrayList<Results> = arrayListOf()
+  @SerializedName("results" ) var results : ArrayList<ComicsResults> = arrayListOf()
 
 )

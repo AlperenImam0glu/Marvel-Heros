@@ -8,8 +8,6 @@ import io.reactivex.disposables.CompositeDisposable
 
 class MainActivity : AppCompatActivity() {
 
-    private val service = MarvelAPIService()
-    private val disposable = CompositeDisposable()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

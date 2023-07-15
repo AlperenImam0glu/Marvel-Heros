@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.marvelheroes.Character
-import com.example.marvelheroes.Data
+import com.example.marvelheroes.models.character.Data
 import com.example.marvelheroes.service.MarvelAPIService
 import retrofit2.Call
 import retrofit2.Callback

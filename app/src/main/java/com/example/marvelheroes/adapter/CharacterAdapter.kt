@@ -16,14 +16,18 @@ import com.example.marvelheroes.Results
 import com.example.marvelheroes.databinding.ItemImageViewBinding
 
 
-class CardItemAdapter(val characterList: ArrayList<Results>,val context:Context ) :RecyclerView.Adapter<CardItemAdapter.CardViewHolder>() {
+class CharacterAdapter(val characterList: ArrayList<Results>, val context: Context) :
+    RecyclerView.Adapter<CharacterAdapter.CardViewHolder>() {
 
-    class CardViewHolder(val binding : ItemImageViewBinding) : RecyclerView.ViewHolder(binding.root) {
+    class CardViewHolder(val binding: ItemImageViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-        val view = DataBindingUtil.inflate<ItemImageViewBinding>(LayoutInflater.from(parent.context),
-            R.layout.item_image_view,parent,false)
+        val view = DataBindingUtil.inflate<ItemImageViewBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_image_view, parent, false
+        )
         return CardViewHolder(view)
     }
 
@@ -34,23 +38,19 @@ class CardItemAdapter(val characterList: ArrayList<Results>,val context:Context 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
         holder.binding.cardSubtitle.text = characterList[position].id.toString()
         holder.binding.cardTitle.text = characterList[position].name
+        setImage(holder, position)
+    }
 
-        setImage(holder,position)
-
-     }
-
-    fun updateCountryList(newList:List<Results>){
+    fun updateCharacterList(newList: List<Results>) {
         characterList.clear()
         characterList.addAll(newList)
         notifyDataSetChanged()
     }
 
-    fun setImage(holder: CardViewHolder,position: Int){
+    fun setImage(holder: CardViewHolder, position: Int) {
 
         var url = characterList[position].thumbnail!!.path
-        url += "."+characterList[position].thumbnail!!.extension
-
-
+        url += "." + characterList[position].thumbnail!!.extension
 
         Glide.with(context)
             .load(url)
@@ -60,13 +60,10 @@ class CardItemAdapter(val characterList: ArrayList<Results>,val context:Context 
                     resource: Drawable,
                     transition: Transition<in Drawable?>?
                 ) {
-                    holder.binding.layout.background=resource
+                    holder.binding.layout.background = resource
                 }
-
                 override fun onLoadCleared(placeholder: Drawable?) {
-
                 }
-
 
             })
 

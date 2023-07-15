@@ -1,10 +1,9 @@
 package com.example.marvelheroes
-import com.example.marvelheroes.models.character.Data
+
 import com.google.gson.annotations.SerializedName
 
 
-
-data class Character (
+data class MainComics (
 
   @SerializedName("code"            ) var code            : Int?    = null,
   @SerializedName("status"          ) var status          : String? = null,
@@ -12,6 +11,6 @@ data class Character (
   @SerializedName("attributionText" ) var attributionText : String? = null,
   @SerializedName("attributionHTML" ) var attributionHTML : String? = null,
   @SerializedName("etag"            ) var etag            : String? = null,
-  @SerializedName("data"            ) var data            : Data?   = Data()
+  @SerializedName("data"            ) var data            : ComicsData?   = ComicsData()
 
 )

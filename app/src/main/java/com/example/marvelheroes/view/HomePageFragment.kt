@@ -5,13 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.GeneratedAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import com.example.marvelheroes.R
-import com.example.marvelheroes.adapter.CardItemAdapter
+import com.example.marvelheroes.adapter.CharacterAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
 import com.example.marvelheroes.viewmodel.HomePageViewModel
 
@@ -19,7 +16,7 @@ class HomePageFragment : Fragment() {
 
     private lateinit var viewModel: HomePageViewModel
     private lateinit var binding : FragmentHomePageBinding
-    private lateinit var  adapter : CardItemAdapter
+    private lateinit var adapter : CharacterAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -35,8 +32,8 @@ class HomePageFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = CardItemAdapter(arrayListOf(), requireContext() )
-        viewModel = ViewModelProvider(this).get(HomePageViewModel::class.java)
+        adapter = CharacterAdapter(arrayListOf(), requireContext() )
+        viewModel = ViewModelProvider(this)[HomePageViewModel::class.java]
         viewModel.refreshData()
 
         binding.characterRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
@@ -49,7 +46,7 @@ class HomePageFragment : Fragment() {
     fun observeLiveData() {
         viewModel.characterList.observe(viewLifecycleOwner, Observer { countries ->
             countries?.let {
-               adapter.updateCountryList(countries.results)
+               adapter.updateCharacterList(countries.results)
             }
         })
 
