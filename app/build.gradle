@@ -8,6 +8,10 @@ android {
     namespace 'com.example.marvelheroes'
     compileSdk 33
 
+    buildFeatures {
+        dataBinding true
+    }
+
     defaultConfig {
         applicationId "com.example.marvelheroes"
         minSdk 24
@@ -36,7 +40,9 @@ android {
 dependencies {
     def retrofit_version = '2.3.0'
     def nav_version = "2.6.0"
+    def rxJavaVersion = '2.1.1'
 
+    
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.5.0'
@@ -56,5 +62,10 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
-    implementation 'com.mikhaellopez:circularimageview:4.3.1'
+
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxJavaVersion"
+
+
+
 }
