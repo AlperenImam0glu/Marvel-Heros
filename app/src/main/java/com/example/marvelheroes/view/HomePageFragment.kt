@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.marvelheroes.adapter.CharacterAdapter
+import com.example.marvelheroes.adapter.ComicsAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
 import com.example.marvelheroes.viewmodel.HomePageViewModel
 
@@ -16,7 +17,8 @@ class HomePageFragment : Fragment() {
 
     private lateinit var viewModel: HomePageViewModel
     private lateinit var binding : FragmentHomePageBinding
-    private lateinit var adapter : CharacterAdapter
+    private lateinit var characterAdapter : CharacterAdapter
+    private lateinit var comicsAdapter : ComicsAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -32,12 +34,12 @@ class HomePageFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = CharacterAdapter(arrayListOf(), requireContext() )
+        characterAdapter = CharacterAdapter(arrayListOf(), requireContext() )
         viewModel = ViewModelProvider(this)[HomePageViewModel::class.java]
         viewModel.refreshData()
 
         binding.characterRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
-        binding.characterRecyclerView.adapter = adapter
+        binding.characterRecyclerView.adapter = characterAdapter
         observeLiveData()
 
         super.onViewCreated(view, savedInstanceState)
@@ -46,7 +48,13 @@ class HomePageFragment : Fragment() {
     fun observeLiveData() {
         viewModel.characterList.observe(viewLifecycleOwner, Observer { countries ->
             countries?.let {
-               adapter.updateCharacterList(countries.results)
+               characterAdapter.updateCharacterList(countries.results)
+            }
+        })
+
+        viewModel.comicsList.observe(viewLifecycleOwner, Observer { countries ->
+            countries?.let {
+               // adapter.updateCharacterList(countries.results)
             }
         })
 
