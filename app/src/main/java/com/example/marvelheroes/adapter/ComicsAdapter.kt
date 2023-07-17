@@ -13,19 +13,19 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.marvelheroes.ComicsResults
 import com.example.marvelheroes.R
-import com.example.marvelheroes.databinding.ItemImageViewBinding
+import com.example.marvelheroes.databinding.HomePageCardDesignBinding
 
  class ComicsAdapter(val comicsList: ArrayList<ComicsResults>, val context: Context) :
     RecyclerView.Adapter<ComicsAdapter.CardViewHolder>() {
 
-    class CardViewHolder(val binding: ItemImageViewBinding) :
+    class CardViewHolder(val binding: HomePageCardDesignBinding) :
         RecyclerView.ViewHolder(binding.root) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-        val view = DataBindingUtil.inflate<ItemImageViewBinding>(
+        val view = DataBindingUtil.inflate<HomePageCardDesignBinding>(
             LayoutInflater.from(parent.context),
-            R.layout.item_image_view, parent, false
+            R.layout.home_page_card_design, parent, false
         )
         return CardViewHolder(view)
     }
