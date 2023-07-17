@@ -1,11 +1,9 @@
 package com.example.marvelheroes
 
-import android.content.Context
 import android.widget.ImageView
-import androidx.databinding.BindingAdapter
+import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.marvelheroes.R
 
 fun ImageView.downloadFromUrl(url: String?) {
     val options = RequestOptions()
@@ -16,7 +14,8 @@ fun ImageView.downloadFromUrl(url: String?) {
         .setDefaultRequestOptions(options)
         .load(url)
         .into(this)
-
 }
+
+
 
 

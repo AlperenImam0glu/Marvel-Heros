@@ -51,13 +51,10 @@ class HomePageViewModel : ViewModel() {
                     comicsList.value = response.body()!!.data
                 }
             }
-
             override fun onFailure(call: Call<MainComics>, t: Throwable) {
                 Log.e("hata", t.message.toString())
             }
         })
 
     }
-
-
 }

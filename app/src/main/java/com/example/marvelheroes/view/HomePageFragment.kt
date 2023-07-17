@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.marvelheroes.R
 import com.example.marvelheroes.adapter.CharacterAdapter
 import com.example.marvelheroes.adapter.ComicsAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
@@ -17,8 +19,6 @@ class HomePageFragment : Fragment() {
 
     private lateinit var viewModel: HomePageViewModel
     private lateinit var binding : FragmentHomePageBinding
-    private lateinit var characterAdapter : CharacterAdapter
-    private lateinit var comicsAdapter : ComicsAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -27,44 +27,45 @@ class HomePageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomePageBinding.inflate(inflater,container,false)
-        // Inflate the layout for this fragment
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_page,container,false)
+        binding.fragment = this
+        binding.characterAdapter = CharacterAdapter(arrayListOf(), requireContext())
+        binding.comicsAdapter= ComicsAdapter(arrayListOf(), requireContext() )
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        characterAdapter = CharacterAdapter(arrayListOf(), requireContext() )
-        comicsAdapter = ComicsAdapter(arrayListOf(), requireContext() )
 
-        viewModel = ViewModelProvider(this)[HomePageViewModel::class.java]
+        viewModel= ViewModelProvider(this)[HomePageViewModel::class.java]
         viewModel.refreshData()
 
-        binding.characterRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
-        binding.characterRecyclerView.adapter = characterAdapter
-
-        binding.rcComics.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
-        binding.rcComics.adapter = comicsAdapter
-
         observeLiveData()
+
+        binding.heroButton.setOnClickListener {
+            binding.scrollView.smoothScrollBy(0,binding.characterRecyclerView.top)
+        }
+
+        binding.villianButton.setOnClickListener {
+            binding.scrollView.smoothScrollBy(0,binding.comicsRecyclerView.bottom)
+        }
 
         super.onViewCreated(view, savedInstanceState)
     }
 
-    fun observeLiveData() {
+    private fun observeLiveData() {
         viewModel.characterList.observe(viewLifecycleOwner, Observer { countries ->
             countries?.let {
-               characterAdapter.updateCharacterList(countries.results)
+               binding.characterAdapter!!.updateCharacterList(countries.results)
             }
         })
 
         viewModel.comicsList.observe(viewLifecycleOwner, Observer { countries ->
             countries?.let {
-               comicsAdapter.updateCharacterList(countries.results)
+                binding.comicsAdapter!!.updateCharacterList(countries.results)
             }
         })
-
-
     }
+
 
 }
