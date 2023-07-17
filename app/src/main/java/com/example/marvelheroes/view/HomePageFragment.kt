@@ -42,14 +42,6 @@ class HomePageFragment : Fragment() {
 
         observeLiveData()
 
-        binding.heroButton.setOnClickListener {
-            binding.scrollView.smoothScrollBy(0,binding.characterRecyclerView.top)
-        }
-
-        binding.villianButton.setOnClickListener {
-            binding.scrollView.smoothScrollBy(0,binding.comicsRecyclerView.bottom)
-        }
-
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -65,6 +57,14 @@ class HomePageFragment : Fragment() {
                 binding.comicsAdapter!!.updateCharacterList(countries.results)
             }
         })
+    }
+
+    fun scrollToCharacter() {
+        viewModel.scrollToCharacter(binding)
+    }
+
+    fun scrollToComics() {
+        viewModel.scrollToComics(binding)
     }
 
 

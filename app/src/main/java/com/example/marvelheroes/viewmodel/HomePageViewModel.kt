@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.example.marvelheroes.Character
 import com.example.marvelheroes.ComicsData
 import com.example.marvelheroes.MainComics
+import com.example.marvelheroes.databinding.FragmentHomePageBinding
 import com.example.marvelheroes.models.character.Data
+import com.example.marvelheroes.repo.HomePageFragmentRepository
 import com.example.marvelheroes.service.MarvelAPIService
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,6 +19,7 @@ class HomePageViewModel : ViewModel() {
     private val service = MarvelAPIService()
     val characterList = MutableLiveData<Data?>()
     val comicsList = MutableLiveData<ComicsData?>()
+    private val repository = HomePageFragmentRepository()
 
     fun refreshData() {
         getDataFromAPI()
@@ -51,10 +54,19 @@ class HomePageViewModel : ViewModel() {
                     comicsList.value = response.body()!!.data
                 }
             }
+
             override fun onFailure(call: Call<MainComics>, t: Throwable) {
                 Log.e("hata", t.message.toString())
             }
         })
+    }
 
+
+    fun scrollToCharacter(binding: FragmentHomePageBinding) {
+        repository.scrollToCharacter(binding)
+    }
+
+    fun scrollToComics(binding: FragmentHomePageBinding) {
+        repository.scrollToComics(binding)
     }
 }
