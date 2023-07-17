@@ -80,37 +80,4 @@ class CharacterAdapter(val characterList: ArrayList<Results>, val context: Conte
 
     }
 
-    fun setImageToCard(holder: CardViewHolder, position: Int) {
-
-        var url = characterList[position].thumbnail!!.path
-        url += "." + characterList[position].thumbnail!!.extension
-        var containsString = false
-
-        url?.let {
-            containsString = url!!.contains("image_not_available")
-        }
-
-        if(containsString){
-            holder.binding.cardItemView.setBackgroundResource(R.drawable.image_not_available)
-        }else{
-            Glide.with(context)
-                .load(url)
-                .into(object : CustomTarget<Drawable?>() {
-                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        transition: Transition<in Drawable?>?
-                    ) {
-                        holder.binding.cardItemView.background = resource
-                    }
-                    override fun onLoadCleared(placeholder: Drawable?) {
-                    }
-
-                })
-        }
-
-
-
-    }
-
 }
