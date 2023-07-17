@@ -50,22 +50,33 @@ import com.example.marvelheroes.databinding.ItemImageViewBinding
 
         var url = comicsList[position].thumbnail!!.path
         url += "." + comicsList[position].thumbnail!!.extension
+        var containsString = false
 
-        Glide.with(context)
-            .load(url)
-            .into(object : CustomTarget<Drawable?>() {
-                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                override fun onResourceReady(
-                    resource: Drawable,
-                    transition: Transition<in Drawable?>?
-                ) {
-                    holder.binding.layout.background = resource
-                }
-                override fun onLoadCleared(placeholder: Drawable?) {
-                }
+        url?.let {
+            containsString = url!!.contains("image_not_available")
+        }
+        if(containsString){
+            holder.binding.layout.setBackgroundResource(R.drawable.image_not_available)
+        }
+        else{
+            Glide.with(context)
+                .load(url)
+                .into(object : CustomTarget<Drawable?>() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        transition: Transition<in Drawable?>?
+                    ) {
+                        holder.binding.layout.background = resource
+                    }
 
-            })
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                    }
 
+                })
+        }
     }
+
+
 
 }
