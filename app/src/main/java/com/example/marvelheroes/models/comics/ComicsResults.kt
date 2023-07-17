@@ -1,5 +1,6 @@
 package com.example.marvelheroes
 
+import com.example.example.ComicsImages
 import com.google.gson.annotations.SerializedName
 
 
@@ -19,20 +20,7 @@ data class ComicsResults (
   @SerializedName("issn"               ) var issn               : String?             = null,
   @SerializedName("format"             ) var format             : String?             = null,
   @SerializedName("pageCount"          ) var pageCount          : Int?                = null,
-  @SerializedName("textObjects"        ) var textObjects        : ArrayList<String>   = arrayListOf(),
-  @SerializedName("resourceURI"        ) var resourceURI        : String?             = null,
-  @SerializedName("urls"               ) var urls               : ArrayList<ComicsUrls>     = arrayListOf(),
-  @SerializedName("series"             ) var series             : ComicsSeries?             = ComicsSeries(),
-  @SerializedName("variants"           ) var variants           : ArrayList<ComicsVariants> = arrayListOf(),
-  @SerializedName("collections"        ) var collections        : ArrayList<String>   = arrayListOf(),
-  @SerializedName("collectedIssues"    ) var collectedIssues    : ArrayList<String>   = arrayListOf(),
-  @SerializedName("dates"              ) var dates              : ArrayList<ComicsDates>    = arrayListOf(),
-  @SerializedName("prices"             ) var prices             : ArrayList<ComicsPrices>   = arrayListOf(),
+
   @SerializedName("thumbnail"          ) var thumbnail          : ComicsThumbnail?          = ComicsThumbnail(),
-  @SerializedName("images"             ) var images             : ArrayList<String>   = arrayListOf(),
-  @SerializedName("creators"           ) var creators           : ComicsCreators?           = ComicsCreators(),
-  @SerializedName("characters"         ) var characters         : ComicsCharacters?         = ComicsCharacters(),
-  @SerializedName("stories"            ) var stories            : ComicsStories?            = ComicsStories(),
-  @SerializedName("events"             ) var events             : ComicsEvents?             = ComicsEvents()
 
 )

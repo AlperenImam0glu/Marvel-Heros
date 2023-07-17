@@ -35,11 +35,17 @@ class HomePageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         characterAdapter = CharacterAdapter(arrayListOf(), requireContext() )
+        comicsAdapter = ComicsAdapter(arrayListOf(), requireContext() )
+
         viewModel = ViewModelProvider(this)[HomePageViewModel::class.java]
         viewModel.refreshData()
 
         binding.characterRecyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
         binding.characterRecyclerView.adapter = characterAdapter
+
+        binding.rcComics.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
+        binding.rcComics.adapter = comicsAdapter
+
         observeLiveData()
 
         super.onViewCreated(view, savedInstanceState)
@@ -54,7 +60,7 @@ class HomePageFragment : Fragment() {
 
         viewModel.comicsList.observe(viewLifecycleOwner, Observer { countries ->
             countries?.let {
-               // adapter.updateCharacterList(countries.results)
+               comicsAdapter.updateCharacterList(countries.results)
             }
         })
 

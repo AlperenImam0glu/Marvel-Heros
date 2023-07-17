@@ -4,9 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardItemView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="@color/primary_black"
         android:layout_marginRight="12dp"
         >
 
@@ -14,7 +16,6 @@
             android:id="@+id/layout"
             android:layout_width="140dp"
             android:layout_height="230dp"
-            android:background="@drawable/spider_man"
             android:orientation="vertical">
 
             <TextView
@@ -26,6 +27,10 @@
                 android:fontFamily="@font/gilroy_medium"
                 android:text="Peter Parker"
                 android:textColor="@color/primary_white"
+                android:shadowColor="@color/primary_dark"
+                android:shadowDx="5"
+                android:shadowDy="5"
+                android:shadowRadius="10"
                 android:textSize="@dimen/card_subtitle_size"
                 app:layout_constraintBottom_toTopOf="@+id/cardTitle"
                 app:layout_constraintStart_toStartOf="parent" />

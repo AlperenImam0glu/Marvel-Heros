@@ -38,6 +38,8 @@ class CharacterAdapter(val characterList: ArrayList<Results>, val context: Conte
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
         holder.binding.cardSubtitle.text = characterList[position].id.toString()
         holder.binding.cardTitle.text = characterList[position].name
+
+       // setImageToCard(holder, position);
         setImage(holder, position)
     }
 
@@ -61,6 +63,28 @@ class CharacterAdapter(val characterList: ArrayList<Results>, val context: Conte
                     transition: Transition<in Drawable?>?
                 ) {
                     holder.binding.layout.background = resource
+                }
+                override fun onLoadCleared(placeholder: Drawable?) {
+                }
+
+            })
+
+    }
+
+    fun setImageToCard(holder: CardViewHolder, position: Int) {
+
+        var url = characterList[position].thumbnail!!.path
+        url += "." + characterList[position].thumbnail!!.extension
+
+        Glide.with(context)
+            .load(url)
+            .into(object : CustomTarget<Drawable?>() {
+                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                override fun onResourceReady(
+                    resource: Drawable,
+                    transition: Transition<in Drawable?>?
+                ) {
+                    holder.binding.cardItemView.background = resource
                 }
                 override fun onLoadCleared(placeholder: Drawable?) {
                 }
