@@ -9,5 +9,13 @@
         android:id="@+id/homePageFragment"
         android:name="com.example.marvelheroes.view.HomePageFragment"
         android:label="fragment_home_page"
-        tools:layout="@layout/fragment_home_page" />
+        tools:layout="@layout/fragment_home_page" >
+        <action
+            android:id="@+id/action_homePageFragment_to_characterDetailPageFragment"
+            app:destination="@id/characterDetailPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterDetailPageFragment"
+        android:name="com.example.marvelheroes.view.CharacterDetailPageFragment"
+        android:label="CharacterDetailPageFragment" />
 </navigation>

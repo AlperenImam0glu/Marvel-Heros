@@ -8,7 +8,7 @@ import com.example.marvelheroes.ComicsData
 import com.example.marvelheroes.MainComics
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
 import com.example.marvelheroes.models.character.Data
-import com.example.marvelheroes.repo.HomePageFragmentRepository
+import com.example.marvelheroes.repository.HomePageFragmentRepository
 import com.example.marvelheroes.service.MarvelAPIService
 import retrofit2.Call
 import retrofit2.Callback

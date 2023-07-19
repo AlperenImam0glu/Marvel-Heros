@@ -1,4 +1,4 @@
-package com.example.marvelheroes.repo
+package com.example.marvelheroes.repository
 
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
 

@@ -8,6 +8,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.marvelheroes.R
 import com.example.marvelheroes.adapter.CharacterAdapter
@@ -33,14 +35,16 @@ class HomePageFragment : Fragment() {
         binding.comicsAdapter= ComicsAdapter(arrayListOf(), requireContext() )
         return binding.root
     }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         viewModel= ViewModelProvider(this)[HomePageViewModel::class.java]
         viewModel.refreshData()
 
         observeLiveData()
+        binding.humanButton.setOnClickListener {
+            val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment()
+            findNavController().navigate(action)
+        }
 
         super.onViewCreated(view, savedInstanceState)
     }
