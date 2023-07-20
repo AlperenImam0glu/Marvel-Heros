@@ -49,15 +49,15 @@ class HomePageFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        viewModel.characterList.observe(viewLifecycleOwner, Observer { countries ->
-            countries?.let {
-                binding.characterAdapter!!.updateCharacterList(countries.results)
+        viewModel.characterList.observe(viewLifecycleOwner, Observer { data ->
+            data?.let {
+                binding.characterAdapter!!.updateCharacterList(data.results)
             }
         })
 
-        viewModel.comicsList.observe(viewLifecycleOwner, Observer { countries ->
-            countries?.let {
-                binding.comicsAdapter!!.updateCharacterList(countries.results)
+        viewModel.comicsList.observe(viewLifecycleOwner, Observer { data ->
+            data?.let {
+                binding.comicsAdapter!!.updateCharacterList(data.results)
             }
         })
     }

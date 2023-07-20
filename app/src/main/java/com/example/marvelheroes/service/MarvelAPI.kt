@@ -4,6 +4,7 @@ import com.example.marvelheroes.Character
 import com.example.marvelheroes.MainComics
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface MarvelAPI {
         //http://gateway.marvel.com/

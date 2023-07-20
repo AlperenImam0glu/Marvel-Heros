@@ -41,7 +41,7 @@ dependencies {
     def retrofit_version = '2.3.0'
     def nav_version = "2.6.0"
     def rxJavaVersion = '2.1.1'
-
+    def paging_version = "3.1.1"
     
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -68,6 +68,13 @@ dependencies {
 
 
     implementation 'com.github.bumptech.glide:glide:4.15.1'
+
+
+
+    implementation("androidx.paging:paging-runtime:$paging_version")
+
+    // alternatively - without Android dependencies for tests
+    testImplementation("androidx.paging:paging-common:$paging_version")
 
 
 }

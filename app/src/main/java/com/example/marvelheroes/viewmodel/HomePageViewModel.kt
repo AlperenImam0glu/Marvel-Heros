@@ -24,6 +24,7 @@ class HomePageViewModel : ViewModel() {
     fun refreshData() {
         getDataFromAPI()
         getComicsDataFromAPI()
+        getComicsDataFromAPIx()
     }
 
     private fun getDataFromAPI() {
@@ -45,6 +46,23 @@ class HomePageViewModel : ViewModel() {
     }
 
     private fun getComicsDataFromAPI() {
+        service.getAllComics().enqueue(object : Callback<MainComics> {
+            override fun onResponse(
+                call: Call<MainComics>,
+                response: Response<MainComics>
+            ) {
+                if (response.isSuccessful) {
+                    comicsList.value = response.body()!!.data
+                }
+            }
+
+            override fun onFailure(call: Call<MainComics>, t: Throwable) {
+                Log.e("hata", t.message.toString())
+            }
+        })
+    }
+
+    private fun getComicsDataFromAPIx() {
         service.getAllComics().enqueue(object : Callback<MainComics> {
             override fun onResponse(
                 call: Call<MainComics>,
