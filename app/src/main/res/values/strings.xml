@@ -2,4 +2,6 @@
     <string name="app_name">Marvel Heroes</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="desc">In Forest Hills, Queens, New York, high school student Peter Parker is an orphaned scientist who lives with his Uncle Ben and Aunt May. He is bitten by a radioactive spider at a scientific exhibit and acquires the agility and proportionate strength of an arachnid. Along with super strength, Parker gains the ability to walk on walls and ceilings.
+        Through his native ability for science, he develops a device that allows him to cast artificial webs. Initially seeking to capitalize on his newfound abilities, Parker creates a suit and, as Spider-Man, becomes a television star.</string>
 </resources>

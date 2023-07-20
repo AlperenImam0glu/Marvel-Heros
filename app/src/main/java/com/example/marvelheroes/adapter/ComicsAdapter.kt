@@ -69,14 +69,9 @@ import com.example.marvelheroes.databinding.HomePageCardDesignBinding
                     ) {
                         holder.binding.layout.background = resource
                     }
-
                     override fun onLoadCleared(placeholder: Drawable?) {
                     }
-
                 })
         }
     }
-
-
-
 }

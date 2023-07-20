@@ -17,5 +17,9 @@
     <fragment
         android:id="@+id/characterDetailPageFragment"
         android:name="com.example.marvelheroes.view.CharacterDetailPageFragment"
-        android:label="CharacterDetailPageFragment" />
+        android:label="CharacterDetailPageFragment" >
+        <argument
+            android:name="results"
+            app:argType="com.example.marvelheroes.Results" />
+    </fragment>
 </navigation>

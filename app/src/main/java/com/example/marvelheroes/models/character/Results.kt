@@ -1,6 +1,7 @@
 package com.example.marvelheroes
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 
 data class Results (
@@ -17,4 +18,4 @@ data class Results (
   @SerializedName("events"      ) var events      : Events?         = Events(),
   @SerializedName("urls"        ) var urls        : ArrayList<Urls> = arrayListOf()
 
-)
+) : Serializable

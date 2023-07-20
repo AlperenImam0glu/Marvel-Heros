@@ -42,8 +42,7 @@ class HomePageFragment : Fragment() {
 
         observeLiveData()
         binding.humanButton.setOnClickListener {
-            val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment()
-            findNavController().navigate(action)
+
         }
 
         super.onViewCreated(view, savedInstanceState)
@@ -52,7 +51,7 @@ class HomePageFragment : Fragment() {
     private fun observeLiveData() {
         viewModel.characterList.observe(viewLifecycleOwner, Observer { countries ->
             countries?.let {
-               binding.characterAdapter!!.updateCharacterList(countries.results)
+                binding.characterAdapter!!.updateCharacterList(countries.results)
             }
         })
 

@@ -6,6 +6,9 @@
 
         <item name="android:statusBarColor">@color/primary_silver</item>
 
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
     </style>
 
     <style name="Theme.MarvelHeroes" parent="Base.Theme.MarvelHeroes" />

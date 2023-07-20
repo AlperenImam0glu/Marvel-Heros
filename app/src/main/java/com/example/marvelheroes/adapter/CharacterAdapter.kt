@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -14,6 +15,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.marvelheroes.R
 import com.example.marvelheroes.Results
 import com.example.marvelheroes.databinding.HomePageCardDesignBinding
+import com.example.marvelheroes.view.HomePageFragmentDirections
 
 
 class CharacterAdapter(val characterList: ArrayList<Results>, val context: Context) :
@@ -39,8 +41,13 @@ class CharacterAdapter(val characterList: ArrayList<Results>, val context: Conte
         holder.binding.cardSubtitle.text = characterList[position].id.toString()
         holder.binding.cardTitle.text = characterList[position].name
 
+        holder.binding.cardItemView.setOnClickListener {
+            val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(characterList[position])
+            Navigation.findNavController(it).navigate(action)
+        }
+
         //setImageToCard(holder, position);
-       setImage(holder, position)
+        setImage(holder, position)
     }
 
     fun updateCharacterList(newList: List<Results>) {
