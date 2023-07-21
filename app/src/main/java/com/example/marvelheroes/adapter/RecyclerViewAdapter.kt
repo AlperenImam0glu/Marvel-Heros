@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.navigation.Navigation
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -17,15 +18,23 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.marvelheroes.R
 import com.example.marvelheroes.Results
 import com.example.marvelheroes.databinding.HomePageCardDesignBinding
+import com.example.marvelheroes.view.HomePageFragmentDirections
 
-class RecyclerViewAdapter(var context: Context) : PagingDataAdapter<Results, RecyclerViewAdapter.MyViewHolder>(DiffUtilCallBack()) {
-    inner class MyViewHolder (view: View) : RecyclerView.ViewHolder(view){
-        private  val binding = HomePageCardDesignBinding.bind(view)
+class RecyclerViewAdapter(var context: Context) :
+    PagingDataAdapter<Results, RecyclerViewAdapter.MyViewHolder>(DiffUtilCallBack()) {
+    inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val binding = HomePageCardDesignBinding.bind(view)
 
-        fun bind(data: Results){
-         binding.cardTitle.text = data.name.toString()
+        fun bind(data: Results) {
+            binding.cardTitle.text = data.name.toString()
+            binding.cardSubtitle.text = data.id.toString()
 
-            setImage(binding,data)
+            setImage(binding, data)
+
+            binding.cardItemView.setOnClickListener {
+                val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(data)
+                Navigation.findNavController(it).navigate(action)
+            }
         }
     }
 
@@ -34,8 +43,9 @@ class RecyclerViewAdapter(var context: Context) : PagingDataAdapter<Results, Rec
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val inflater =  LayoutInflater.from(parent.context).inflate(R.layout.home_page_card_design,parent,false)
-        return  MyViewHolder(inflater)
+        val inflater = LayoutInflater.from(parent.context)
+            .inflate(R.layout.home_page_card_design, parent, false)
+        return MyViewHolder(inflater)
     }
 
 
@@ -49,11 +59,14 @@ class RecyclerViewAdapter(var context: Context) : PagingDataAdapter<Results, Rec
             containsString = url!!.contains("image_not_available")
         }
 
-        if(containsString){
+        if (containsString) {
             bindig.layout.setBackgroundResource(R.drawable.image_not_available)
-        }else{
+        } else {
+            val options = RequestOptions().placeholder(R.drawable.gradient).error(R.drawable.gradient)
             Glide.with(context)
                 .load(url)
+                .apply(options)
+                .centerCrop()
                 .into(object : CustomTarget<Drawable?>() {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                     override fun onResourceReady(
@@ -62,6 +75,7 @@ class RecyclerViewAdapter(var context: Context) : PagingDataAdapter<Results, Rec
                     ) {
                         bindig.layout.background = resource
                     }
+
                     override fun onLoadCleared(placeholder: Drawable?) {
                     }
 
@@ -70,13 +84,13 @@ class RecyclerViewAdapter(var context: Context) : PagingDataAdapter<Results, Rec
 
     }
 
-    class DiffUtilCallBack : DiffUtil.ItemCallback<Results>(){
+    class DiffUtilCallBack : DiffUtil.ItemCallback<Results>() {
         override fun areItemsTheSame(oldItem: Results, newItem: Results): Boolean {
-            return  oldItem.id == newItem.id
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Results, newItem: Results): Boolean {
-           return  oldItem == newItem
+            return oldItem == newItem
         }
 
     }

@@ -1,5 +1,6 @@
 package com.example.marvelheroes.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.marvelheroes.Results
@@ -12,10 +13,11 @@ class HomePagingSource(private  val marvelApi : RetrofitService): PagingSource<I
         return try {
             val position = params.key ?: FIRST_PAGE_INDEX
             val response = marvelApi.getAllCharactersWithPage(position)
+            Log.e("position",position.toString())
             LoadResult.Page(
                 data = response.data!!.results,
-                prevKey = if (position == 1) null else position - 1,
-                nextKey = if (position == response.data!!.total!!) null else position + 1
+                prevKey = if (position == 1) null else position - 20,
+                nextKey = if (position > response.data!!.total!!) null else position + 20
             )
 
         }catch (e: Exception){
@@ -24,7 +26,7 @@ class HomePagingSource(private  val marvelApi : RetrofitService): PagingSource<I
     }
 
     companion object{
-        private const val FIRST_PAGE_INDEX = 1
+        private const val FIRST_PAGE_INDEX =0
     }
 
     override fun getRefreshKey(state: PagingState<Int, Results>): Int? {
