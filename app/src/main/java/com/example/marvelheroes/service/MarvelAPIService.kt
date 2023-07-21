@@ -15,6 +15,9 @@ class MarvelAPIService {
         .build()
         .create(MarvelAPI::class.java)
 
+
+    val apiService : MarvelAPI = api
+
     fun getAllCharacters() : Call<Character> {
         return api.getAllCharacters()
     }
