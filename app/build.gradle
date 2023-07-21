@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-    def retrofit_version = '2.3.0'
+    def retrofit_version = '2.9.0'
     def nav_version = "2.6.0"
     def rxJavaVersion = '2.1.1'
     def paging_version = "3.1.1"
@@ -50,8 +50,6 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
-
 
     // Kotlin
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
@@ -68,7 +66,6 @@ dependencies {
 
 
     implementation 'com.github.bumptech.glide:glide:4.15.1'
-
 
 
     implementation("androidx.paging:paging-runtime:$paging_version")
