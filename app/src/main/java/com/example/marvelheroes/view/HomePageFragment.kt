@@ -28,6 +28,7 @@ class HomePageFragment : Fragment() {
 
     private lateinit var viewModel: HomePageViewModel
     private lateinit var binding: FragmentHomePageBinding
+    private lateinit var recyclerViewAdapter: RecyclerViewAdapter
 
     private val viewModelPaging: HomeViewModel by viewModels()
 
@@ -46,7 +47,7 @@ class HomePageFragment : Fragment() {
         }
     }
 
-    var recyclerViewAdapter: RecyclerViewAdapter = RecyclerViewAdapter()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,7 +60,7 @@ class HomePageFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_page, container, false)
         binding.fragment = this
-
+        recyclerViewAdapter = RecyclerViewAdapter(requireContext())
         initViewModel()
         initRecyclerView()
         binding.comicsAdapter = ComicsAdapter(arrayListOf(), requireContext())
