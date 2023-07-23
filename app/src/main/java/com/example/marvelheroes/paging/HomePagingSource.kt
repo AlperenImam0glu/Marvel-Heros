@@ -13,7 +13,6 @@ class HomePagingSource(private  val marvelApi : RetrofitService): PagingSource<I
         return try {
             val position = params.key ?: FIRST_PAGE_INDEX
             val response = marvelApi.getAllCharactersWithPage(position)
-            Log.e("position",position.toString())
             LoadResult.Page(
                 data = response.data!!.results,
                 prevKey = if (position == 1) null else position - 20,
