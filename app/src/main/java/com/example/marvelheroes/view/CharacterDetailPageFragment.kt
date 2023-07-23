@@ -65,11 +65,6 @@ class CharacterDetailPageFragment : Fragment() {
 
     }
 
-    fun findMaxNumber(a: Int, b: Int, c: Int, d: Int): Int {
-        val maxAB = if (a > b) a else b
-        val maxCD = if (c > d) c else d
-        return if (maxAB > maxCD) maxAB else maxCD
-    }
     fun configureRecyclerView(){
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerviewComics.layoutManager = layoutManager
@@ -87,7 +82,6 @@ class CharacterDetailPageFragment : Fragment() {
         param.setMargins(0, statusBarHeight, 0, 0)
         binding.toolbar.layoutParams = param
     }
-
 
     fun putDataToView() {
 
