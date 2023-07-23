@@ -57,7 +57,6 @@
                     android:layout_height="812dp"
                     android:foreground="@drawable/black_shadow"
                     android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
