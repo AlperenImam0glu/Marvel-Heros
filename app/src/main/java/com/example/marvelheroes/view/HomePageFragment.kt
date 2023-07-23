@@ -10,25 +10,20 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.marvelheroes.R
-import com.example.marvelheroes.adapter.CharacterAdapter
 import com.example.marvelheroes.adapter.ComicsAdapter
-import com.example.marvelheroes.adapter.RecyclerViewAdapter
+import com.example.marvelheroes.adapter.CharacterPagingAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
 import com.example.marvelheroes.viewmodel.HomePageViewModel
 import com.example.marvelheroes.viewmodel.HomeViewModel
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combineLatest
 import kotlinx.coroutines.launch
 
 class HomePageFragment : Fragment() {
 
     private lateinit var viewModel: HomePageViewModel
     private lateinit var binding: FragmentHomePageBinding
-    private lateinit var recyclerViewAdapter: RecyclerViewAdapter
+    private lateinit var recyclerViewAdapter: CharacterPagingAdapter
 
     private val viewModelPaging: HomeViewModel by viewModels()
 
@@ -60,7 +55,7 @@ class HomePageFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_page, container, false)
         binding.fragment = this
-        recyclerViewAdapter = RecyclerViewAdapter(requireContext())
+        recyclerViewAdapter = CharacterPagingAdapter(requireContext())
         initViewModel()
         initRecyclerView()
         binding.comicsAdapter = ComicsAdapter(arrayListOf(), requireContext())

@@ -26,7 +26,7 @@ class HomePagingSource(private  val marvelApi : RetrofitService): PagingSource<I
     }
 
     companion object{
-        private const val FIRST_PAGE_INDEX =0
+        private const val FIRST_PAGE_INDEX = 0
     }
 
     override fun getRefreshKey(state: PagingState<Int, Results>): Int? {

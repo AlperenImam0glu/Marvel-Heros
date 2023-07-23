@@ -20,8 +20,8 @@ import com.example.marvelheroes.Results
 import com.example.marvelheroes.databinding.HomePageCardDesignBinding
 import com.example.marvelheroes.view.HomePageFragmentDirections
 
-class RecyclerViewAdapter(var context: Context) :
-    PagingDataAdapter<Results, RecyclerViewAdapter.MyViewHolder>(DiffUtilCallBack()) {
+class CharacterPagingAdapter(var context: Context) :
+    PagingDataAdapter<Results, CharacterPagingAdapter.MyViewHolder>(DiffUtilCallBack()) {
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = HomePageCardDesignBinding.bind(view)
 
@@ -54,11 +54,9 @@ class RecyclerViewAdapter(var context: Context) :
         var url = data.thumbnail!!.path
         url += "." + data.thumbnail!!.extension
         var containsString = false
-
         url?.let {
             containsString = url!!.contains("image_not_available")
         }
-
         if (containsString) {
             bindig.layout.setBackgroundResource(R.drawable.image_not_available)
         } else {
@@ -75,13 +73,10 @@ class RecyclerViewAdapter(var context: Context) :
                     ) {
                         bindig.layout.background = resource
                     }
-
                     override fun onLoadCleared(placeholder: Drawable?) {
                     }
-
                 })
         }
-
     }
 
     class DiffUtilCallBack : DiffUtil.ItemCallback<Results>() {
