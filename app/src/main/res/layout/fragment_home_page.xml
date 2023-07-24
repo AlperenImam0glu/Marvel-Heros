@@ -31,7 +31,7 @@
 
             <!-- Custom Toolbar'ı include etmek için include etiketini kullanın -->
             <include
-                layout="@layout/custom_toolbar"
+                layout="@layout/homepage_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -282,7 +282,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/gilroy_bold"
-                        android:text="Heros"
+                        android:text="Comics"
                         android:textColor="@color/primary_red"
                         android:textSize="@dimen/section_title_size" />
 

@@ -13,14 +13,13 @@ import com.example.marvelheroes.R
 import com.example.marvelheroes.Results
 import com.example.marvelheroes.adapter.CustomAttributeBarAdapter
 import com.example.marvelheroes.databinding.FragmentCharacterDetailPageBinding
-import com.example.marvelheroes.maxOfFourNumber
 import java.lang.Math.max
 
 
 class CharacterDetailPageFragment : Fragment() {
 
-    lateinit  var adapter : CustomAttributeBarAdapter
 
+    private lateinit var result: Results
     lateinit var binding: FragmentCharacterDetailPageBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,21 +33,19 @@ class CharacterDetailPageFragment : Fragment() {
         return binding.root
     }
 
-    private lateinit var result: Results
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         arguments?.let {
             result = CharacterDetailPageFragmentArgs.fromBundle(it).results
         }
 
-        val maxValue = getMaxValueData()
 
-        adapter = CustomAttributeBarAdapter(maxValue,result.comics!!.available ?:0)
         setToolbarPosition()
         putDataToView()
         configureRecyclerView()
 
-
-        binding.iconBack.setOnClickListener {
+        binding.toolbarBackBtn.setOnClickListener {
             findNavController(this).popBackStack()
         }
 
@@ -57,18 +54,43 @@ class CharacterDetailPageFragment : Fragment() {
 
     fun getMaxValueData(): Int {
 
-        var comicsCount =result.comics!!.available ?: 0
-        var eventCount =result.events!!.available ?: 0
-        var seriesCount =result.series!!.available ?: 0
-        var storiesCount =result.stories!!.available ?: 0
-        return max(max(comicsCount,eventCount), max(seriesCount,storiesCount))
+        val comicsCount = result.comics!!.available ?: 0
+        val eventCount = result.events!!.available ?: 0
+        val seriesCount = result.series!!.available ?: 0
+        val storiesCount = result.stories!!.available ?: 0
+        return max(max(comicsCount, eventCount), max(seriesCount, storiesCount))
 
     }
 
-    fun configureRecyclerView(){
+    fun configureRecyclerView() {
+
+        val maxValue = getMaxValueData()
+
+        //burada factory kullanabilirim
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager2 = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager3 = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager4 = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        var adapter = CustomAttributeBarAdapter(maxValue, result.comics!!.available ?: 0)
         binding.recyclerviewComics.layoutManager = layoutManager
         binding.recyclerviewComics.adapter = adapter
+
+
+        var adapter2 = CustomAttributeBarAdapter(maxValue, result.series!!.available ?: 0)
+        binding.recyclerviewSeries.layoutManager = layoutManager2
+        binding.recyclerviewSeries.adapter = adapter2
+
+        var adapter3 = CustomAttributeBarAdapter(maxValue, result.events!!.available ?: 0)
+        binding.recyclerviewEvents.layoutManager = layoutManager3
+        binding.recyclerviewEvents.adapter = adapter3
+
+        var adapter4 = CustomAttributeBarAdapter(maxValue, result.stories!!.available ?: 0)
+        binding.recyclerviewStories.layoutManager = layoutManager4
+        binding.recyclerviewStories.adapter = adapter4
+
+
+
     }
 
     fun setToolbarPosition() {
@@ -112,11 +134,11 @@ class CharacterDetailPageFragment : Fragment() {
         var containsString = false
 
         url?.let {
-            containsString = url!!.contains("image_not_available")
+            containsString = url!!.contains("image_not_available_detail")
         }
 
         if (containsString) {
-            view.setBackgroundResource(R.drawable.spider_man)
+            view.setBackgroundResource(R.drawable.image_not_available)
         } else {
             Glide.with(requireContext())
                 .load(url)

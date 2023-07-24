@@ -16,9 +16,6 @@ fun ImageView.downloadFromUrl(url: String?) {
         .into(this)
 }
 
-fun Int.maxOfFourNumber(other1: Int, other2: Int, other3: Int): Int {
-    return maxOf(this, other1, other2, other3)
-}
 
 
 
