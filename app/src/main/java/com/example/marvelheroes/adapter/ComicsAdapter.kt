@@ -23,11 +23,8 @@ import com.example.marvelheroes.databinding.HomePageCardDesignBinding
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-        val view = DataBindingUtil.inflate<HomePageCardDesignBinding>(
-            LayoutInflater.from(parent.context),
-            R.layout.home_page_card_design, parent, false
-        )
-        return CardViewHolder(view)
+        val binding =  HomePageCardDesignBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        return CardViewHolder(binding)
     }
 
     override fun getItemCount(): Int {

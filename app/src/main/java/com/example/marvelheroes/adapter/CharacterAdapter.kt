@@ -1,9 +1,11 @@
+
 package com.example.marvelheroes.adapter
 
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
@@ -14,6 +16,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.marvelheroes.R
 import com.example.marvelheroes.Results
+import com.example.marvelheroes.databinding.FragmentHomePageBinding
 import com.example.marvelheroes.databinding.HomePageCardDesignBinding
 import com.example.marvelheroes.view.HomePageFragmentDirections
 
@@ -21,23 +24,28 @@ import com.example.marvelheroes.view.HomePageFragmentDirections
 class CharacterAdapter(val characterList: ArrayList<Results>, val context: Context) :
     RecyclerView.Adapter<CharacterAdapter.CardViewHolder>() {
 
-    class CardViewHolder(val binding: HomePageCardDesignBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+
+
+    class CardViewHolder(view: View) :
+        RecyclerView.ViewHolder(view) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-        val view = DataBindingUtil.inflate<HomePageCardDesignBinding>(
-            LayoutInflater.from(parent.context),
-            R.layout.home_page_card_design, parent, false
-        )
+        val view =  LayoutInflater.from(parent.context).inflate(R.layout.home_page_card_design,parent,false)
         return CardViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
+        TODO("Not yet implemented")
     }
 
     override fun getItemCount(): Int {
         return characterList.size
     }
-
+/*
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
+
+        holder.
         holder.binding.cardSubtitle.text = characterList[position].id.toString()
         holder.binding.cardTitle.text = characterList[position].name
 
@@ -86,5 +94,6 @@ class CharacterAdapter(val characterList: ArrayList<Results>, val context: Conte
         }
 
     }
-
+*/
 }
+

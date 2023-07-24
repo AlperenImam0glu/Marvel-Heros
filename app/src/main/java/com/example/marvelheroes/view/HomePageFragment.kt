@@ -24,7 +24,7 @@ class HomePageFragment : Fragment() {
     private lateinit var viewModel: HomePageViewModel
     private lateinit var binding: FragmentHomePageBinding
     private lateinit var recyclerViewAdapter: CharacterPagingAdapter
-
+    private lateinit var comicsAdapter: ComicsAdapter
     private val viewModelPaging: HomeViewModel by viewModels()
 
     fun initViewModel() {
@@ -53,12 +53,12 @@ class HomePageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_page, container, false)
-        binding.fragment = this
+        binding = FragmentHomePageBinding.inflate(inflater,container,false)
         recyclerViewAdapter = CharacterPagingAdapter(requireContext())
         initViewModel()
         initRecyclerView()
-        binding.comicsAdapter = ComicsAdapter(arrayListOf(), requireContext())
+        comicsAdapter= ComicsAdapter(arrayListOf(), requireContext())
+        binding.comicsRecyclerView.adapter = comicsAdapter
         return binding.root
     }
 
@@ -85,7 +85,7 @@ class HomePageFragment : Fragment() {
 
         viewModel.comicsList.observe(viewLifecycleOwner, Observer { data ->
             data?.let {
-                binding.comicsAdapter!!.updateCharacterList(data.results)
+                comicsAdapter.updateCharacterList(data.results)
             }
         })
     }
