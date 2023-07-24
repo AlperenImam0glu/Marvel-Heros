@@ -1,7 +1,6 @@
 package com.example.marvelheroes
 
 import android.widget.ImageView
-import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
