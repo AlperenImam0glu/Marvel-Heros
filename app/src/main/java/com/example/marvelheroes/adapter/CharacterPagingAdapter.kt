@@ -6,6 +6,7 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.navigation.Navigation
 import androidx.paging.PagingDataAdapter
@@ -18,6 +19,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.marvelheroes.R
 import com.example.marvelheroes.Results
 import com.example.marvelheroes.databinding.HomePageCardDesignBinding
+import com.example.marvelheroes.loadImageFromInternet
 import com.example.marvelheroes.view.HomePageFragmentDirections
 
 class CharacterPagingAdapter(var context: Context) :
@@ -28,9 +30,7 @@ class CharacterPagingAdapter(var context: Context) :
         fun bind(data: Results) {
             binding.cardTitle.text = data.name.toString()
             binding.cardSubtitle.text = data.id.toString()
-
-            setImage(binding, data)
-
+            setImage(binding.imageView, data)
             binding.cardItemView.setOnClickListener {
                 val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(data)
                 Navigation.findNavController(it).navigate(action)
@@ -49,21 +49,10 @@ class CharacterPagingAdapter(var context: Context) :
     }
 
 
-    fun setImage(bindig: HomePageCardDesignBinding, data: Results) {
-
+    fun setImage(view: ImageView, data: Results) {
         var url = data.thumbnail!!.path
         url += "." + data.thumbnail!!.extension
-        var containsString = false
-        url?.let {
-            containsString = url!!.contains("image_not_available")
-        }
-        if (containsString) {
-            bindig.layout.setBackgroundResource(R.drawable.image_not_available)
-        } else {
-
-            Glide.with(context).load(url).centerCrop().into(bindig.imageView)
-
-        }
+        view.loadImageFromInternet(url!!,view)
     }
 
     class DiffUtilCallBack : DiffUtil.ItemCallback<Results>() {
