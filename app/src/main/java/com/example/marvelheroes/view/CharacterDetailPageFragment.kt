@@ -134,11 +134,11 @@ class CharacterDetailPageFragment : Fragment() {
         var containsString = false
 
         url?.let {
-            containsString = url!!.contains("image_not_available_detail")
+            containsString = url!!.contains("image_not_available")
         }
 
         if (containsString) {
-            view.setBackgroundResource(R.drawable.image_not_available)
+            view.setBackgroundResource(R.drawable.image_not_available_detail)
         } else {
             Glide.with(requireContext())
                 .load(url)

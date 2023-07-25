@@ -3,9 +3,7 @@
     <style name="Base.Theme.MarvelHeroes" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-
-        <item name="android:statusBarColor">@color/primary_silver</item>
-
+        <item name="android:statusBarColor">@color/primary_black</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
 

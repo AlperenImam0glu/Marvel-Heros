@@ -212,7 +212,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/gilroy_bold"
-                        android:text="Heros"
+                        android:text="Heroes"
                         android:textColor="@color/primary_red"
                         android:textSize="@dimen/section_title_size" />
 
@@ -244,7 +244,7 @@
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="24dp"
+                        android:layout_marginStart="0dp"
                         android:layout_marginTop="0dp"
                         android:layout_marginEnd="0dp"
                         android:layout_marginBottom="40dp" />
@@ -301,7 +301,7 @@
                         android:layout_height="match_parent"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:orientation="horizontal"
-                        android:layout_marginStart="24dp"
+                        android:layout_marginStart="0dp"
                         android:layout_marginTop="0dp"
                         android:layout_marginEnd="0dp"
                         android:layout_marginBottom="40dp" />

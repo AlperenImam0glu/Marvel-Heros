@@ -1,9 +1,14 @@
 package com.example.marvelheroes.view
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -42,12 +47,6 @@ class HomePageFragment : Fragment() {
     }
 
 
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,6 +57,13 @@ class HomePageFragment : Fragment() {
         initRecyclerView()
         comicsAdapter= ComicsAdapter(arrayListOf(), requireContext())
         binding.comicsRecyclerView.adapter = comicsAdapter
+
+        val window: Window = requireActivity().window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.statusBarColor = ContextCompat.getColor(requireActivity(), R.color.primary_silver)
+
+
         return binding.root
     }
 
@@ -74,6 +80,15 @@ class HomePageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    override fun onPause() {
+
+        super.onPause()
+        val window: Window = requireActivity().window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.statusBarColor = Color.TRANSPARENT
+
+    }
     private fun observeLiveData() {
         /*
         viewModel.characterList.observe(viewLifecycleOwner, Observer { data ->

@@ -60,22 +60,9 @@ class CharacterPagingAdapter(var context: Context) :
         if (containsString) {
             bindig.layout.setBackgroundResource(R.drawable.image_not_available)
         } else {
-            val options = RequestOptions().placeholder(R.drawable.gradient).error(R.drawable.gradient)
-            Glide.with(context)
-                .load(url)
-                .apply(options)
-                .centerCrop()
-                .into(object : CustomTarget<Drawable?>() {
-                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        transition: Transition<in Drawable?>?
-                    ) {
-                        bindig.layout.background = resource
-                    }
-                    override fun onLoadCleared(placeholder: Drawable?) {
-                    }
-                })
+
+            Glide.with(context).load(url).centerCrop().into(bindig.imageView)
+
         }
     }
 
