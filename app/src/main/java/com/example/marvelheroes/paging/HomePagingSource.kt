@@ -5,7 +5,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.marvelheroes.Results
 import com.example.marvelheroes.paging.network.RetrofitService
-import com.example.marvelheroes.service.MarvelAPI
 
 class HomePagingSource(private  val marvelApi : RetrofitService): PagingSource<Int,Results>() {
 

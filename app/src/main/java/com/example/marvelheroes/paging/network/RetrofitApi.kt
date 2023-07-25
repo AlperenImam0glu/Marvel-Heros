@@ -1,6 +1,5 @@
 package com.example.marvelheroes.paging.network
 
-import com.example.marvelheroes.service.MarvelAPI
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
