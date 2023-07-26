@@ -28,6 +28,15 @@ class HomeViewModel : ViewModel() {
     }).flow.cachedIn(viewModelScope)
 
 
+
+
+
+
+
+
+
+
+
     private val service = MarvelAPIService()
     val comicsList = MutableLiveData<ComicsData?>()
 
@@ -52,13 +61,12 @@ class HomeViewModel : ViewModel() {
         })
     }
 
-
     fun scrollToCharacter(binding: FragmentHomePageBinding) {
-        repository.scrollToCharacter(binding)
+        binding.scrollView.smoothScrollBy(0,binding.characterRecyclerView.top)
     }
 
     fun scrollToComics(binding: FragmentHomePageBinding) {
-        repository.scrollToComics(binding)
+        binding.scrollView.smoothScrollBy(0,binding.comicsRecyclerView.bottom)
     }
 
 }
