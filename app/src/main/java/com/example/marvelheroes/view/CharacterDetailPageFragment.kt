@@ -13,9 +13,10 @@ import com.example.marvelheroes.R
 import com.example.marvelheroes.Results
 import com.example.marvelheroes.adapter.CustomAttributeBarAdapter
 import com.example.marvelheroes.databinding.FragmentCharacterDetailPageBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Math.max
 
-
+@AndroidEntryPoint
 class CharacterDetailPageFragment : Fragment() {
 
 

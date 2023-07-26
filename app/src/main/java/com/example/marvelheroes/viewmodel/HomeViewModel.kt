@@ -13,14 +13,14 @@ import com.example.marvelheroes.databinding.FragmentHomePageBinding
 import com.example.marvelheroes.paging.HomePagingSource
 import com.example.marvelheroes.repository.MainRepository
 import com.example.marvelheroes.service.MarvelAPIService
+import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
-
-
-   private val repository = MainRepository()
+@HiltViewModel
+class HomeViewModel @Inject constructor(private val repository: MainRepository)  : ViewModel() {
 
     val homePage = Pager(config = PagingConfig(pageSize = 30),
     pagingSourceFactory = {

@@ -17,9 +17,11 @@ import com.example.marvelheroes.adapter.ComicsAdapter
 import com.example.marvelheroes.adapter.CharacterPagingAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
 import com.example.marvelheroes.viewmodel.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HomePageFragment : Fragment() {
 
     private lateinit var binding: FragmentHomePageBinding
@@ -33,7 +35,6 @@ class HomePageFragment : Fragment() {
                 recyclerViewAdapter.submitData(it)
             }
         }
-
     }
 
     fun initRecyclerView() {
@@ -48,6 +49,11 @@ class HomePageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomePageBinding.inflate(inflater,container,false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         recyclerViewAdapter = CharacterPagingAdapter(requireContext())
         initViewModel()
         initRecyclerView()
@@ -59,12 +65,6 @@ class HomePageFragment : Fragment() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = ContextCompat.getColor(requireActivity(), R.color.primary_silver)
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
 
         viewModelPaging.refreshData()
         observeLiveData()

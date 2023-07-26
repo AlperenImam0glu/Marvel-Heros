@@ -3,6 +3,8 @@ package com.example.marvelheroes.paging.network
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
+
 object RetrofitApi {
 
     private val BASE_URL = "http://gateway.marvel.com/"
@@ -12,5 +14,4 @@ object RetrofitApi {
         .build()
 
     val apiService : RetrofitService = retrofit.create(RetrofitService::class.java)
-
 }
