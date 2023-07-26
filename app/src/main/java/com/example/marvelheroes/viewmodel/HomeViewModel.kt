@@ -27,16 +27,6 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
         HomePagingSource(repository.retroService())
     }).flow.cachedIn(viewModelScope)
 
-
-
-
-
-
-
-
-
-
-
     private val service = MarvelAPIService()
     val comicsList = MutableLiveData<ComicsData?>()
 
@@ -61,12 +51,6 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
         })
     }
 
-    fun scrollToCharacter(binding: FragmentHomePageBinding) {
-        binding.scrollView.smoothScrollBy(0,binding.characterRecyclerView.top)
-    }
 
-    fun scrollToComics(binding: FragmentHomePageBinding) {
-        binding.scrollView.smoothScrollBy(0,binding.comicsRecyclerView.bottom)
-    }
 
 }
