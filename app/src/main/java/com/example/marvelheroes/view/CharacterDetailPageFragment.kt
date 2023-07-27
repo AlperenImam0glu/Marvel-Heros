@@ -139,7 +139,7 @@ class CharacterDetailPageFragment : Fragment() {
         }
 
         if (containsString) {
-            view.setBackgroundResource(R.drawable.image_not_available_detail)
+            view.setBackgroundResource(R.drawable.portrait_xlarge)
         } else {
             Glide.with(requireContext())
                 .load(url)

@@ -63,6 +63,7 @@
                     android:elevation="10dp"
                     android:fontFamily="@font/gilroy_heavy"
                     android:maxLines="2"
+                    android:ellipsize="end"
                     android:shadowColor="@color/primary_black"
                     android:shadowDx="5"
                     android:shadowDy="5"

@@ -8,17 +8,17 @@ import android.widget.ImageView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.marvelheroes.ComicsResults
 import com.example.marvelheroes.R
 import com.example.marvelheroes.databinding.HomepageCardDesignBinding
 import com.example.marvelheroes.loadImageFromInternet
+import com.example.marvelheroes.stories.StoriesResults
 
-class ComicsPagingAdapter(var context: Context) :
-    PagingDataAdapter<ComicsResults, ComicsPagingAdapter.MyViewHolder>(DiffUtilCallBack()) {
+class StoriesPagingAdapter(var context: Context) :
+    PagingDataAdapter<StoriesResults, StoriesPagingAdapter.MyViewHolder>(DiffUtilCallBack()) {
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = HomepageCardDesignBinding.bind(view)
-        fun bind(data: ComicsResults) {
+        fun bind(data: StoriesResults) {
             binding.cardTitle.text = data.title.toString()
             binding.cardSubtitle.text = data.id.toString()
             setImage(binding.imageView, data)
@@ -42,18 +42,29 @@ class ComicsPagingAdapter(var context: Context) :
     }
 
 
-    fun setImage(view: ImageView, data: ComicsResults) {
-        var url = data.thumbnail!!.path
-        url += "." + data.thumbnail!!.extension
-        view.loadImageFromInternet(url!!, view)
+    fun setImage(view: ImageView, data: StoriesResults) {
+
+        if(data.thumbnail != null){
+            data.thumbnail?.let {
+                var url = data.thumbnail!!.path
+                url += "." + data.thumbnail!!.extension
+                view.loadImageFromInternet(url!!, view)
+            }
+        }else{
+            view.setImageResource(R.drawable.portrait_xlarge).apply {
+                view.scaleType = ImageView.ScaleType.CENTER_CROP
+            }
+        }
+
+
     }
 
-    class DiffUtilCallBack : DiffUtil.ItemCallback<ComicsResults>() {
-        override fun areItemsTheSame(oldItem: ComicsResults, newItem: ComicsResults): Boolean {
+    class DiffUtilCallBack : DiffUtil.ItemCallback<StoriesResults>() {
+        override fun areItemsTheSame(oldItem: StoriesResults, newItem: StoriesResults): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: ComicsResults, newItem: ComicsResults): Boolean {
+        override fun areContentsTheSame(oldItem: StoriesResults, newItem: StoriesResults): Boolean {
             return oldItem == newItem
         }
 

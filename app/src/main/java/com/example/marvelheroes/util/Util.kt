@@ -2,19 +2,19 @@ package com.example.marvelheroes
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 
 fun ImageView.loadImageFromInternet(url:String,view: ImageView) {
-    var containsString = false
+    var isImageEmpty = false
+    var imageUrl=""
     url?.let {
-        containsString = url!!.contains("image_not_available")
+        isImageEmpty = url!!.contains("image_not_available")
     }
-    if (containsString) {
-        view.setBackgroundResource(R.drawable.image_not_available)
-    } else {
-        Glide.with(context).load(url).centerCrop().into(view)
-
+    if(isImageEmpty){
+        imageUrl = "https://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/portrait_xlarge.jpg"
+    }else{
+        imageUrl = url
     }
+        Glide.with(context).load(imageUrl).centerCrop().into(view)
 }
 
 

@@ -8,17 +8,17 @@ import android.widget.ImageView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.marvelheroes.ComicsResults
 import com.example.marvelheroes.R
 import com.example.marvelheroes.databinding.HomepageCardDesignBinding
 import com.example.marvelheroes.loadImageFromInternet
+import com.example.marvelheroes.series.SeriesResults
 
-class ComicsPagingAdapter(var context: Context) :
-    PagingDataAdapter<ComicsResults, ComicsPagingAdapter.MyViewHolder>(DiffUtilCallBack()) {
+class SeriesPagingAdapter(var context: Context) :
+    PagingDataAdapter<SeriesResults, SeriesPagingAdapter.MyViewHolder>(DiffUtilCallBack()) {
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = HomepageCardDesignBinding.bind(view)
-        fun bind(data: ComicsResults) {
+        fun bind(data: SeriesResults) {
             binding.cardTitle.text = data.title.toString()
             binding.cardSubtitle.text = data.id.toString()
             setImage(binding.imageView, data)
@@ -42,18 +42,18 @@ class ComicsPagingAdapter(var context: Context) :
     }
 
 
-    fun setImage(view: ImageView, data: ComicsResults) {
+    fun setImage(view: ImageView, data: SeriesResults) {
         var url = data.thumbnail!!.path
         url += "." + data.thumbnail!!.extension
         view.loadImageFromInternet(url!!, view)
     }
 
-    class DiffUtilCallBack : DiffUtil.ItemCallback<ComicsResults>() {
-        override fun areItemsTheSame(oldItem: ComicsResults, newItem: ComicsResults): Boolean {
+    class DiffUtilCallBack : DiffUtil.ItemCallback<SeriesResults>() {
+        override fun areItemsTheSame(oldItem: SeriesResults, newItem: SeriesResults): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: ComicsResults, newItem: ComicsResults): Boolean {
+        override fun areContentsTheSame(oldItem: SeriesResults, newItem: SeriesResults): Boolean {
             return oldItem == newItem
         }
 

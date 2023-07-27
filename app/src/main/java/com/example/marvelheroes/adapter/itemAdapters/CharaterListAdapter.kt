@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class CharaterListAdapter(var context: Context) :
+class CharaterListAdapter(var context: Context, var title: String) :
     RecyclerView.Adapter<CharaterListAdapter.ViewHolder>() {
 
     var characterPagingAdapter = CharacterPagingAdapter(context)
@@ -36,6 +36,7 @@ class CharaterListAdapter(var context: Context) :
     override fun getItemCount(): Int = 1
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.binding.heroListTitle.text = title
         holder.bind()
     }
 }

@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelheroes.R
 import com.example.marvelheroes.Results
-import com.example.marvelheroes.databinding.HomePageCardDesignBinding
+import com.example.marvelheroes.databinding.HomepageCardDesignBinding
 import com.example.marvelheroes.loadImageFromInternet
 import com.example.marvelheroes.view.HomePageFragmentDirections
 
 class CharacterPagingAdapter(var context: Context) :
     PagingDataAdapter<Results, CharacterPagingAdapter.MyViewHolder>(DiffUtilCallBack()) {
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val binding = HomePageCardDesignBinding.bind(view)
+        private val binding = HomepageCardDesignBinding.bind(view)
 
         fun bind(data: Results) {
             binding.cardTitle.text = data.name.toString()
@@ -37,7 +37,7 @@ class CharacterPagingAdapter(var context: Context) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-            .inflate(R.layout.home_page_card_design, parent, false)
+            .inflate(R.layout.homepage_card_design, parent, false)
         return MyViewHolder(inflater)
     }
 
