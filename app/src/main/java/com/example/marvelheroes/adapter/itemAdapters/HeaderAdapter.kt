@@ -3,16 +3,16 @@ package com.example.marvelheroes.adapter.itemAdapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.marvelheroes.databinding.HeaderBinding
+import com.example.marvelheroes.databinding.HomepageHeaderBinding
 
 class HeaderAdapter() : RecyclerView.Adapter<HeaderAdapter.HeaderDesign>() {
 
-    class HeaderDesign(binding: HeaderBinding) : RecyclerView.ViewHolder(binding.root) {
+    class HeaderDesign(binding: HomepageHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderDesign {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val headerBinding = HeaderBinding.inflate(layoutInflater, parent, false)
+        val headerBinding = HomepageHeaderBinding.inflate(layoutInflater, parent, false)
         return HeaderDesign(headerBinding)
     }
 

@@ -3,7 +3,6 @@ package com.example.marvelheroes.adapter.itemAdapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.marvelheroes.databinding.HeaderBinding
 import com.example.marvelheroes.databinding.HomepageButtonsBinding
 
 class ButtonAdapter() : RecyclerView.Adapter<ButtonAdapter.HeaderDesign>() {
