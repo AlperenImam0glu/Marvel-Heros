@@ -6,17 +6,27 @@ import com.example.marvelheroes.ComicsResults
 import com.example.marvelheroes.Results
 import com.example.marvelheroes.paging.network.RetrofitService
 
-class ComicsPagingSource(private val marvelApi: RetrofitService) : PagingSource<Int, ComicsResults>() {
+class ComicsPagingSource(private val marvelApi: RetrofitService,private val type:Int,private val id:String ="0") : PagingSource<Int, ComicsResults>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ComicsResults> {
         return try {
-            val position = params.key ?: FIRST_PAGE_INDEX
-            val response = marvelApi.getAllComicsWithPage(position)
-            LoadResult.Page(
-                data = response.data!!.results,
-                prevKey = if (position == 1) null else position - 20,
-                nextKey = if (position > response.data!!.total!!) null else position + 20
-            )
+            if(type==0){
+                val position = params.key ?: FIRST_PAGE_INDEX
+                val response = marvelApi.getAllComicsWithPage(position)
+                LoadResult.Page(
+                    data = response.data!!.results,
+                    prevKey = if (position == 1) null else position - 20,
+                    nextKey = if (position > response.data!!.total!!) null else position + 20)
+            }
+            else{
+                val position = params.key ?: FIRST_PAGE_INDEX
+                val response = marvelApi.getAllComicsWithId(id,position)
+                LoadResult.Page(
+                    data = response.data!!.results,
+                    prevKey = if (position == 1) null else position - 20,
+                    nextKey = if (position > response.data!!.total!!) null else position + 20
+                )
+            }
 
         } catch (e: Exception) {
             LoadResult.Error(e)

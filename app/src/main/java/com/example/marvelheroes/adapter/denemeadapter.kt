@@ -14,31 +14,29 @@ import com.example.marvelheroes.R
 import com.example.marvelheroes.databinding.HomepageCardDesignBinding
 import com.example.marvelheroes.loadImageFromInternet
 
-class ComicsPagingAdapter(var context: Context) :
-    PagingDataAdapter<ComicsResults, ComicsPagingAdapter.MyViewHolder>(DiffUtilCallBack()) {
-
+class deneme(var context: Context) :
+    PagingDataAdapter<ComicsResults, deneme.MyViewHolder>(DiffUtilCallBack()) {
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = HomepageCardDesignBinding.bind(view)
+
         fun bind(data: ComicsResults) {
+            Log.e("hata","${data.title.toString()}")
             binding.cardTitle.text = data.title.toString()
             binding.cardSubtitle.text = data.id.toString()
             setImage(binding.imageView, data)
-            binding.cardItemView.setOnClickListener {
-                /*
-                val action =
-                    HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(
-                        data
-                    )
-                Navigation.findNavController(it).navigate(action)*/
-                //comics detail ekranı hazırla
-            }
+
         }
     }
 
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        Log.e("hata","deneme çalıştı")
+        holder.bind(getItem(position)!!)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
             .inflate(R.layout.homepage_card_design, parent, false)
+        Log.e("hata","deneme çalıştı")
         return MyViewHolder(inflater)
     }
 
@@ -46,7 +44,7 @@ class ComicsPagingAdapter(var context: Context) :
     fun setImage(view: ImageView, data: ComicsResults) {
         var url = data.thumbnail!!.path
         url += "." + data.thumbnail!!.extension
-        view.loadImageFromInternet(url!!, view)
+        view.loadImageFromInternet(url!!,view)
     }
 
     class DiffUtilCallBack : DiffUtil.ItemCallback<ComicsResults>() {
@@ -58,9 +56,5 @@ class ComicsPagingAdapter(var context: Context) :
             return oldItem == newItem
         }
 
-    }
-
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(getItem(position)!!)
     }
 }

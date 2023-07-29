@@ -6,14 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.marvelheroes.R
 import com.example.marvelheroes.Results
 import com.example.marvelheroes.adapter.CustomAttributeBarAdapter
+import com.example.marvelheroes.adapter.pagingAdapters.CharacterPagingAdapter
+import com.example.marvelheroes.adapter.pagingAdapters.ComicsPagingAdapter
+import com.example.marvelheroes.adapter.pagingAdapters.EventsPagingAdapter
+import com.example.marvelheroes.adapter.pagingAdapters.SeriesPagingAdapter
+import com.example.marvelheroes.adapter.pagingAdapters.StoriesPagingAdapter
+import com.example.marvelheroes.adapter.pagingAdapters.deneme
 import com.example.marvelheroes.databinding.FragmentCharacterDetailPageBinding
+import com.example.marvelheroes.viewmodel.DenemeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.lang.Math.max
 
 @AndroidEntryPoint
@@ -34,13 +45,73 @@ class CharacterDetailPageFragment : Fragment() {
         return binding.root
     }
 
+    private val viewModelPaging: DenemeViewModel by viewModels()
+    lateinit var characterAdapter: ComicsPagingAdapter
+    lateinit var characterAdapter2: SeriesPagingAdapter
+    lateinit var characterAdapter3: EventsPagingAdapter
+    lateinit var characterAdapter4: StoriesPagingAdapter
+
+    fun initViewModel(){
+        lifecycleScope.launch {
+            viewModelPaging.comicsData.collectLatest {
+                characterAdapter.submitData(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModelPaging.seriesData.collectLatest {
+                characterAdapter2.submitData(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModelPaging.eventsData.collectLatest {
+                characterAdapter3.submitData(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModelPaging.storiesData.collectLatest {
+                characterAdapter4.submitData(it)
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+         characterAdapter= ComicsPagingAdapter(requireContext())
+         characterAdapter2= SeriesPagingAdapter(requireContext())
+        characterAdapter3= EventsPagingAdapter(requireContext())
+        characterAdapter4 = StoriesPagingAdapter(requireContext())
 
         arguments?.let {
             result = CharacterDetailPageFragmentArgs.fromBundle(it).results
         }
 
+        viewModelPaging.id= result.id.toString()
+
+        initViewModel()
+
+        binding.img1.setOnClickListener {
+            binding.rv.adapter = characterAdapter
+        }
+        binding.img2.setOnClickListener {
+            binding.rv.adapter = characterAdapter2
+        }
+
+        binding.img3.setOnClickListener {
+            binding.rv.adapter = characterAdapter3
+        }
+
+        binding.img4.setOnClickListener {
+            binding.rv.adapter = characterAdapter4
+        }
+
+
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rv.layoutManager = layoutManager
+        binding.rv.adapter = characterAdapter
 
         setToolbarPosition()
         putDataToView()
@@ -49,8 +120,6 @@ class CharacterDetailPageFragment : Fragment() {
         binding.toolbarBackBtn.setOnClickListener {
             findNavController(this).popBackStack()
         }
-
-        super.onViewCreated(view, savedInstanceState)
     }
 
     fun getMaxValueData(): Int {

@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
 
     val comicsData = Pager(config = PagingConfig(pageSize = 30),
         pagingSourceFactory = {
-            ComicsPagingSource(repository.retroService())
+            ComicsPagingSource(repository.retroService(),0)
         }).flow.cachedIn(viewModelScope)
 
     val creatorsData  = Pager(config = PagingConfig(pageSize = 30),
@@ -36,17 +36,17 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
 
     val eventsData  = Pager(config = PagingConfig(pageSize = 30),
         pagingSourceFactory = {
-            EventsPagingSource(repository.retroService())
+            EventsPagingSource(repository.retroService(),0)
         }).flow.cachedIn(viewModelScope)
 
     val seriesData  = Pager(config = PagingConfig(pageSize = 30),
         pagingSourceFactory = {
-            SeriesPagingSource(repository.retroService())
+            SeriesPagingSource(repository.retroService(),0 )
         }).flow.cachedIn(viewModelScope)
 
     val storiesData  = Pager(config = PagingConfig(pageSize = 30),
         pagingSourceFactory = {
-            StoriesPagingSource(repository.retroService())
+            StoriesPagingSource(repository.retroService(),0)
         }).flow.cachedIn(viewModelScope)
 
 }
