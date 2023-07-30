@@ -20,7 +20,11 @@ data class ComicsResults (
   @SerializedName("issn"               ) var issn               : String?             = null,
   @SerializedName("format"             ) var format             : String?             = null,
   @SerializedName("pageCount"          ) var pageCount          : Int?                = null,
-
+  @SerializedName("creators"           ) var creators           : ComicsCreators?           = ComicsCreators(),
+  @SerializedName("characters"         ) var characters         : ComicsCharacters?         = ComicsCharacters(),
+  @SerializedName("stories"            ) var stories            : ComicsStories?            = ComicsStories(),
+  @SerializedName("events"             ) var events             : ComicsEvents?             = ComicsEvents(),
+  @SerializedName("series"             ) var series             : ComicsSeries?             = ComicsSeries(),
   @SerializedName("thumbnail"          ) var thumbnail          : ComicsThumbnail?          = ComicsThumbnail(),
 
 )

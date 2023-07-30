@@ -3,19 +3,21 @@ package com.example.marvelheroes.adapter.itemAdapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelheroes.adapter.pagingAdapters.CharacterPagingAdapter
 import com.example.marvelheroes.databinding.HomepageMainRecyclerviewBinding
+import com.example.marvelheroes.viewmodel.SharedViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class CharaterListAdapter(var context: Context, var title: String) :
+class CharaterListAdapter(var context: Context, var title: String,viewModel:SharedViewModel) :
     RecyclerView.Adapter<CharaterListAdapter.ViewHolder>() {
 
-    var characterPagingAdapter = CharacterPagingAdapter(context)
+    var characterPagingAdapter = CharacterPagingAdapter(context,viewModel)
 
     inner class ViewHolder(var binding: HomepageMainRecyclerviewBinding) :
         RecyclerView.ViewHolder(binding.root) {

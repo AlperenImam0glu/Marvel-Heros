@@ -8,7 +8,7 @@ import com.example.marvelheroes.R
 import com.example.marvelheroes.databinding.CustomAttributeBarItemBinding
 
 
-class CustomAttributeBarAdapter(val maxValue: Int, var value: Int) :
+class CustomAttributeBarAdapter( var value: Int) :
     RecyclerView.Adapter<CustomAttributeBarAdapter.ViewHolder>() {
     val ITEM_COUNT = 44
 

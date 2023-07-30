@@ -42,5 +42,7 @@ interface RetrofitService {
     @GET("v1/public/characters/{id}/stories?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
     suspend fun getAllStoriesWithId(@Path("id") id: String, @Query("offset") offset: Int): MainStories
 
+    @GET("v1/public/comics/{id}/characters?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
+    suspend fun getAllComicsCharacters(@Path("id") id: String, @Query("offset") offset: Int): Character
 
 }

@@ -1,5 +1,6 @@
 package com.example.marvelheroes.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.marvelheroes.ComicsResults
@@ -13,22 +14,26 @@ class ComicsPagingSource(private val marvelApi: RetrofitService,private val type
             if(type==0){
                 val position = params.key ?: FIRST_PAGE_INDEX
                 val response = marvelApi.getAllComicsWithPage(position)
+                Log.e("comics","$position - ${response.data!!.total!!}")
                 LoadResult.Page(
                     data = response.data!!.results,
-                    prevKey = if (position == 1) null else position - 20,
+                    prevKey = if (position < 20) null else position - 20,
                     nextKey = if (position > response.data!!.total!!) null else position + 20)
             }
             else{
+
                 val position = params.key ?: FIRST_PAGE_INDEX
                 val response = marvelApi.getAllComicsWithId(id,position)
+                Log.e("comics","$position - ${response.data!!.total!!}")
                 LoadResult.Page(
                     data = response.data!!.results,
-                    prevKey = if (position == 1) null else position - 20,
+                    prevKey = if (position <20 ) null else position - 20,
                     nextKey = if (position > response.data!!.total!!) null else position + 20
                 )
             }
 
         } catch (e: Exception) {
+            Log.e("comics",e.message.toString())
             LoadResult.Error(e)
         }
     }

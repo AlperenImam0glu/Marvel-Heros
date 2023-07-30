@@ -9,6 +9,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.marvelheroes.ComicsResults
+import com.example.marvelheroes.Results
 import com.example.marvelheroes.adapter.itemAdapters.ButtonAdapter
 import com.example.marvelheroes.adapter.itemAdapters.CharaterListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.ComicsListAdapter
@@ -26,6 +29,7 @@ import com.example.marvelheroes.adapter.itemAdapters.SeriesListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.StoriesListAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
 import com.example.marvelheroes.viewmodel.HomeViewModel
+import com.example.marvelheroes.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -44,7 +48,7 @@ class HomePageFragment : Fragment() {
     private lateinit var eventListAdapter: EventListAdapter
     private lateinit var seriesListAdapter: SeriesListAdapter
     private lateinit var storiesListAdapter: StoriesListAdapter
-
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private fun initViewModel() {
         lifecycleScope.launch {
             viewModelPaging.charactersData.collectLatest {
@@ -94,8 +98,12 @@ class HomePageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        comicsListAdapter = ComicsListAdapter(requireContext(),"Comics")
-        characterListAdapter = CharaterListAdapter(requireContext(),"Heroes")
+        super.onViewCreated(view, savedInstanceState)
+
+        sharedViewModel.setCharacter(null)
+        sharedViewModel.setComics(null)
+        comicsListAdapter = ComicsListAdapter(requireContext(),"Comics",sharedViewModel)
+        characterListAdapter = CharaterListAdapter(requireContext(),"Heroes",sharedViewModel)
         creatorListAdapter = CreatorListAdapter(requireContext(),"Creators")
         eventListAdapter = EventListAdapter(requireContext(),"Events")
         seriesListAdapter = SeriesListAdapter(requireContext(),"Series")
@@ -120,7 +128,6 @@ class HomePageFragment : Fragment() {
             adapter = concatAdapter
         }
 
-        super.onViewCreated(view, savedInstanceState)
     }
 
 

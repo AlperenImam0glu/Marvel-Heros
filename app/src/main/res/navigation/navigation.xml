@@ -17,9 +17,12 @@
     <fragment
         android:id="@+id/characterDetailPageFragment"
         android:name="com.example.marvelheroes.view.CharacterDetailPageFragment"
-        android:label="CharacterDetailPageFragment" >
+        android:label="CharacterDetailPageFragment">
+    <action
+        android:id="@+id/detailPageFragmentTo_detailPageFragment"
+        app:destination="@id/characterDetailPageFragment" />
         <argument
-            android:name="results"
-            app:argType="com.example.marvelheroes.Results" />
+            android:name="type"
+            app:argType="integer" />
     </fragment>
 </navigation>

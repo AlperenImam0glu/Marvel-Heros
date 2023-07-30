@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -13,10 +14,13 @@ import com.example.marvelheroes.R
 import com.example.marvelheroes.Results
 import com.example.marvelheroes.databinding.HomepageCardDesignBinding
 import com.example.marvelheroes.loadImageFromInternet
+import com.example.marvelheroes.view.CharacterDetailPageFragmentDirections
 import com.example.marvelheroes.view.HomePageFragmentDirections
+import com.example.marvelheroes.viewmodel.SharedViewModel
 
-class CharacterPagingAdapter(var context: Context) :
+class CharacterPagingAdapter(var context: Context,val viewModel: SharedViewModel) :
     PagingDataAdapter<Results, CharacterPagingAdapter.MyViewHolder>(DiffUtilCallBack()) {
+
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = HomepageCardDesignBinding.bind(view)
 
@@ -25,8 +29,26 @@ class CharacterPagingAdapter(var context: Context) :
             binding.cardSubtitle.text = data.id.toString()
             setImage(binding.imageView, data)
             binding.cardItemView.setOnClickListener {
-                val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(data)
-                Navigation.findNavController(it).navigate(action)
+
+                viewModel.setCharacter(data)
+                var flag = true
+                try {
+                    if(flag){
+                        val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(0)
+                        Navigation.findNavController(it).navigate(action)
+                        flag = false
+                    }
+
+                }catch (e:Exception){
+                }
+                try {
+                    if(flag){
+                        flag = false
+                        val action =
+                            CharacterDetailPageFragmentDirections.detailPageFragmentToDetailPageFragment(0)
+                        Navigation.findNavController(it).navigate(action)
+                    }
+                }catch (e:Exception){}
             }
         }
     }
