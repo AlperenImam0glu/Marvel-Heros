@@ -12,37 +12,60 @@ import retrofit2.http.Query
 
 interface RetrofitService {
 
-    @GET("v1/public/characters?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
+    @GET("v1/public/characters?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
     suspend fun getAllCharactersWithPage(@Query("offset") offset: Int): Character
 
-    @GET("v1/public/comics?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
+    @GET("v1/public/comics?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
     suspend fun getAllComicsWithPage(@Query("offset") offset: Int): MainComics
 
-    @GET("v1/public/creators?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
+    @GET("v1/public/creators?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
     suspend fun getAllCreatorsWithPage(@Query("offset") offset: Int): MainCreators
 
-    @GET("v1/public/events?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
+    @GET("v1/public/events?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
     suspend fun getAllEventsWithPage(@Query("offset") offset: Int): MainEvents
 
-    @GET("v1/public/series?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
+    @GET("v1/public/series?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
     suspend fun getAllSeriesWithPage(@Query("offset") offset: Int): MainSeries
 
-    @GET("v1/public/stories?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
+    @GET("v1/public/stories?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
     suspend fun getAllStoriesWithPage(@Query("offset") offset: Int): MainStories
 
-    @GET("v1/public/characters/{id}/comics?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
-    suspend fun getAllComicsOfCharacter(@Path("id") id: String, @Query("offset") offset: Int): MainComics
+    @GET("v1/public/characters/{id}/comics?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllComicsOfCharacter(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): MainComics
 
-    @GET("v1/public/characters/{id}/series?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
-    suspend fun getAllSeriesOfCharacter(@Path("id") id: String, @Query("offset") offset: Int): MainSeries
+    @GET("v1/public/characters/{id}/series?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllSeriesOfCharacter(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): MainSeries
 
-    @GET("v1/public/characters/{id}/events?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
-    suspend fun getAllEventsOfCharacter(@Path("id") id: String, @Query("offset") offset: Int): MainEvents
+    @GET("v1/public/characters/{id}/events?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllEventsOfCharacter(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): MainEvents
 
-    @GET("v1/public/characters/{id}/stories?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
-    suspend fun getAllStoriesOfCharacter(@Path("id") id: String, @Query("offset") offset: Int): MainStories
+    @GET("v1/public/characters/{id}/stories?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllStoriesOfCharacter(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): MainStories
 
-    @GET("v1/public/comics/{id}/characters?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
-        suspend fun getAllCharactersOfComic(@Path("id") id: String, @Query("offset") offset: Int): Character
+    @GET("v1/public/comics/{id}/characters?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllCharactersOfComic(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): Character
+
+    @GET("v1/public/comics/{id}/creators?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllCreatorsOfComics(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): MainCreators
+
+
 
 }

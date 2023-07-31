@@ -20,7 +20,7 @@ class SeriesPagingSource(private val marvelApi: RetrofitService,private val type
                     nextKey = if (position > response.data!!.total!!) null else position + 20
                 )
             }
-            else{
+            else if (type ==1){
                 val position = params.key ?: FIRST_PAGE_INDEX
                 val response = marvelApi.getAllSeriesOfCharacter(id, position)
 
@@ -30,7 +30,11 @@ class SeriesPagingSource(private val marvelApi: RetrofitService,private val type
                     nextKey = if (position > response.data!!.total!!) null else position + 20
                 )
             }
-
+            else if (type ==2){
+                LoadResult.Error(Exception())
+            } else{
+                LoadResult.Error(Exception())
+            }
 
 
         } catch (e: Exception) {

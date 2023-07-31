@@ -237,7 +237,7 @@
 
                 <TextView
                     android:id="@+id/text_comics_bar"
-                    android:layout_width="70dp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
@@ -252,7 +252,7 @@
 
                 <TextView
                     android:id="@+id/text_series_bar"
-                    android:layout_width="70dp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
@@ -266,7 +266,7 @@
 
                 <TextView
                     android:id="@+id/text_events_bar"
-                    android:layout_width="70dp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
@@ -280,7 +280,7 @@
 
                 <TextView
                     android:id="@+id/text_stories_bar"
-                    android:layout_width="70dp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"

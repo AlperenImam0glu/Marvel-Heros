@@ -1,7 +1,6 @@
 package com.example.marvelheroes.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,7 @@ import com.example.marvelheroes.CharactersResults
 import com.example.marvelheroes.adapter.CustomAttributeBarAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.CharacterPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.ComicsPagingAdapter
+import com.example.marvelheroes.adapter.pagingAdapters.CreatorsPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.EventsPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.SeriesPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.StoriesPagingAdapter
@@ -44,6 +44,7 @@ class CharacterDetailPageFragment : Fragment() {
     lateinit var eventsAdapter: EventsPagingAdapter
     lateinit var storiesAdapter: StoriesPagingAdapter
     lateinit var charactersAdapter: CharacterPagingAdapter
+    lateinit var creatorsAdapter: CreatorsPagingAdapter
     private var type: Int = 0
 
 
@@ -63,13 +64,14 @@ class CharacterDetailPageFragment : Fragment() {
         eventsAdapter = EventsPagingAdapter(requireContext(),sharedViewModel)
         storiesAdapter = StoriesPagingAdapter(requireContext())
         charactersAdapter = CharacterPagingAdapter(requireContext(), sharedViewModel)
+        creatorsAdapter = CreatorsPagingAdapter(requireContext())
 
         arguments?.let {
             type = CharacterDetailPageFragmentArgs.fromBundle(it).type
         }
 
         createViewByType(type)
-        initViewModel()
+
         setToolbarPosition()
 
         binding.toolbarBackBtn.setOnClickListener {
@@ -115,11 +117,12 @@ class CharacterDetailPageFragment : Fragment() {
                 charactersData = it.last()
                 viewModelPaging.id = charactersData.id.toString()
                 setCharactersToView(charactersData)
-
+                initViewModelForCharacter()
                 val layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 binding.rv.layoutManager = layoutManager
                 binding.rv.adapter = comicsAdapter
+
             }
 
         } else if(type ==1) {
@@ -155,12 +158,15 @@ class CharacterDetailPageFragment : Fragment() {
         } else {
             binding.textView7.text = resources.getString(R.string.desc)
         }
+        initViewModelForComics()
         binding.textNameTitle.text = comicsData.title
         binding.textNameSubtitle.text = comicsData.id.toString()
         binding.textComicsCount.text = comicsData.characters!!.available.toString()
         binding.textEventsCount.text = comicsData.events!!.available.toString()
         binding.textSeriesCount.text = comicsData.creators!!.available.toString()
         binding.textStoriesCount.text = comicsData.stories!!.available.toString()
+        binding.textComicsBar.text="Characters"
+        binding.textSeriesBar.text="Creators"
         setImage(binding.image, comicsData.thumbnail!!.path!!, comicsData.thumbnail!!.extension!!)
         configureRecyclerViewComics(comicsData)
         setClickListenersComics()
@@ -201,11 +207,10 @@ class CharacterDetailPageFragment : Fragment() {
             characterData.thumbnail!!.extension!!
         )
         configureRecyclerViewCharacters(characterData)
-        setClickListeners()
+        setClickListenersCharacters()
     }
 
-
-    fun initViewModel() {
+    fun initViewModelForCharacter() {
         lifecycleScope.launch {
             viewModelPaging.allComicsOfTheCharacter.collectLatest {
                 comicsAdapter.submitData(it)
@@ -230,9 +235,17 @@ class CharacterDetailPageFragment : Fragment() {
             }
         }
 
+    }
+
+    fun initViewModelForComics() {
         lifecycleScope.launch {
             viewModelPaging.allCharacterOfTheComics.collectLatest {
                 charactersAdapter.submitData(it)
+            }
+        }
+        lifecycleScope.launch {
+            viewModelPaging.allCreatorsOfTheComics.collectLatest {
+                creatorsAdapter.submitData(it)
             }
         }
     }
@@ -245,7 +258,7 @@ class CharacterDetailPageFragment : Fragment() {
             scrollToRv()
         }
         binding.img2.setOnClickListener {
-            binding.rv.adapter = seriesAdapter
+            binding.rv.adapter = creatorsAdapter
             binding.rvTitle.text = "Creators"
             scrollToRv()
         }
@@ -263,8 +276,7 @@ class CharacterDetailPageFragment : Fragment() {
         }
     }
 
-
-    fun setClickListeners() {
+    fun setClickListenersCharacters() {
 
         binding.img1.setOnClickListener {
             binding.rv.adapter = comicsAdapter
@@ -395,12 +407,6 @@ class CharacterDetailPageFragment : Fragment() {
         binding.scrollView.smoothScrollBy(0, binding.rv.bottom)
     }
 
-    fun setDataToView() {
-
-
-        // setImage(binding.image, pageModel.thumbnail!!)
-    }
-
     fun setImage(view: ImageView, path: String, extension: String) {
 
         var url = path
@@ -420,6 +426,5 @@ class CharacterDetailPageFragment : Fragment() {
                 .into(view);
         }
     }
-
 
 }

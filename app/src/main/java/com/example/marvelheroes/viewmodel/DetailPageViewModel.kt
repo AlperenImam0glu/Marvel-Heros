@@ -7,6 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.example.marvelheroes.paging.CharacterPagingSource
 import com.example.marvelheroes.paging.ComicsPagingSource
+import com.example.marvelheroes.paging.CreatorsPagingSource
 import com.example.marvelheroes.paging.EventsPagingSource
 import com.example.marvelheroes.paging.SeriesPagingSource
 import com.example.marvelheroes.paging.StoriesPagingSource
@@ -41,6 +42,11 @@ class DetailPageViewModel @Inject constructor(private val repository: MainReposi
     val allCharacterOfTheComics = Pager(config = PagingConfig(pageSize = 30),
         pagingSourceFactory = {
             CharacterPagingSource(repository.retroService(),1,id)
+        }).flow.cachedIn(viewModelScope)
+
+    val allCreatorsOfTheComics = Pager(config = PagingConfig(pageSize = 30),
+        pagingSourceFactory = {
+            CreatorsPagingSource(repository.retroService(),1,id)
         }).flow.cachedIn(viewModelScope)
 
 }
