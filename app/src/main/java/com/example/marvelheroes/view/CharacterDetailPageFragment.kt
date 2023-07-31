@@ -248,6 +248,16 @@ class CharacterDetailPageFragment : Fragment() {
                 creatorsAdapter.submitData(it)
             }
         }
+        lifecycleScope.launch {
+            viewModelPaging.allEventsOfTheComics.collectLatest {
+                eventsAdapter.submitData(it)
+            }
+        }
+        lifecycleScope.launch {
+            viewModelPaging.allStoriesOfTheComics.collectLatest {
+                storiesAdapter.submitData(it)
+            }
+        }
     }
 
     fun setClickListenersComics() {

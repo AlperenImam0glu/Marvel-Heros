@@ -49,4 +49,14 @@ class DetailPageViewModel @Inject constructor(private val repository: MainReposi
             CreatorsPagingSource(repository.retroService(),1,id)
         }).flow.cachedIn(viewModelScope)
 
+    val allEventsOfTheComics = Pager(config = PagingConfig(pageSize = 30),
+        pagingSourceFactory = {
+            EventsPagingSource(repository.retroService(),2,id)
+        }).flow.cachedIn(viewModelScope)
+
+    val allStoriesOfTheComics = Pager(config = PagingConfig(pageSize = 30),
+        pagingSourceFactory = {
+            StoriesPagingSource(repository.retroService(),2,id)
+        }).flow.cachedIn(viewModelScope)
+
 }

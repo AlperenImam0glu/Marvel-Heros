@@ -10,6 +10,7 @@ class EventsPagingSource(private val marvelApi: RetrofitService,private val type
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, EventsResults> {
         return try {
             if(type==0){
+                //homepage
                 val position = params.key ?: FIRST_PAGE_INDEX
                 val response = marvelApi.getAllEventsWithPage(position)
                 LoadResult.Page(
@@ -18,7 +19,8 @@ class EventsPagingSource(private val marvelApi: RetrofitService,private val type
                     nextKey = if (position > response.data!!.total!!) null else position + 20
                 )
 
-            }else{
+            }else if (type ==1){
+                //character
                 val position = params.key ?: FIRST_PAGE_INDEX
                 val response = marvelApi.getAllEventsOfCharacter(id,position)
                 LoadResult.Page(
@@ -27,6 +29,18 @@ class EventsPagingSource(private val marvelApi: RetrofitService,private val type
                     nextKey = if (position > response.data!!.total!!) null else position + 20
                 )
 
+            }
+            else if(type ==2 ){
+                //comics
+                val position = params.key ?: FIRST_PAGE_INDEX
+                val response = marvelApi.getAllEventsOfComics(id,position)
+                LoadResult.Page(
+                    data = response.data!!.results,
+                    prevKey = if (position < 20) null else position - 20,
+                    nextKey = if (position > response.data!!.total!!) null else position + 20
+                )
+            }else{
+                LoadResult.Error(Exception())
             }
 
         } catch (e: Exception) {

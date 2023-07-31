@@ -12,6 +12,7 @@ class StoriesPagingSource(private val marvelApi: RetrofitService,private val typ
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, StoriesResults> {
         return try {
             if(type ==0 ){
+                //Homepage
                 val position = params.key ?: FIRST_PAGE_INDEX
                 val response = marvelApi.getAllStoriesWithPage(position)
                 Log.e("hata","$position - ${response.data!!.total!!}")
@@ -20,7 +21,8 @@ class StoriesPagingSource(private val marvelApi: RetrofitService,private val typ
                     prevKey = if (position < 20) null else position - 20,
                     nextKey = if (position > response.data!!.total!!) null else position + 20
                 )
-            }else{
+            }else if (type ==1){
+                //Character
                 val position = params.key ?: FIRST_PAGE_INDEX
                 val response = marvelApi.getAllStoriesOfCharacter(id,position)
                 Log.e("hata","$position - ${response.data!!.total!!}")
@@ -29,6 +31,17 @@ class StoriesPagingSource(private val marvelApi: RetrofitService,private val typ
                     prevKey = if (position < 20) null else position - 20,
                     nextKey = if (position > response.data!!.total!!) null else position + 20
                 )
+            }  else if(type ==2 ){
+                //Comic
+                val position = params.key ?: FIRST_PAGE_INDEX
+                val response = marvelApi.getAllStoriesOfComics(id,position)
+                LoadResult.Page(
+                    data = response.data!!.results,
+                    prevKey = if (position < 20) null else position - 20,
+                    nextKey = if (position > response.data!!.total!!) null else position + 20
+                )
+            }else{
+                LoadResult.Error(Exception())
             }
 
         } catch (e: Exception) {

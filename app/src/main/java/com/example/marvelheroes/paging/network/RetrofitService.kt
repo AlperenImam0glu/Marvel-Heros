@@ -66,6 +66,16 @@ interface RetrofitService {
         @Query("offset") offset: Int
     ): MainCreators
 
+    @GET("v1/public/comics/{id}/events?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllEventsOfComics(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): MainEvents
+    @GET("v1/public/comics/{id}/stories?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllStoriesOfComics(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): MainStories
 
 
 }
