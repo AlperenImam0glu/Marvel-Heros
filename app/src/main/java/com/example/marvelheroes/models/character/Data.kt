@@ -1,6 +1,6 @@
 package com.example.marvelheroes.models.character
 
-import com.example.marvelheroes.Results
+import com.example.marvelheroes.CharactersResults
 import com.google.gson.annotations.SerializedName
 
 data class Data (
@@ -9,6 +9,6 @@ data class Data (
   @SerializedName("limit"   ) var limit   : Int?               = null,
   @SerializedName("total"   ) var total   : Int?               = null,
   @SerializedName("count"   ) var count   : Int?               = null,
-  @SerializedName("results" ) var results : ArrayList<Results> = arrayListOf()
+  @SerializedName("results" ) var results : ArrayList<CharactersResults> = arrayListOf()
 
 )

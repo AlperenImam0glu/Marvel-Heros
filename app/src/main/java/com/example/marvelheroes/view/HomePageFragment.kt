@@ -1,24 +1,17 @@
 package com.example.marvelheroes.view
 
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.marvelheroes.ComicsResults
-import com.example.marvelheroes.Results
 import com.example.marvelheroes.adapter.itemAdapters.ButtonAdapter
 import com.example.marvelheroes.adapter.itemAdapters.CharaterListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.ComicsListAdapter
@@ -49,6 +42,46 @@ class HomePageFragment : Fragment() {
     private lateinit var seriesListAdapter: SeriesListAdapter
     private lateinit var storiesListAdapter: StoriesListAdapter
     private val sharedViewModel: SharedViewModel by activityViewModels()
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentHomePageBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        super.onViewCreated(view, savedInstanceState)
+
+        comicsListAdapter = ComicsListAdapter(requireContext(),"Comics",sharedViewModel)
+        characterListAdapter = CharaterListAdapter(requireContext(),"Heroes",sharedViewModel)
+        creatorListAdapter = CreatorListAdapter(requireContext(),"Creators")
+        eventListAdapter = EventListAdapter(requireContext(),"Events",sharedViewModel)
+        seriesListAdapter = SeriesListAdapter(requireContext(),"Series")
+        storiesListAdapter = StoriesListAdapter(requireContext(),"Stories")
+
+        initViewModel()
+
+        concatAdapter = ConcatAdapter(
+            headerAdapter,
+            buttonAdapter,
+            characterListAdapter,
+            comicsListAdapter,
+            creatorListAdapter,
+            eventListAdapter,
+            seriesListAdapter,
+            storiesListAdapter
+        )
+
+        binding.homepageRv.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = concatAdapter
+        }
+    }
+
     private fun initViewModel() {
         lifecycleScope.launch {
             viewModelPaging.charactersData.collectLatest {
@@ -86,55 +119,4 @@ class HomePageFragment : Fragment() {
             }
         }
     }
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentHomePageBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        super.onViewCreated(view, savedInstanceState)
-
-        comicsListAdapter = ComicsListAdapter(requireContext(),"Comics",sharedViewModel)
-        characterListAdapter = CharaterListAdapter(requireContext(),"Heroes",sharedViewModel)
-        creatorListAdapter = CreatorListAdapter(requireContext(),"Creators")
-        eventListAdapter = EventListAdapter(requireContext(),"Events")
-        seriesListAdapter = SeriesListAdapter(requireContext(),"Series")
-        storiesListAdapter = StoriesListAdapter(requireContext(),"Stories")
-
-        initViewModel()
-
-        concatAdapter = ConcatAdapter(
-            headerAdapter,
-            buttonAdapter,
-            characterListAdapter,
-            comicsListAdapter,
-            creatorListAdapter,
-            eventListAdapter,
-            seriesListAdapter,
-            storiesListAdapter
-        )
-
-        binding.homepageRv.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            adapter = concatAdapter
-        }
-
-    }
-
-
-
-    fun changeStatusBarColor(color: Int) {
-        val window: Window = requireActivity().window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.statusBarColor = color
-    }
-
 }

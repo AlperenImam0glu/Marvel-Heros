@@ -7,11 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelheroes.adapter.pagingAdapters.EventsPagingAdapter
 import com.example.marvelheroes.databinding.HomepageMainRecyclerviewBinding
+import com.example.marvelheroes.viewmodel.SharedViewModel
 
-class EventListAdapter(var context: Context,var title: String) :
+class EventListAdapter(var context: Context,var title: String, viewModel: SharedViewModel) :
     RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
 
-    var evetPagingAdapter = EventsPagingAdapter(context)
+    var evetPagingAdapter = EventsPagingAdapter(context,viewModel)
 
     inner class ViewHolder(var binding: HomepageMainRecyclerviewBinding) :
         RecyclerView.ViewHolder(binding.root) {

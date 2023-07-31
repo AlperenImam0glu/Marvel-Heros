@@ -31,18 +31,18 @@ interface RetrofitService {
     suspend fun getAllStoriesWithPage(@Query("offset") offset: Int): MainStories
 
     @GET("v1/public/characters/{id}/comics?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
-    suspend fun getAllComicsWithId(@Path("id") id: String, @Query("offset") offset: Int): MainComics
+    suspend fun getAllComicsOfCharacter(@Path("id") id: String, @Query("offset") offset: Int): MainComics
 
     @GET("v1/public/characters/{id}/series?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
-    suspend fun getAllSeriesWithId(@Path("id") id: String, @Query("offset") offset: Int): MainSeries
+    suspend fun getAllSeriesOfCharacter(@Path("id") id: String, @Query("offset") offset: Int): MainSeries
 
     @GET("v1/public/characters/{id}/events?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
-    suspend fun getAllEventsWithId(@Path("id") id: String, @Query("offset") offset: Int): MainEvents
+    suspend fun getAllEventsOfCharacter(@Path("id") id: String, @Query("offset") offset: Int): MainEvents
 
     @GET("v1/public/characters/{id}/stories?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
-    suspend fun getAllStoriesWithId(@Path("id") id: String, @Query("offset") offset: Int): MainStories
+    suspend fun getAllStoriesOfCharacter(@Path("id") id: String, @Query("offset") offset: Int): MainStories
 
     @GET("v1/public/comics/{id}/characters?ts=1&apikey=e54bad6078fdfcb7a1fdbc479f3391de&hash=b5e74f65be214f7d6aa9c8c89f06f074")
-    suspend fun getAllComicsCharacters(@Path("id") id: String, @Query("offset") offset: Int): Character
+        suspend fun getAllCharactersOfComic(@Path("id") id: String, @Query("offset") offset: Int): Character
 
 }

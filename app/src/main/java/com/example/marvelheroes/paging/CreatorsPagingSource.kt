@@ -2,9 +2,7 @@ package com.example.marvelheroes.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.marvelheroes.ComicsResults
 import com.example.marvelheroes.CreatorResults
-import com.example.marvelheroes.Results
 import com.example.marvelheroes.paging.network.RetrofitService
 
 class CreatorsPagingSource(private val marvelApi: RetrofitService) : PagingSource<Int, CreatorResults>() {

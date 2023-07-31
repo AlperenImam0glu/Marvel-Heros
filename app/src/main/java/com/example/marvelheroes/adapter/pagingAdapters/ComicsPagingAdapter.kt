@@ -1,7 +1,6 @@
 package com.example.marvelheroes.adapter.pagingAdapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelheroes.ComicsResults
 import com.example.marvelheroes.R
-import com.example.marvelheroes.Results
 import com.example.marvelheroes.databinding.HomepageCardDesignBinding
 import com.example.marvelheroes.loadImageFromInternet
 import com.example.marvelheroes.view.CharacterDetailPageFragmentDirections
@@ -29,8 +27,9 @@ class ComicsPagingAdapter(var context: Context, val viewModel: SharedViewModel) 
             binding.cardSubtitle.text = data.id.toString()
             setImage(binding.imageView, data)
             binding.cardItemView.setOnClickListener {
-
-                viewModel.setComics(data)
+                var newDataList = viewModel.getComic() ?: ArrayList<ComicsResults>()
+                newDataList.add(data)
+                viewModel.setComic(newDataList)
                 var flag = true
                 try {
                     if(flag){

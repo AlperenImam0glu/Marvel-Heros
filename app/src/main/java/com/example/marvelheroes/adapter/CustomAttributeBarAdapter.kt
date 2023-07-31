@@ -35,7 +35,6 @@ class CustomAttributeBarAdapter( var value: Int) :
         var y = x / ITEM_COUNT
         var z = (value / y).toInt()
 
-        Log.v("hata", "$z, $position")
         if (value == 0) {
             holder.binding.image.setImageResource(R.drawable.bar_8dp)
             holder.binding.image.alpha = 0.25f

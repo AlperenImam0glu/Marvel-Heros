@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 
-data class Results(
+data class CharactersResults(
 
     @SerializedName("id") var id: Int? = null,
     @SerializedName("name") var name: String? = null,

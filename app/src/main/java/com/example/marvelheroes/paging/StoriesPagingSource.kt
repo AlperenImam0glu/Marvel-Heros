@@ -22,7 +22,7 @@ class StoriesPagingSource(private val marvelApi: RetrofitService,private val typ
                 )
             }else{
                 val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllStoriesWithId(id,position)
+                val response = marvelApi.getAllStoriesOfCharacter(id,position)
                 Log.e("hata","$position - ${response.data!!.total!!}")
                 LoadResult.Page(
                     data = response.data!!.results,

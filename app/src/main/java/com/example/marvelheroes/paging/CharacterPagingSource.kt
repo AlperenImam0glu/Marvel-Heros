@@ -2,12 +2,12 @@ package com.example.marvelheroes.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.marvelheroes.Results
+import com.example.marvelheroes.CharactersResults
 import com.example.marvelheroes.paging.network.RetrofitService
 
-class CharacterPagingSource(private val marvelApi: RetrofitService,private val type:Int,private  val id:String="0") : PagingSource<Int, Results>() {
+class CharacterPagingSource(private val marvelApi: RetrofitService,private val type:Int,private  val id:String="0") : PagingSource<Int, CharactersResults>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Results> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharactersResults> {
         return try {
             if(type==0){
                 val position = params.key ?: FIRST_PAGE_INDEX
@@ -19,7 +19,7 @@ class CharacterPagingSource(private val marvelApi: RetrofitService,private val t
                 )
             }else{
                 val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllComicsCharacters(id,position)
+                val response = marvelApi.getAllCharactersOfComic(id,position)
                 LoadResult.Page(
                     data = response.data!!.results,
                     prevKey = if (position == 1) null else position - 20,
@@ -36,7 +36,7 @@ class CharacterPagingSource(private val marvelApi: RetrofitService,private val t
         private const val FIRST_PAGE_INDEX = 0
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Results>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, CharactersResults>): Int? {
         TODO("Not yet implemented")
     }
 

@@ -20,7 +20,7 @@ class EventsPagingSource(private val marvelApi: RetrofitService,private val type
 
             }else{
                 val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllEventsWithId(id,position)
+                val response = marvelApi.getAllEventsOfCharacter(id,position)
                 LoadResult.Page(
                     data = response.data!!.results,
                     prevKey = if (position < 20) null else position - 20,
