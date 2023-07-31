@@ -44,7 +44,7 @@ class CharacterDetailPageFragment : Fragment() {
     lateinit var eventsAdapter: EventsPagingAdapter
     lateinit var storiesAdapter: StoriesPagingAdapter
     lateinit var charactersAdapter: CharacterPagingAdapter
-    var type:Int =0
+    var type: Int = 0
 
 
     override fun onCreateView(
@@ -58,24 +58,20 @@ class CharacterDetailPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        comicsAdapter = ComicsPagingAdapter(requireContext(),sharedViewModel)
+        comicsAdapter = ComicsPagingAdapter(requireContext(), sharedViewModel)
         seriesAdapter = SeriesPagingAdapter(requireContext())
         eventsAdapter = EventsPagingAdapter(requireContext())
         storiesAdapter = StoriesPagingAdapter(requireContext())
-        charactersAdapter = CharacterPagingAdapter(requireContext(),sharedViewModel)
+        charactersAdapter = CharacterPagingAdapter(requireContext(), sharedViewModel)
 
         arguments?.let {
             type = CharacterDetailPageFragmentArgs.fromBundle(it).type
         }
         getData(type)
-
         initViewModel()
-
-
-
         setToolbarPosition()
-       // setDataToView()
-       // setClickListeners()
+        // setDataToView()
+        // setClickListeners()
 
         binding.toolbarBackBtn.setOnClickListener {
 
@@ -83,44 +79,55 @@ class CharacterDetailPageFragment : Fragment() {
         }
     }
 
-    fun getData( type:Int){
-        if(type ==0){
-            sharedViewModel.getCharacter()?.let {
-                charactersData = it
-                viewModelPaging.id = charactersData.id.toString()
-                setCharactersToView(charactersData)
-                Log.e("ch","$it")
-                val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                binding.rv.layoutManager = layoutManager
-                binding.rv.adapter = comicsAdapter
+    override fun onDestroy() {
+        super.onDestroy()
+        if(type==0){
+            var tmp = sharedViewModel.getCharacter()
+            tmp?.let {
+                if (tmp.isNotEmpty()) {
+                    Log.e("liste", "silinmeden önce ${tmp.size}")
+                    tmp.removeLast()
+                    sharedViewModel.setCharacter(tmp)
+                    Log.e("liste", "silinmeden sonra ${tmp.size}")
+                }
             }
+        }
+    }
 
-        }else {
+    fun getData(type: Int) {
+        if (type == 0) {
+                        sharedViewModel.getCharacter()?.let {
+                            charactersData = it.last()
+                            viewModelPaging.id = charactersData.id.toString()
+                            setCharactersToView(charactersData)
+                            Log.e("ch","$it")
+                            val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                            binding.rv.layoutManager = layoutManager
+                            binding.rv.adapter = comicsAdapter
+                        }
+
+        } else {
             sharedViewModel.getComics()?.let {
                 comicsData = it
                 viewModelPaging.id = comicsData.id.toString()
                 setComicsToView(comicsData)
-                val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                val layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 binding.rv.layoutManager = layoutManager
                 binding.rv.adapter = charactersAdapter
-                Log.e("ch","$it")
+                Log.e("ch", "$it")
             }
         }
 
 
     }
 
-    fun setComicsToView(comicsData: ComicsResults){
+    fun setComicsToView(comicsData: ComicsResults) {
 
         if (comicsData.description.toString() != "") {
             binding.textView7.text = comicsData.description
         } else {
-            binding.textView7.text = "Description not found\n\n" +
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit neque nulla," +
-                    " bibendum malesuada nisi sagittis at. Sed venenatis accumsan risus eu tempor. Fusce " +
-                    "aliquam dapibus turpis, id ultricies nulla laoreet nec. Suspendisse mattis lectus sit amet \n\n" +
-                    "ipsum fermentum elementum. Nunc aliquam justo tincidunt lectus lacinia pulvinar. Pellentesque " +
-                    "habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla efficitur,"
+            binding.textView7.text = resources.getString(R.string.desc)
         }
 
         binding.textNameTitle.text = comicsData.title
@@ -128,24 +135,19 @@ class CharacterDetailPageFragment : Fragment() {
         binding.textComicsCount.text = comicsData.characters!!.available.toString()
         binding.textEventsCount.text = comicsData.events!!.available.toString()
         binding.textSeriesCount.text = comicsData.creators!!.available.toString()
-        //binding.textSeriesCount.text = pageModel.series!!.available.toString()
         binding.textStoriesCount.text = comicsData.stories!!.available.toString()
-        setImage(binding.image, comicsData.thumbnail!!.path!!,comicsData.thumbnail!!.extension!!)
+        setImage(binding.image, comicsData.thumbnail!!.path!!, comicsData.thumbnail!!.extension!!)
 
         configureRecyclerViewComics(comicsData)
         setClickListenersComics()
     }
-    fun setCharactersToView(characterData: Results){
+
+    fun setCharactersToView(characterData: Results) {
 
         if (characterData.description.toString() != "") {
             binding.textView7.text = characterData.description
         } else {
-            binding.textView7.text = "Description not found\n\n" +
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit neque nulla," +
-                    " bibendum malesuada nisi sagittis at. Sed venenatis accumsan risus eu tempor. Fusce " +
-                    "aliquam dapibus turpis, id ultricies nulla laoreet nec. Suspendisse mattis lectus sit amet \n\n" +
-                    "ipsum fermentum elementum. Nunc aliquam justo tincidunt lectus lacinia pulvinar. Pellentesque " +
-                    "habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla efficitur,"
+            binding.textView7.text = resources.getString(R.string.desc)
         }
 
         binding.textNameTitle.text = characterData.name
@@ -154,7 +156,11 @@ class CharacterDetailPageFragment : Fragment() {
         binding.textEventsCount.text = characterData.events!!.available.toString()
         binding.textSeriesCount.text = characterData.series!!.available.toString()
         binding.textStoriesCount.text = characterData.stories!!.available.toString()
-        setImage(binding.image, characterData.thumbnail!!.path!!,characterData.thumbnail!!.extension!!)
+        setImage(
+            binding.image,
+            characterData.thumbnail!!.path!!,
+            characterData.thumbnail!!.extension!!
+        )
         configureRecyclerViewCharacters(characterData)
         setClickListeners()
 
@@ -193,55 +199,55 @@ class CharacterDetailPageFragment : Fragment() {
         }
     }
 
-    fun setClickListenersComics(){
+    fun setClickListenersComics() {
 
         binding.img1.setOnClickListener {
             binding.rv.adapter = charactersAdapter
-            binding.rvTitle.text="Comics"
+            binding.rvTitle.text = "Comics"
             scrollToRv()
         }
         binding.img2.setOnClickListener {
             binding.rv.adapter = seriesAdapter
-            binding.rvTitle.text="Series"
+            binding.rvTitle.text = "Series"
             scrollToRv()
         }
 
         binding.img3.setOnClickListener {
             binding.rv.adapter = eventsAdapter
-            binding.rvTitle.text="Events"
+            binding.rvTitle.text = "Events"
             scrollToRv()
         }
 
         binding.img4.setOnClickListener {
             binding.rv.adapter = storiesAdapter
-            binding.rvTitle.text="Stories"
+            binding.rvTitle.text = "Stories"
             scrollToRv()
         }
     }
 
 
-    fun setClickListeners(){
+    fun setClickListeners() {
 
         binding.img1.setOnClickListener {
             binding.rv.adapter = comicsAdapter
-            binding.rvTitle.text="Comics"
+            binding.rvTitle.text = "Comics"
             scrollToRv()
         }
         binding.img2.setOnClickListener {
             binding.rv.adapter = seriesAdapter
-            binding.rvTitle.text="Series"
+            binding.rvTitle.text = "Series"
             scrollToRv()
         }
 
         binding.img3.setOnClickListener {
             binding.rv.adapter = eventsAdapter
-            binding.rvTitle.text="Events"
+            binding.rvTitle.text = "Events"
             scrollToRv()
         }
 
         binding.img4.setOnClickListener {
             binding.rv.adapter = storiesAdapter
-            binding.rvTitle.text="Stories"
+            binding.rvTitle.text = "Stories"
             scrollToRv()
         }
     }
@@ -302,7 +308,7 @@ class CharacterDetailPageFragment : Fragment() {
         binding.recyclerviewStories.layoutManager = layoutManager4
         binding.recyclerviewStories.adapter = adapter4
 
-        Log.e("detail","$comicsData")
+        Log.e("detail", "$comicsData")
 
     }
 
@@ -318,18 +324,17 @@ class CharacterDetailPageFragment : Fragment() {
         binding.toolbar.layoutParams = param
     }
 
-    fun scrollToRv(){
-        binding.scrollView.smoothScrollBy(0,binding.rv.bottom)
+    fun scrollToRv() {
+        binding.scrollView.smoothScrollBy(0, binding.rv.bottom)
     }
 
     fun setDataToView() {
 
 
-
-       // setImage(binding.image, pageModel.thumbnail!!)
+        // setImage(binding.image, pageModel.thumbnail!!)
     }
 
-    fun setImage(view: ImageView, path: String,extension:String) {
+    fun setImage(view: ImageView, path: String, extension: String) {
 
         var url = path
         url += "." + extension

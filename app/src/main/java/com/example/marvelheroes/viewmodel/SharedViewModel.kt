@@ -10,20 +10,23 @@ import com.example.marvelheroes.Results
 import com.example.marvelheroes.models.events.EventsResults
 import com.example.marvelheroes.series.SeriesResults
 import com.example.marvelheroes.stories.StoriesResults
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class SharedViewModel : ViewModel() {
 
-    private val _character = MutableLiveData<Results?>()
+    private val _character = MutableLiveData<ArrayList<Results>>()
+
     private val _comics = MutableLiveData<ComicsResults?>()
     private val _creators = MutableLiveData<CreatorResults>()
     private val _events = MutableLiveData<EventsResults>()
     private val _series = MutableLiveData<SeriesResults>()
     private val _stories = MutableLiveData<StoriesResults>()
 
-    fun setCharacter(results: Results?) {
+    fun setCharacter(results: ArrayList<Results>) {
         _character.value = results
     }
-    fun getCharacter(): Results?{
+    fun getCharacter(): ArrayList<Results>?{
         return _character.value
     }
 
@@ -33,6 +36,4 @@ class SharedViewModel : ViewModel() {
     fun getComics(): ComicsResults?{
         return _comics.value
     }
-
-
 }

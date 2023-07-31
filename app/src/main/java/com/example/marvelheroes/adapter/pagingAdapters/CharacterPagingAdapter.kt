@@ -29,8 +29,9 @@ class CharacterPagingAdapter(var context: Context,val viewModel: SharedViewModel
             binding.cardSubtitle.text = data.id.toString()
             setImage(binding.imageView, data)
             binding.cardItemView.setOnClickListener {
-
-                viewModel.setCharacter(data)
+                var newDataList = viewModel.getCharacter() ?: ArrayList<Results>()
+                newDataList.add(data)
+                viewModel.setCharacter(newDataList)
                 var flag = true
                 try {
                     if(flag){

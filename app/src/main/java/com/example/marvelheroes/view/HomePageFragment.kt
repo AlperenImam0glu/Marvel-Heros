@@ -100,8 +100,6 @@ class HomePageFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
-        sharedViewModel.setCharacter(null)
-        sharedViewModel.setComics(null)
         comicsListAdapter = ComicsListAdapter(requireContext(),"Comics",sharedViewModel)
         characterListAdapter = CharaterListAdapter(requireContext(),"Heroes",sharedViewModel)
         creatorListAdapter = CreatorListAdapter(requireContext(),"Creators")
