@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.marvelheroes.ComicsResults
 import com.example.marvelheroes.R
 import com.example.marvelheroes.CharactersResults
+import com.example.marvelheroes.ComicsData
 import com.example.marvelheroes.adapter.CustomAttributeBarAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.CharacterPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.ComicsPagingAdapter
@@ -173,6 +174,8 @@ class CharacterDetailPageFragment : Fragment() {
     }
 
     fun setEventToView(eventsResults: EventsResults) {
+
+        initViewModelForEvents()
         if (eventsResults.description.toString() != "") {
             binding.textView7.text = eventsResults.description
         } else {
@@ -186,7 +189,7 @@ class CharacterDetailPageFragment : Fragment() {
         binding.textStoriesCount.text = eventsResults.stories!!.available.toString()
         setImage(binding.image, eventsResults.thumbnail!!.path!!, eventsResults.thumbnail!!.extension!!)
         configureRecyclerViewEvent(eventsResults)
-        setClickListenersComics()
+        setClickListenersEvents()
     }
 
     fun setCharactersToView(characterData: CharactersResults) {
@@ -260,6 +263,29 @@ class CharacterDetailPageFragment : Fragment() {
         }
     }
 
+    fun initViewModelForEvents() {
+        lifecycleScope.launch {
+            viewModelPaging.allCharactersOfTheEvents.collectLatest {
+                charactersAdapter.submitData(it)
+            }
+        }
+        lifecycleScope.launch {
+            viewModelPaging.allCreatorsOfTheEvents.collectLatest {
+                creatorsAdapter.submitData(it)
+            }
+        }
+        lifecycleScope.launch {
+            viewModelPaging.allComicsOfTheEvents.collectLatest {
+                comicsAdapter.submitData(it)
+            }
+        }
+        lifecycleScope.launch {
+            viewModelPaging.allStoriesOfTheEvents.collectLatest {
+                storiesAdapter.submitData(it)
+            }
+        }
+    }
+
     fun setClickListenersComics() {
 
         binding.img1.setOnClickListener {
@@ -276,6 +302,33 @@ class CharacterDetailPageFragment : Fragment() {
         binding.img3.setOnClickListener {
             binding.rv.adapter = eventsAdapter
             binding.rvTitle.text = "Events"
+            scrollToRv()
+        }
+
+        binding.img4.setOnClickListener {
+            binding.rv.adapter = storiesAdapter
+            binding.rvTitle.text = "Stories"
+            scrollToRv()
+        }
+    }
+
+
+    fun setClickListenersEvents() {
+
+        binding.img1.setOnClickListener {
+            binding.rv.adapter = charactersAdapter
+            binding.rvTitle.text = "Characters"
+            scrollToRv()
+        }
+        binding.img2.setOnClickListener {
+            binding.rv.adapter = creatorsAdapter
+            binding.rvTitle.text = "Creators"
+            scrollToRv()
+        }
+
+        binding.img3.setOnClickListener {
+            binding.rv.adapter = comicsAdapter
+            binding.rvTitle.text = "Comics"
             scrollToRv()
         }
 

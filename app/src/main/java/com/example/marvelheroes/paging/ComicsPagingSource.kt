@@ -30,8 +30,14 @@ class ComicsPagingSource(private val marvelApi: RetrofitService,private val type
                     prevKey = if (position <20 ) null else position - 20,
                     nextKey = if (position > response.data!!.total!!) null else position + 20
                 )
-            } else if (type==1){
-                LoadResult.Error(Exception())
+            } else if (type==2){
+                //events
+                val position = params.key ?: FIRST_PAGE_INDEX
+                val response = marvelApi.getAllComicsOfEvents(id,position)
+                LoadResult.Page(
+                    data = response.data!!.results,
+                    prevKey = if (position <20 ) null else position - 20,
+                    nextKey = if (position > response.data!!.total!!) null else position + 20)
 
             }else{
                 LoadResult.Error(Exception())
