@@ -48,6 +48,15 @@ class EventsPagingSource(private val marvelApi: RetrofitService,private val type
                     prevKey = if (position < 20) null else position - 20,
                     nextKey = if (position > response.data!!.total!!) null else position + 20
                 )
+            }else if(type ==4){
+                //series
+                val position = params.key ?: FIRST_PAGE_INDEX
+                val response = marvelApi.getAllEventsOfSeries(id,position)
+                LoadResult.Page(
+                    data = response.data!!.results,
+                    prevKey = if (position < 20) null else position - 20,
+                    nextKey = if (position > response.data!!.total!!) null else position + 20
+                )
             }else{
                 LoadResult.Error(Exception())
             }

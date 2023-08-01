@@ -25,6 +25,7 @@ import com.example.marvelheroes.adapter.pagingAdapters.SeriesPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.StoriesPagingAdapter
 import com.example.marvelheroes.databinding.FragmentCharacterDetailPageBinding
 import com.example.marvelheroes.models.events.EventsResults
+import com.example.marvelheroes.series.SeriesResults
 import com.example.marvelheroes.viewmodel.DetailPageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,6 +39,7 @@ class CharacterDetailPageFragment : Fragment() {
     private lateinit var comicsData: ComicsResults
     private lateinit var eventsData:EventsResults
     private lateinit var creatorsData:CreatorResults
+    private lateinit var seriesData:SeriesResults
     lateinit var binding: FragmentCharacterDetailPageBinding
     private val viewModelPaging: DetailPageViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
@@ -62,7 +64,7 @@ class CharacterDetailPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         comicsAdapter = ComicsPagingAdapter(requireContext(), sharedViewModel)
-        seriesAdapter = SeriesPagingAdapter(requireContext())
+        seriesAdapter = SeriesPagingAdapter(requireContext(),sharedViewModel)
         eventsAdapter = EventsPagingAdapter(requireContext(),sharedViewModel)
         storiesAdapter = StoriesPagingAdapter(requireContext())
         charactersAdapter = CharacterPagingAdapter(requireContext(), sharedViewModel)
@@ -119,6 +121,15 @@ class CharacterDetailPageFragment : Fragment() {
                 }
             }
         }
+        if(type ==4){
+            var newList = sharedViewModel.getSeries()
+            newList?.let {
+                if (newList.isNotEmpty()) {
+                    newList.removeLast()
+                    sharedViewModel.setSeries(newList)
+                }
+            }
+        }
     }
 
     fun createViewByType(type: Int) {
@@ -172,6 +183,18 @@ class CharacterDetailPageFragment : Fragment() {
                 binding.rv.adapter = comicsAdapter
             }
         }
+        else if(type == 4) {
+            sharedViewModel.getSeries()?.let {
+                seriesData = it.last()
+                viewModelPaging.id = seriesData.id.toString()
+                setSeriesToView(seriesData)
+
+                val layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                binding.rv.layoutManager = layoutManager
+                binding.rv.adapter = charactersAdapter
+            }
+        }
 
 
     }
@@ -195,6 +218,27 @@ class CharacterDetailPageFragment : Fragment() {
         setImage(binding.image, comicsData.thumbnail!!.path!!, comicsData.thumbnail!!.extension!!)
         configureRecyclerViewComics(comicsData)
         setClickListenersComics()
+    }
+
+   fun setSeriesToView( seriesResults: SeriesResults){
+        if (seriesResults.description.toString() != "" && seriesResults.description != null) {
+            binding.textView7.text = seriesResults.description
+        } else {
+            binding.textView7.text = resources.getString(R.string.desc)
+        }
+        initViewModelForSeries()
+        binding.textNameTitle.text = seriesResults.title
+        binding.textNameSubtitle.text = seriesResults.id.toString()
+        binding.textComicsCount.text = seriesResults.characters!!.available.toString()
+        binding.textEventsCount.text = seriesResults.events!!.available.toString()
+        binding.textSeriesCount.text = seriesResults.creators!!.available.toString()
+        binding.textStoriesCount.text = seriesResults.stories!!.available.toString()
+        binding.textComicsBar.text="Characters"
+        binding.textSeriesBar.text="Creators"
+        setImage(binding.image, seriesResults.thumbnail!!.path!!, seriesResults.thumbnail!!.extension!!)
+
+        configureRecyclerViewSeries(seriesResults)
+        setClickListenersSeries()
     }
 
     fun setEventToView(eventsResults: EventsResults) {
@@ -328,6 +372,29 @@ class CharacterDetailPageFragment : Fragment() {
         }
     }
 
+    fun initViewModelForSeries(){
+        lifecycleScope.launch {
+            viewModelPaging.allCharactersOfTheSeries.collectLatest {
+                charactersAdapter.submitData(it)
+            }
+        }
+        lifecycleScope.launch {
+            viewModelPaging.allComicsOfTheSeries.collectLatest {
+                comicsAdapter.submitData(it)
+            }
+        }
+        lifecycleScope.launch {
+            viewModelPaging.allEventsOfTheSeries.collectLatest {
+                eventsAdapter.submitData(it)
+            }
+        }
+        lifecycleScope.launch {
+            viewModelPaging.allStoriesOfTheSeries.collectLatest {
+                storiesAdapter.submitData(it)
+            }
+        }
+    }
+
     fun initViewModelForEvents() {
         lifecycleScope.launch {
             viewModelPaging.allCharactersOfTheEvents.collectLatest {
@@ -428,7 +495,30 @@ class CharacterDetailPageFragment : Fragment() {
             scrollToRv()
         }
     }
+    fun setClickListenersSeries(){
+        binding.img1.setOnClickListener {
+            binding.rv.adapter = charactersAdapter
+            binding.rvTitle.text = "Character"
+            scrollToRv()
+        }
+        binding.img2.setOnClickListener {
+            binding.rv.adapter = comicsAdapter
+            binding.rvTitle.text = "Comics"
+            scrollToRv()
+        }
 
+        binding.img3.setOnClickListener {
+            binding.rv.adapter = eventsAdapter
+            binding.rvTitle.text = "Events"
+            scrollToRv()
+        }
+
+        binding.img4.setOnClickListener {
+            binding.rv.adapter = storiesAdapter
+            binding.rvTitle.text = "Stories"
+            scrollToRv()
+        }
+    }
     fun setClickListenersCreators() {
 
         binding.img1.setOnClickListener {
@@ -483,7 +573,34 @@ class CharacterDetailPageFragment : Fragment() {
         binding.recyclerviewStories.adapter = adapter4
 
     }
+    fun configureRecyclerViewSeries(seriesResults: SeriesResults){
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager2 =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager3 =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager4 =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
+        var adapter = CustomAttributeBarAdapter(seriesResults.characters!!.available ?: 0)
+        binding.recyclerviewComics.layoutManager = layoutManager
+        binding.recyclerviewComics.adapter = adapter
+
+        var adapter2 = CustomAttributeBarAdapter(seriesResults.creators!!.available ?: 0)
+        binding.recyclerviewSeries.layoutManager = layoutManager2
+        binding.recyclerviewSeries.adapter = adapter2
+
+        var adapter3 = CustomAttributeBarAdapter(seriesResults.events!!.available ?: 0)
+        binding.recyclerviewEvents.layoutManager = layoutManager3
+        binding.recyclerviewEvents.adapter = adapter3
+
+        var adapter4 = CustomAttributeBarAdapter(seriesResults.stories!!.available ?: 0)
+        binding.recyclerviewStories.layoutManager = layoutManager4
+        binding.recyclerviewStories.adapter = adapter4
+
+
+    }
     fun configureRecyclerViewComics(comicsData: ComicsResults) {
 
         val layoutManager =

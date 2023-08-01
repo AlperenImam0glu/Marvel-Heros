@@ -34,6 +34,14 @@ class CharacterPagingSource(private val marvelApi: RetrofitService,private val t
                     data = response.data!!.results,
                     prevKey = if (position == 1) null else position - 20,
                     nextKey = if (position > response.data!!.total!!) null else position + 20)
+            } else if (type==3){
+                //Series
+                val position = params.key ?: FIRST_PAGE_INDEX
+                val response = marvelApi.getAllCharactersOfSeries(id,position)
+                LoadResult.Page(
+                    data = response.data!!.results,
+                    prevKey = if (position == 1) null else position - 20,
+                    nextKey = if (position > response.data!!.total!!) null else position + 20)
             }
             else{
                 LoadResult.Error(Exception())
