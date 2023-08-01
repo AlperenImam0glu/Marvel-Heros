@@ -4,42 +4,46 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.marvelheroes.CreatorResults
 import com.example.marvelheroes.paging.network.RetrofitService
+import com.example.marvelheroes.util.Enums
 
-class CreatorsPagingSource(private val marvelApi: RetrofitService,private val type:Int,private val id:String ="0") : PagingSource<Int, CreatorResults>() {
+class CreatorsPagingSource(private val marvelApi: RetrofitService,private val type:Enums,private val id:String ="0") : PagingSource<Int, CreatorResults>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CreatorResults> {
         return try {
-            if(type == 0){
-                // for homepage
-                val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllCreatorsWithPage(position)
-                LoadResult.Page(
-                    data = response.data!!.results,
-                    prevKey = if (position < 20) null else position - 20,
-                    nextKey = if (position > response.data!!.total!!) null else position + 20
-                )
-            }else if (type ==1){
-                //for Comics
-                val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllCreatorsOfComics(id,position)
-                LoadResult.Page(
-                    data = response.data!!.results,
-                    prevKey = if (position < 20) null else position - 20,
-                    nextKey = if (position > response.data!!.total!!) null else position + 20
-                )
-            }else if (type ==2){
-                //for Events
-                val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllCreatorsOfEvents(id,position)
-                LoadResult.Page(
-                    data = response.data!!.results,
-                    prevKey = if (position < 20) null else position - 20,
-                    nextKey = if (position > response.data!!.total!!) null else position + 20
-                )
-            }
-
-            else{
-                LoadResult.Error(Exception())
+            when (type) {
+                Enums.Home -> {
+                    // for homepage
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getAllCreatorsWithPage(position)
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position < 20) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20
+                    )
+                }
+                Enums.Comic -> {
+                    //for Comics
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getAllCreatorsOfComics(id,position)
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position < 20) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20
+                    )
+                }
+                Enums.Event -> {
+                    //for Events
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getAllCreatorsOfEvents(id,position)
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position < 20) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20
+                    )
+                }
+                else -> {
+                    LoadResult.Error(Exception())
+                }
             }
         } catch (e: Exception) {
             LoadResult.Error(e)

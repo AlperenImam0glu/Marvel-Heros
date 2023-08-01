@@ -5,55 +5,56 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.marvelheroes.paging.network.RetrofitService
 import com.example.marvelheroes.series.SeriesResults
+import com.example.marvelheroes.util.Enums
 
-class SeriesPagingSource(private val marvelApi: RetrofitService,private val type:Int,private val id:String ="0") : PagingSource<Int, SeriesResults>() {
+class SeriesPagingSource(private val marvelApi: RetrofitService, private val type: Enums, private val id:String ="0") : PagingSource<Int, SeriesResults>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SeriesResults> {
         return try {
-            if(type ==0){
-                // homepage
-                val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllSeriesWithPage(position)
+            when (type) {
+                Enums.Home -> {
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getAllSeriesWithPage(position)
 
-                LoadResult.Page(
-                    data = response.data!!.results,
-                    prevKey = if (position < 20) null else position - 20,
-                    nextKey = if (position > response.data!!.total!!) null else position + 20
-                )
-            }
-            else if (type ==1){
-                //character
-                val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllSeriesOfCharacter(id, position)
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position < 20) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20
+                    )
+                }
+                Enums.Character -> {
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getAllSeriesOfCharacter(id, position)
 
-                LoadResult.Page(
-                    data = response.data!!.results,
-                    prevKey = if (position < 20) null else position - 20,
-                    nextKey = if (position > response.data!!.total!!) null else position + 20
-                )
-            }
-            else if (type ==2){
-                //creators
-                val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllSeriesOfCreators(id, position)
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position < 20) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20
+                    )
+                }
+                Enums.Creator -> {
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getAllSeriesOfCreators(id, position)
 
-                LoadResult.Page(
-                    data = response.data!!.results,
-                    prevKey = if (position < 20) null else position - 20,
-                    nextKey = if (position > response.data!!.total!!) null else position + 20
-                )
-            } else if (type ==3){
-                //creators
-                val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllSeriesOfStories(id, position)
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position < 20) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20
+                    )
+                }
+                Enums.Story -> {
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getAllSeriesOfStories(id, position)
 
-                LoadResult.Page(
-                    data = response.data!!.results,
-                    prevKey = if (position < 20) null else position - 20,
-                    nextKey = if (position > response.data!!.total!!) null else position + 20
-                )
-            } else{
-                LoadResult.Error(Exception())
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position < 20) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20
+                    )
+                }
+                else -> {
+                    LoadResult.Error(Exception())
+                }
             }
 
 

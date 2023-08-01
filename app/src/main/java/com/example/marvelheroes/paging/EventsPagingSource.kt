@@ -4,70 +4,71 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.marvelheroes.models.events.EventsResults
 import com.example.marvelheroes.paging.network.RetrofitService
+import com.example.marvelheroes.util.Enums
 
-class EventsPagingSource(private val marvelApi: RetrofitService,private val type:Int,private val id:String ="0") : PagingSource<Int, EventsResults>() {
+class EventsPagingSource(private val marvelApi: RetrofitService,private val type:Enums,private val id:String ="0") : PagingSource<Int, EventsResults>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, EventsResults> {
         return try {
-            if(type==0){
-                //homepage
-                val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllEventsWithPage(position)
-                LoadResult.Page(
-                    data = response.data!!.results,
-                    prevKey = if (position < 20) null else position - 20,
-                    nextKey = if (position > response.data!!.total!!) null else position + 20
-                )
+            when (type) {
+                Enums.Home -> {
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getAllEventsWithPage(position)
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position < 20) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20
+                    )
 
-            }else if (type ==1){
-                //character
-                val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllEventsOfCharacter(id,position)
-                LoadResult.Page(
-                    data = response.data!!.results,
-                    prevKey = if (position < 20) null else position - 20,
-                    nextKey = if (position > response.data!!.total!!) null else position + 20
-                )
-
-            }
-            else if(type ==2 ){
-                //comics
-                val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllEventsOfComics(id,position)
-                LoadResult.Page(
-                    data = response.data!!.results,
-                    prevKey = if (position < 20) null else position - 20,
-                    nextKey = if (position > response.data!!.total!!) null else position + 20
-                )
-            }else if(type ==3){
-                //comics
-                val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllEventsOfCreators(id,position)
-                LoadResult.Page(
-                    data = response.data!!.results,
-                    prevKey = if (position < 20) null else position - 20,
-                    nextKey = if (position > response.data!!.total!!) null else position + 20
-                )
-            }else if(type ==4){
-                //series
-                val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllEventsOfSeries(id,position)
-                LoadResult.Page(
-                    data = response.data!!.results,
-                    prevKey = if (position < 20) null else position - 20,
-                    nextKey = if (position > response.data!!.total!!) null else position + 20
-                )
-            }else if(type ==5){
-                //series
-                val position = params.key ?: FIRST_PAGE_INDEX
-                val response = marvelApi.getAllEventsOfStories(id,position)
-                LoadResult.Page(
-                    data = response.data!!.results,
-                    prevKey = if (position < 20) null else position - 20,
-                    nextKey = if (position > response.data!!.total!!) null else position + 20
-                )
-            }else{
-                LoadResult.Error(Exception())
+                }
+                Enums.Character -> {
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getAllEventsOfCharacter(id,position)
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position < 20) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20
+                    )
+                }
+                Enums.Comic -> {
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getAllEventsOfComics(id,position)
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position < 20) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20
+                    )
+                }
+                Enums.Creator -> {
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getAllEventsOfCreators(id,position)
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position < 20) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20
+                    )
+                }
+                Enums.Series -> {
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getAllEventsOfSeries(id,position)
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position < 20) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20
+                    )
+                }
+                Enums.Story -> {
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getAllEventsOfStories(id,position)
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position < 20) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20
+                    )
+                }
+                else -> {
+                    LoadResult.Error(Exception())
+                }
             }
 
         } catch (e: Exception) {
