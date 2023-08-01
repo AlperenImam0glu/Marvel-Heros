@@ -16,10 +16,11 @@ class SharedViewModel : ViewModel() {
     private val _events = MutableLiveData<ArrayList<EventsResults>>()
     private val _series = MutableLiveData<SeriesResults>()
     private val _stories = MutableLiveData<StoriesResults>()
-    private val _creators = MutableLiveData<CreatorResults>()
+    private val _creators = MutableLiveData<ArrayList<CreatorResults>>()
 
     fun setCharacter(results: ArrayList<CharactersResults>) {
         _character.value = results
+
     }
     fun getCharacter(): ArrayList<CharactersResults>? = _character.value
 
@@ -32,6 +33,11 @@ class SharedViewModel : ViewModel() {
         _events.value = results
     }
     fun getEvent(): ArrayList<EventsResults>? = _events.value
+
+    fun setCreators(results: ArrayList<CreatorResults>) {
+        _creators.value = results
+    }
+    fun getCreators(): ArrayList<CreatorResults>? = _creators.value
 
 
 }

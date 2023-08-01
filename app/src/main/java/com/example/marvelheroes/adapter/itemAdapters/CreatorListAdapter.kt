@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelheroes.adapter.pagingAdapters.ComicsPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.CreatorsPagingAdapter
 import com.example.marvelheroes.databinding.HomepageMainRecyclerviewBinding
+import com.example.marvelheroes.viewmodel.SharedViewModel
 
-class CreatorListAdapter(var context: Context,var title: String) :
+class CreatorListAdapter(var context: Context,var title: String,viewModel: SharedViewModel) :
     RecyclerView.Adapter<CreatorListAdapter.ViewHolder>() {
 
-    var creatorsPagingAdapter = CreatorsPagingAdapter(context)
+    var creatorsPagingAdapter = CreatorsPagingAdapter(context,viewModel)
 
     inner class ViewHolder(var binding: HomepageMainRecyclerviewBinding) :
         RecyclerView.ViewHolder(binding.root) {

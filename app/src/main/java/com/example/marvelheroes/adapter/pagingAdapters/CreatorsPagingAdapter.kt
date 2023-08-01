@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.navigation.Navigation
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,8 +13,12 @@ import com.example.marvelheroes.CreatorResults
 import com.example.marvelheroes.R
 import com.example.marvelheroes.databinding.HomepageCardDesignBinding
 import com.example.marvelheroes.loadImageFromInternet
+import com.example.marvelheroes.models.events.EventsResults
+import com.example.marvelheroes.view.CharacterDetailPageFragmentDirections
+import com.example.marvelheroes.view.HomePageFragmentDirections
+import com.example.marvelheroes.viewmodel.SharedViewModel
 
-class CreatorsPagingAdapter(var context: Context) :
+class CreatorsPagingAdapter(var context: Context,val viewModel: SharedViewModel) :
     PagingDataAdapter<CreatorResults, CreatorsPagingAdapter.MyViewHolder>(DiffUtilCallBack()) {
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -23,13 +28,27 @@ class CreatorsPagingAdapter(var context: Context) :
             binding.cardSubtitle.text = data.id.toString()
             setImage(binding.imageView, data)
             binding.cardItemView.setOnClickListener {
-                /*
-                val action =
-                    HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(
-                        data
-                    )
-                Navigation.findNavController(it).navigate(action)*/
-                //comics detail ekranı hazırla
+                var newDataList = viewModel.getCreators() ?: ArrayList<CreatorResults>()
+                newDataList.add(data)
+                viewModel.setCreators(newDataList)
+                var flag = true
+                try {
+                    if(flag){
+                        val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(3)
+                        Navigation.findNavController(it).navigate(action)
+                        flag = false
+                    }
+
+                }catch (e:Exception){
+                }
+                try {
+                    if(flag){
+                        val action =
+                            CharacterDetailPageFragmentDirections.detailPageFragmentToDetailPageFragment(3)
+                        Navigation.findNavController(it).navigate(action)
+                        flag = false
+                    }
+                }catch (e:Exception){}
             }
         }
     }

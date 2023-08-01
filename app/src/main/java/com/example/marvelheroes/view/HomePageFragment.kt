@@ -57,7 +57,7 @@ class HomePageFragment : Fragment() {
 
         comicsListAdapter = ComicsListAdapter(requireContext(),"Comics",sharedViewModel)
         characterListAdapter = CharaterListAdapter(requireContext(),"Heroes",sharedViewModel)
-        creatorListAdapter = CreatorListAdapter(requireContext(),"Creators")
+        creatorListAdapter = CreatorListAdapter(requireContext(),"Creators",sharedViewModel)
         eventListAdapter = EventListAdapter(requireContext(),"Events",sharedViewModel)
         seriesListAdapter = SeriesListAdapter(requireContext(),"Series")
         storiesListAdapter = StoriesListAdapter(requireContext(),"Stories")

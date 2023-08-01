@@ -11,6 +11,7 @@ class SeriesPagingSource(private val marvelApi: RetrofitService,private val type
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SeriesResults> {
         return try {
             if(type ==0){
+                // homepage
                 val position = params.key ?: FIRST_PAGE_INDEX
                 val response = marvelApi.getAllSeriesWithPage(position)
 
@@ -21,6 +22,7 @@ class SeriesPagingSource(private val marvelApi: RetrofitService,private val type
                 )
             }
             else if (type ==1){
+                //character
                 val position = params.key ?: FIRST_PAGE_INDEX
                 val response = marvelApi.getAllSeriesOfCharacter(id, position)
 
@@ -31,7 +33,15 @@ class SeriesPagingSource(private val marvelApi: RetrofitService,private val type
                 )
             }
             else if (type ==2){
-                LoadResult.Error(Exception())
+                //creators
+                val position = params.key ?: FIRST_PAGE_INDEX
+                val response = marvelApi.getAllSeriesOfCreators(id, position)
+
+                LoadResult.Page(
+                    data = response.data!!.results,
+                    prevKey = if (position < 20) null else position - 20,
+                    nextKey = if (position > response.data!!.total!!) null else position + 20
+                )
             } else{
                 LoadResult.Error(Exception())
             }

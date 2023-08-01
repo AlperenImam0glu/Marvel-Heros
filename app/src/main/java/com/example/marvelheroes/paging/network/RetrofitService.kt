@@ -98,6 +98,49 @@ interface RetrofitService {
         @Query("offset") offset: Int
     ): MainStories
 
+    @GET("v1/public/creators/{id}/comics?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllComicsOfCreators(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): MainComics
+
+    @GET("v1/public/creators/{id}/stories?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllStoriesOfCreators(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): MainStories
+    @GET("v1/public/creators/{id}/series?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllSeriesOfCreators(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): MainSeries
+    @GET("v1/public/creators/{id}/events?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllEventsOfCreators(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): MainEvents
+
+    @GET("v1/public/series/{id}/characters?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllCharactersOfSeries(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): Character
+    @GET("v1/public/series/{id}/comics?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllComicsOfSeries(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): MainComics
+    @GET("v1/public/series/{id}/events?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllEventsOfSeries(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): MainEvents
+    @GET("v1/public/series/{id}/stories?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    suspend fun getAllStoriesOfSeries(
+        @Path("id") id: String,
+        @Query("offset") offset: Int
+    ): MainStories
+
 
 
 

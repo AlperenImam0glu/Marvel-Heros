@@ -50,6 +50,15 @@ class StoriesPagingSource(private val marvelApi: RetrofitService,private val typ
                     prevKey = if (position < 20) null else position - 20,
                     nextKey = if (position > response.data!!.total!!) null else position + 20
                 )
+            }else if(type ==4 ){
+                //Creators
+                val position = params.key ?: FIRST_PAGE_INDEX
+                val response = marvelApi.getAllStoriesOfCreators(id,position)
+                LoadResult.Page(
+                    data = response.data!!.results,
+                    prevKey = if (position < 20) null else position - 20,
+                    nextKey = if (position > response.data!!.total!!) null else position + 20
+                )
             }
             else{
                 LoadResult.Error(Exception())
