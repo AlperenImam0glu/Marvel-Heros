@@ -38,10 +38,10 @@ class CharacterDetailPageFragment : Fragment() {
 
     private lateinit var charactersData: CharactersResults
     private lateinit var comicsData: ComicsResults
-    private lateinit var eventsData:EventsResults
-    private lateinit var creatorsData:CreatorResults
-    private lateinit var seriesData:SeriesResults
-    private lateinit var storiesData:StoriesResults
+    private lateinit var eventsData: EventsResults
+    private lateinit var creatorsData: CreatorResults
+    private lateinit var seriesData: SeriesResults
+    private lateinit var storiesData: StoriesResults
     lateinit var binding: FragmentCharacterDetailPageBinding
     private val viewModelPaging: DetailPageViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
@@ -66,9 +66,9 @@ class CharacterDetailPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         comicsAdapter = ComicsPagingAdapter(requireContext(), sharedViewModel)
-        seriesAdapter = SeriesPagingAdapter(requireContext(),sharedViewModel)
-        eventsAdapter = EventsPagingAdapter(requireContext(),sharedViewModel)
-        storiesAdapter = StoriesPagingAdapter(requireContext(),sharedViewModel)
+        seriesAdapter = SeriesPagingAdapter(requireContext(), sharedViewModel)
+        eventsAdapter = EventsPagingAdapter(requireContext(), sharedViewModel)
+        storiesAdapter = StoriesPagingAdapter(requireContext(), sharedViewModel)
         charactersAdapter = CharacterPagingAdapter(requireContext(), sharedViewModel)
         creatorsAdapter = CreatorsPagingAdapter(requireContext(), sharedViewModel)
 
@@ -114,7 +114,7 @@ class CharacterDetailPageFragment : Fragment() {
                 }
             }
         }
-        if(type ==3){
+        if (type == 3) {
             var newList = sharedViewModel.getCreators()
             newList?.let {
                 if (newList.isNotEmpty()) {
@@ -123,7 +123,7 @@ class CharacterDetailPageFragment : Fragment() {
                 }
             }
         }
-        if(type ==4){
+        if (type == 4) {
             var newList = sharedViewModel.getSeries()
             newList?.let {
                 if (newList.isNotEmpty()) {
@@ -132,7 +132,7 @@ class CharacterDetailPageFragment : Fragment() {
                 }
             }
         }
-        if(type ==5){
+        if (type == 5) {
             var newList = sharedViewModel.getStories()
             newList?.let {
                 if (newList.isNotEmpty()) {
@@ -158,7 +158,7 @@ class CharacterDetailPageFragment : Fragment() {
 
             }
 
-        } else if(type ==1) {
+        } else if (type == 1) {
             sharedViewModel.getComic()?.let {
                 comicsData = it.last()
                 viewModelPaging.id = comicsData.id.toString()
@@ -168,9 +168,7 @@ class CharacterDetailPageFragment : Fragment() {
                 binding.rv.layoutManager = layoutManager
                 binding.rv.adapter = charactersAdapter
             }
-        }
-
-        else if(type ==2) {
+        } else if (type == 2) {
             sharedViewModel.getEvent()?.let {
                 eventsData = it.last()
                 viewModelPaging.id = eventsData.id.toString()
@@ -180,9 +178,7 @@ class CharacterDetailPageFragment : Fragment() {
                 binding.rv.layoutManager = layoutManager
                 binding.rv.adapter = charactersAdapter
             }
-        }
-
-        else if(type == 3) {
+        } else if (type == 3) {
             sharedViewModel.getCreators()?.let {
                 creatorsData = it.last()
                 viewModelPaging.id = creatorsData.id.toString()
@@ -193,8 +189,7 @@ class CharacterDetailPageFragment : Fragment() {
                 binding.rv.layoutManager = layoutManager
                 binding.rv.adapter = comicsAdapter
             }
-        }
-        else if(type == 4) {
+        } else if (type == 4) {
             sharedViewModel.getSeries()?.let {
                 seriesData = it.last()
                 viewModelPaging.id = seriesData.id.toString()
@@ -205,12 +200,12 @@ class CharacterDetailPageFragment : Fragment() {
                 binding.rv.layoutManager = layoutManager
                 binding.rv.adapter = charactersAdapter
             }
-        }  else if(type == 5) {
+        } else if (type == 5) {
             sharedViewModel.getStories()?.let {
                 storiesData = it.last()
                 viewModelPaging.id = storiesData.id.toString()
 
-               setStoriesToView(storiesData)
+                setStoriesToView(storiesData)
 
                 val layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -236,14 +231,20 @@ class CharacterDetailPageFragment : Fragment() {
         binding.textEventsCount.text = comicsData.events!!.available.toString()
         binding.textSeriesCount.text = comicsData.creators!!.available.toString()
         binding.textStoriesCount.text = comicsData.stories!!.available.toString()
-        binding.textComicsBar.text="Characters"
-        binding.textSeriesBar.text="Creators"
+        binding.textComicsBar.text = "Characters"
+        binding.textSeriesBar.text = "Creators"
         setImage(binding.image, comicsData.thumbnail!!.path!!, comicsData.thumbnail!!.extension!!)
-        configureRecyclerViewComics(comicsData)
+
+        configureRecyclerView(
+            comicsData.characters!!.available,
+            comicsData.events!!.available,
+            comicsData.creators!!.available,
+            comicsData.stories!!.available
+        )
         setClickListenersComics()
     }
 
-    fun setStoriesToView(storiesResults: StoriesResults){
+    fun setStoriesToView(storiesResults: StoriesResults) {
         if (storiesResults.description.toString() != "" && storiesResults.description != null) {
             binding.textView7.text = storiesResults.description
         } else {
@@ -257,16 +258,26 @@ class CharacterDetailPageFragment : Fragment() {
         binding.textSeriesCount.text = storiesResults.comics!!.available.toString()
         binding.textStoriesCount.text = storiesResults.series!!.available.toString()
 
-        if (storiesResults.thumbnail!=null){
-            setImage(binding.image, storiesResults.thumbnail!!.path!!, storiesResults.thumbnail!!.extension!!)
-        }else{
+        if (storiesResults.thumbnail != null) {
+            setImage(
+                binding.image,
+                storiesResults.thumbnail!!.path!!,
+                storiesResults.thumbnail!!.extension!!
+            )
+        } else {
             setImage(binding.image, "", "")
         }
 
-        configureRecyclerViewStories(storiesResults)
-       setClickListenersStories()
+        configureRecyclerView(
+            storiesResults.characters!!.available!!,
+            storiesResults.events!!.available!!,
+            storiesResults.comics!!.available!!,
+            storiesResults.series!!.available!!
+        )
+        setClickListenersStories()
     }
-   fun setSeriesToView( seriesResults: SeriesResults){
+
+    fun setSeriesToView(seriesResults: SeriesResults) {
         if (seriesResults.description.toString() != "" && seriesResults.description != null) {
             binding.textView7.text = seriesResults.description
         } else {
@@ -279,11 +290,20 @@ class CharacterDetailPageFragment : Fragment() {
         binding.textEventsCount.text = seriesResults.events!!.available.toString()
         binding.textSeriesCount.text = seriesResults.creators!!.available.toString()
         binding.textStoriesCount.text = seriesResults.stories!!.available.toString()
-        binding.textComicsBar.text="Characters"
-        binding.textSeriesBar.text="Creators"
-        setImage(binding.image, seriesResults.thumbnail!!.path!!, seriesResults.thumbnail!!.extension!!)
+        binding.textComicsBar.text = "Characters"
+        binding.textSeriesBar.text = "Creators"
+        setImage(
+            binding.image,
+            seriesResults.thumbnail!!.path!!,
+            seriesResults.thumbnail!!.extension!!
+        )
 
-        configureRecyclerViewSeries(seriesResults)
+        configureRecyclerView(
+            seriesResults.characters!!.available,
+            seriesResults.events!!.available,
+            seriesResults.creators!!.available,
+            seriesResults.stories!!.available
+        )
         setClickListenersSeries()
     }
 
@@ -301,8 +321,17 @@ class CharacterDetailPageFragment : Fragment() {
         binding.textEventsCount.text = eventsResults.series!!.available.toString()
         binding.textSeriesCount.text = eventsResults.creators!!.available.toString()
         binding.textStoriesCount.text = eventsResults.stories!!.available.toString()
-        setImage(binding.image, eventsResults.thumbnail!!.path!!, eventsResults.thumbnail!!.extension!!)
-        configureRecyclerViewEvent(eventsResults)
+        setImage(
+            binding.image,
+            eventsResults.thumbnail!!.path!!,
+            eventsResults.thumbnail!!.extension!!
+        )
+        configureRecyclerView(
+            eventsResults.characters!!.available,
+            eventsResults.series!!.available,
+            eventsResults.creators!!.available,
+            eventsResults.stories!!.available
+        )
         setClickListenersEvents()
     }
 
@@ -316,9 +345,18 @@ class CharacterDetailPageFragment : Fragment() {
         binding.textEventsCount.text = creatorResults.events!!.available.toString()
         binding.textSeriesCount.text = creatorResults.series!!.available.toString()
         binding.textStoriesCount.text = creatorResults.stories!!.available.toString()
-        setImage(binding.image, creatorResults.thumbnail!!.path!!, creatorResults.thumbnail!!.extension!!)
+        setImage(
+            binding.image,
+            creatorResults.thumbnail!!.path!!,
+            creatorResults.thumbnail!!.extension!!
+        )
 
-        configureRecyclerViewCreators(creatorResults)
+        configureRecyclerView(
+            creatorResults.comics!!.available,
+            creatorResults.events!!.available,
+            creatorResults.series!!.available,
+            creatorResults.stories!!.available,
+        )
         setClickListenersCreators()
     }
 
@@ -339,7 +377,12 @@ class CharacterDetailPageFragment : Fragment() {
             characterData.thumbnail!!.path!!,
             characterData.thumbnail!!.extension!!
         )
-        configureRecyclerViewCharacters(characterData)
+        configureRecyclerView(
+            characterData.comics!!.available,
+            characterData.events!!.available,
+            characterData.series!!.available,
+            characterData.stories!!.available,
+        )
         setClickListenersCharacters()
     }
 
@@ -370,7 +413,7 @@ class CharacterDetailPageFragment : Fragment() {
 
     }
 
-    fun initViewModelForStories(){
+    fun initViewModelForStories() {
         lifecycleScope.launch {
             viewModelPaging.allComicsOfTheStories.collectLatest {
                 comicsAdapter.submitData(it)
@@ -396,7 +439,7 @@ class CharacterDetailPageFragment : Fragment() {
         }
     }
 
-    fun initViewModelForCreators(){
+    fun initViewModelForCreators() {
         lifecycleScope.launch {
             viewModelPaging.allComicsOfTheCreators.collectLatest {
                 comicsAdapter.submitData(it)
@@ -421,6 +464,7 @@ class CharacterDetailPageFragment : Fragment() {
             }
         }
     }
+
     fun initViewModelForComics() {
         lifecycleScope.launch {
             viewModelPaging.allCharacterOfTheComics.collectLatest {
@@ -444,7 +488,7 @@ class CharacterDetailPageFragment : Fragment() {
         }
     }
 
-    fun initViewModelForSeries(){
+    fun initViewModelForSeries() {
         lifecycleScope.launch {
             viewModelPaging.allCharactersOfTheSeries.collectLatest {
                 charactersAdapter.submitData(it)
@@ -567,7 +611,8 @@ class CharacterDetailPageFragment : Fragment() {
             scrollToRv()
         }
     }
-    fun setClickListenersSeries(){
+
+    fun setClickListenersSeries() {
         binding.img1.setOnClickListener {
             binding.rv.adapter = charactersAdapter
             binding.rvTitle.text = "Character"
@@ -591,6 +636,7 @@ class CharacterDetailPageFragment : Fragment() {
             scrollToRv()
         }
     }
+
     fun setClickListenersCreators() {
 
         binding.img1.setOnClickListener {
@@ -617,7 +663,7 @@ class CharacterDetailPageFragment : Fragment() {
         }
     }
 
-    fun setClickListenersStories(){
+    fun setClickListenersStories() {
         binding.img1.setOnClickListener {
             binding.rv.adapter = charactersAdapter
             binding.rvTitle.text = "Characters"
@@ -642,7 +688,12 @@ class CharacterDetailPageFragment : Fragment() {
         }
     }
 
-    fun configureRecyclerViewCharacters(characterData: CharactersResults) {
+    fun configureRecyclerView(
+        firstBarValue: Int?,
+        secondBarValue: Int?,
+        thirdValue: Int?,
+        fourthBarValue: Int?
+    ) {
 
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -653,165 +704,22 @@ class CharacterDetailPageFragment : Fragment() {
         val layoutManager4 =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        var adapter = CustomAttributeBarAdapter(characterData.comics!!.available ?: 0)
+        var adapter = CustomAttributeBarAdapter(firstBarValue ?: 0)
         binding.recyclerviewComics.layoutManager = layoutManager
         binding.recyclerviewComics.adapter = adapter
 
-        var adapter2 = CustomAttributeBarAdapter(characterData.series!!.available ?: 0)
+        var adapter2 = CustomAttributeBarAdapter(secondBarValue ?: 0)
         binding.recyclerviewSeries.layoutManager = layoutManager2
         binding.recyclerviewSeries.adapter = adapter2
 
-        var adapter3 = CustomAttributeBarAdapter(characterData.events!!.available ?: 0)
+        var adapter3 = CustomAttributeBarAdapter(thirdValue ?: 0)
         binding.recyclerviewEvents.layoutManager = layoutManager3
         binding.recyclerviewEvents.adapter = adapter3
 
-        var adapter4 = CustomAttributeBarAdapter(characterData.stories!!.available ?: 0)
+        var adapter4 = CustomAttributeBarAdapter(fourthBarValue ?: 0)
         binding.recyclerviewStories.layoutManager = layoutManager4
         binding.recyclerviewStories.adapter = adapter4
 
-    }
-    fun configureRecyclerViewSeries(seriesResults: SeriesResults){
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager2 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager3 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager4 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        var adapter = CustomAttributeBarAdapter(seriesResults.characters!!.available ?: 0)
-        binding.recyclerviewComics.layoutManager = layoutManager
-        binding.recyclerviewComics.adapter = adapter
-
-        var adapter2 = CustomAttributeBarAdapter(seriesResults.creators!!.available ?: 0)
-        binding.recyclerviewSeries.layoutManager = layoutManager2
-        binding.recyclerviewSeries.adapter = adapter2
-
-        var adapter3 = CustomAttributeBarAdapter(seriesResults.events!!.available ?: 0)
-        binding.recyclerviewEvents.layoutManager = layoutManager3
-        binding.recyclerviewEvents.adapter = adapter3
-
-        var adapter4 = CustomAttributeBarAdapter(seriesResults.stories!!.available ?: 0)
-        binding.recyclerviewStories.layoutManager = layoutManager4
-        binding.recyclerviewStories.adapter = adapter4
-
-
-    }
-    fun configureRecyclerViewComics(comicsData: ComicsResults) {
-
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager2 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager3 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager4 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        var adapter = CustomAttributeBarAdapter(comicsData.characters!!.available ?: 0)
-        binding.recyclerviewComics.layoutManager = layoutManager
-        binding.recyclerviewComics.adapter = adapter
-
-        var adapter2 = CustomAttributeBarAdapter(comicsData.creators!!.available ?: 0)
-        binding.recyclerviewSeries.layoutManager = layoutManager2
-        binding.recyclerviewSeries.adapter = adapter2
-
-        var adapter3 = CustomAttributeBarAdapter(comicsData.events!!.available ?: 0)
-        binding.recyclerviewEvents.layoutManager = layoutManager3
-        binding.recyclerviewEvents.adapter = adapter3
-
-        var adapter4 = CustomAttributeBarAdapter(comicsData.stories!!.available ?: 0)
-        binding.recyclerviewStories.layoutManager = layoutManager4
-        binding.recyclerviewStories.adapter = adapter4
-
-
-    }
-
-    fun configureRecyclerViewEvent(eventResult: EventsResults) {
-
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager2 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager3 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager4 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        var adapter = CustomAttributeBarAdapter(eventResult.characters!!.available ?: 0)
-        binding.recyclerviewComics.layoutManager = layoutManager
-        binding.recyclerviewComics.adapter = adapter
-
-        var adapter2 = CustomAttributeBarAdapter(eventResult.creators!!.available ?: 0)
-        binding.recyclerviewSeries.layoutManager = layoutManager2
-        binding.recyclerviewSeries.adapter = adapter2
-
-        var adapter3 = CustomAttributeBarAdapter(eventResult.series!!.available ?: 0)
-        binding.recyclerviewEvents.layoutManager = layoutManager3
-        binding.recyclerviewEvents.adapter = adapter3
-
-        var adapter4 = CustomAttributeBarAdapter(eventResult.stories!!.available ?: 0)
-        binding.recyclerviewStories.layoutManager = layoutManager4
-        binding.recyclerviewStories.adapter = adapter4
-
-    }
-
-    fun configureRecyclerViewCreators(creatorResults: CreatorResults) {
-
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager2 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager3 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager4 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        var adapter = CustomAttributeBarAdapter(creatorResults.comics!!.available ?: 0)
-        binding.recyclerviewComics.layoutManager = layoutManager
-        binding.recyclerviewComics.adapter = adapter
-
-        var adapter2 = CustomAttributeBarAdapter(creatorResults.events!!.available ?: 0)
-        binding.recyclerviewSeries.layoutManager = layoutManager2
-        binding.recyclerviewSeries.adapter = adapter2
-
-        var adapter3 = CustomAttributeBarAdapter(creatorResults.series!!.available ?: 0)
-        binding.recyclerviewEvents.layoutManager = layoutManager3
-        binding.recyclerviewEvents.adapter = adapter3
-
-        var adapter4 = CustomAttributeBarAdapter(creatorResults.stories!!.available ?: 0)
-        binding.recyclerviewStories.layoutManager = layoutManager4
-        binding.recyclerviewStories.adapter = adapter4
-
-    }
-
-    fun configureRecyclerViewStories(storiesResults: StoriesResults){
-
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager2 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager3 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val layoutManager4 =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        var adapter = CustomAttributeBarAdapter(storiesResults.characters!!.available ?: 0)
-        binding.recyclerviewComics.layoutManager = layoutManager
-        binding.recyclerviewComics.adapter = adapter
-
-        var adapter2 = CustomAttributeBarAdapter(storiesResults.comics!!.available ?: 0)
-        binding.recyclerviewSeries.layoutManager = layoutManager2
-        binding.recyclerviewSeries.adapter = adapter2
-
-        var adapter3 = CustomAttributeBarAdapter(storiesResults.events!!.available ?: 0)
-        binding.recyclerviewEvents.layoutManager = layoutManager3
-        binding.recyclerviewEvents.adapter = adapter3
-
-        var adapter4 = CustomAttributeBarAdapter(storiesResults.series!!.available ?: 0)
-        binding.recyclerviewStories.layoutManager = layoutManager4
-        binding.recyclerviewStories.adapter = adapter4
     }
 
     fun setToolbarPosition() {
@@ -838,8 +746,8 @@ class CharacterDetailPageFragment : Fragment() {
 
         url?.let {
             containsString = url!!.contains("image_not_available")
-            if(path ==""){
-                containsString=true
+            if (path == "") {
+                containsString = true
             }
         }
 
