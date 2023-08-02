@@ -1,14 +1,14 @@
 package com.example.marvelheroes.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.marvelheroes.CharactersResults
+import com.example.marvelheroes.adapter.pagingAdapters.CharacterPagingAdapter
 import com.example.marvelheroes.paging.CharacterPagingSource
 import com.example.marvelheroes.paging.ComicsPagingSource
 import com.example.marvelheroes.paging.CreatorsPagingSource
@@ -18,7 +18,8 @@ import com.example.marvelheroes.paging.StoriesPagingSource
 import com.example.marvelheroes.repository.MainRepository
 import com.example.marvelheroes.util.Enums
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.subscribe
 
 import javax.inject.Inject
 
@@ -32,8 +33,10 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository) 
     val seriesLoading = MutableLiveData<Boolean>()
     val storiesLoading = MutableLiveData<Boolean>()
 
+    val isOpen = MutableLiveData<Boolean>()
 
-    val charactersData = Pager(config = PagingConfig(pageSize = 30),
+
+   val charactersData = Pager(config = PagingConfig(pageSize = 30),
     pagingSourceFactory = {
         CharacterPagingSource(repository.retroService(),Enums.Home)
     }).flow.cachedIn(viewModelScope)
