@@ -1,44 +1,33 @@
 package com.example.marvelheroes.view
 
 import android.animation.ValueAnimator
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.marvelheroes.adapter.itemAdapters.ButtonAdapter
 import com.example.marvelheroes.adapter.itemAdapters.CharaterListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.ComicsListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.CreatorListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.EventListAdapter
-import com.example.marvelheroes.adapter.itemAdapters.HeaderAdapter
 import com.example.marvelheroes.adapter.itemAdapters.SeriesListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.StoriesListAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
-import com.example.marvelheroes.viewmodel.HomeViewModel
+import com.example.marvelheroes.view.HomePage.InitViewModelForHomePage
+import com.example.marvelheroes.viewmodel.HomePageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
-import com.facebook.shimmer.ShimmerFrameLayout
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomePageFragment : Fragment() {
 
     private lateinit var binding: FragmentHomePageBinding
-    private val viewModelPaging: HomeViewModel by viewModels()
+    private val viewModelPaging: HomePageViewModel by viewModels()
     private var concatAdapter = ConcatAdapter()
     private lateinit var characterListAdapter: CharaterListAdapter
     private lateinit var comicsListAdapter: ComicsListAdapter
@@ -47,6 +36,7 @@ class HomePageFragment : Fragment() {
     private lateinit var seriesListAdapter: SeriesListAdapter
     private lateinit var storiesListAdapter: StoriesListAdapter
     private val sharedViewModel: SharedViewModel by activityViewModels()
+    lateinit var inıtViewModelForHomePage: InitViewModelForHomePage
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,9 +46,17 @@ class HomePageFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onResume() {
+        super.onResume()
+        if (viewModelPaging.isOpen.value == false) {
+            binding.headerLayout.visibility = View.GONE
+        }
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.shimmer.startShimmer()
 
         comicsListAdapter = ComicsListAdapter(requireContext(), "Comics", sharedViewModel)
         characterListAdapter = CharaterListAdapter(requireContext(), "Heroes", sharedViewModel)
@@ -67,7 +65,19 @@ class HomePageFragment : Fragment() {
         seriesListAdapter = SeriesListAdapter(requireContext(), "Series", sharedViewModel)
         storiesListAdapter = StoriesListAdapter(requireContext(), "Stories", sharedViewModel)
 
-        initViewModel()
+        inıtViewModelForHomePage = InitViewModelForHomePage(
+            viewModelPaging,
+            lifecycle,
+            characterListAdapter,
+            comicsListAdapter,
+            creatorListAdapter,
+            eventListAdapter,
+            seriesListAdapter,
+            storiesListAdapter,
+            binding
+        )
+
+        inıtViewModelForHomePage.initViewModel()
 
         concatAdapter = ConcatAdapter(
             characterListAdapter,
@@ -77,8 +87,6 @@ class HomePageFragment : Fragment() {
             seriesListAdapter,
             storiesListAdapter
         )
-
-        binding.shimmer.startShimmer()
 
         binding.homepageRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -91,11 +99,7 @@ class HomePageFragment : Fragment() {
             }
         })
 
-        binding.homepageRv.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            adapter = concatAdapter
-        }
+        binding.homepageRv.adapter = concatAdapter
     }
 
     private fun closeViewWithAnimation(view: View) {
@@ -113,62 +117,9 @@ class HomePageFragment : Fragment() {
         valueAnimator.interpolator = AccelerateDecelerateInterpolator()
         valueAnimator.duration = 500
         valueAnimator.start()
-
-        viewModelPaging.isOpen.value=false
-
+        viewModelPaging.isOpen.value = false
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        if (viewModelPaging.isOpen.value == false) {
-        binding.headerLayout.visibility = View.GONE}
-    }
-    private fun initViewModel() {
 
-        lifecycleScope.launch {
-            characterListAdapter.characterPagingAdapter.loadStateFlow.collectLatest { loadStates ->
-                if (loadStates.refresh is LoadState.NotLoading) {
-                    binding.shimmer.visibility = View.GONE
-                    binding.homepageRv.visibility = View.VISIBLE
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModelPaging.charactersData.collectLatest {
-                characterListAdapter.characterPagingAdapter.submitData(it)
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModelPaging.comicsData.collectLatest {
-                comicsListAdapter.comicsPagingAdapter.submitData(it)
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModelPaging.creatorsData.collectLatest {
-                creatorListAdapter.creatorsPagingAdapter.submitData(it)
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModelPaging.eventsData.collectLatest {
-                eventListAdapter.evetPagingAdapter.submitData(it)
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModelPaging.seriesData.collectLatest {
-                seriesListAdapter.seriesPagingAdapter.submitData(it)
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModelPaging.storiesData.collectLatest {
-                storiesListAdapter.storiesPagingAdapter.submitData(it)
-            }
-        }
-    }
 }

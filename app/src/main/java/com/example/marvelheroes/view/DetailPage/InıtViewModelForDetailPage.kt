@@ -1,4 +1,4 @@
-package com.example.marvelheroes.view
+package com.example.marvelheroes.view.DetailPage
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner

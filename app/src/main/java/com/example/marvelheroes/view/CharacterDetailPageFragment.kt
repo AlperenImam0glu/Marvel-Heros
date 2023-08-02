@@ -27,6 +27,7 @@ import com.example.marvelheroes.loadImageFromInternet
 import com.example.marvelheroes.models.events.EventsResults
 import com.example.marvelheroes.series.SeriesResults
 import com.example.marvelheroes.stories.StoriesResults
+import com.example.marvelheroes.view.DetailPage.InıtViewModelForDetailPage
 import com.example.marvelheroes.viewmodel.DetailPageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -90,6 +91,7 @@ class CharacterDetailPageFragment : Fragment() {
             findNavController(this).popBackStack()
         }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
