@@ -1,5 +1,6 @@
 package com.example.marvelheroes.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.marvelheroes.models.events.EventsResults
@@ -18,6 +19,11 @@ class EventsPagingSource(
                 Enums.Home -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
                     val response = marvelApi.getAllEventsWithPage(position)
+                    response.code?.let {
+                        if(response.code==200){
+
+                        }
+                    }
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,

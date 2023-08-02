@@ -19,6 +19,14 @@ class ComicsPagingSource(
                 Enums.Home -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
                     val response = marvelApi.getAllComicsWithPage(position)
+
+                    response.code?.let {
+                        if(response.code==200){
+
+                        }
+                    }
+
+
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,

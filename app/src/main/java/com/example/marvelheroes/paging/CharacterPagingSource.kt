@@ -14,6 +14,12 @@ class CharacterPagingSource(private val marvelApi: RetrofitService,private val t
                 Enums.Home -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
                     val response = marvelApi.getAllCharactersWithPage(position)
+
+                    response.code?.let {
+                        if(response.code==200){
+
+                        }
+                    }
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position == 1) null else position - 20,
