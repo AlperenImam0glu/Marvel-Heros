@@ -6,7 +6,11 @@ import com.example.marvelheroes.models.events.EventsResults
 import com.example.marvelheroes.paging.network.RetrofitService
 import com.example.marvelheroes.util.Enums
 
-class EventsPagingSource(private val marvelApi: RetrofitService,private val type:Enums,private val id:String ="0") : PagingSource<Int, EventsResults>() {
+class EventsPagingSource(
+    private val marvelApi: RetrofitService,
+    private val type: Enums,
+    private val id: String = "0"
+) : PagingSource<Int, EventsResults>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, EventsResults> {
         return try {
@@ -21,51 +25,57 @@ class EventsPagingSource(private val marvelApi: RetrofitService,private val type
                     )
 
                 }
+
                 Enums.Character -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllEventsOfCharacter(id,position)
+                    val response = marvelApi.getAllEventsOfCharacter(id, position)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,
                         nextKey = if (position > response.data!!.total!!) null else position + 20
                     )
                 }
+
                 Enums.Comic -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllEventsOfComics(id,position)
+                    val response = marvelApi.getAllEventsOfComics(id, position)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,
                         nextKey = if (position > response.data!!.total!!) null else position + 20
                     )
                 }
+
                 Enums.Creator -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllEventsOfCreators(id,position)
+                    val response = marvelApi.getAllEventsOfCreators(id, position)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,
                         nextKey = if (position > response.data!!.total!!) null else position + 20
                     )
                 }
+
                 Enums.Series -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllEventsOfSeries(id,position)
+                    val response = marvelApi.getAllEventsOfSeries(id, position)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,
                         nextKey = if (position > response.data!!.total!!) null else position + 20
                     )
                 }
+
                 Enums.Story -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllEventsOfStories(id,position)
+                    val response = marvelApi.getAllEventsOfStories(id, position)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,
                         nextKey = if (position > response.data!!.total!!) null else position + 20
                     )
                 }
+
                 else -> {
                     LoadResult.Error(Exception())
                 }

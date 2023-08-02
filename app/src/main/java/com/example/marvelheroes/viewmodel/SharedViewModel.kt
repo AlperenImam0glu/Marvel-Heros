@@ -20,7 +20,6 @@ class SharedViewModel : ViewModel() {
 
     fun setCharacter(results: ArrayList<CharactersResults>) {
         _character.value = results
-
     }
     fun getCharacter(): ArrayList<CharactersResults>? = _character.value
 

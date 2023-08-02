@@ -6,13 +6,16 @@ import com.example.marvelheroes.CreatorResults
 import com.example.marvelheroes.paging.network.RetrofitService
 import com.example.marvelheroes.util.Enums
 
-class CreatorsPagingSource(private val marvelApi: RetrofitService,private val type:Enums,private val id:String ="0") : PagingSource<Int, CreatorResults>() {
+class CreatorsPagingSource(
+    private val marvelApi: RetrofitService,
+    private val type: Enums,
+    private val id: String = "0"
+) : PagingSource<Int, CreatorResults>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CreatorResults> {
         return try {
             when (type) {
                 Enums.Home -> {
-                    // for homepage
                     val position = params.key ?: FIRST_PAGE_INDEX
                     val response = marvelApi.getAllCreatorsWithPage(position)
                     LoadResult.Page(
@@ -21,26 +24,27 @@ class CreatorsPagingSource(private val marvelApi: RetrofitService,private val ty
                         nextKey = if (position > response.data!!.total!!) null else position + 20
                     )
                 }
+
                 Enums.Comic -> {
-                    //for Comics
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllCreatorsOfComics(id,position)
+                    val response = marvelApi.getAllCreatorsOfComics(id, position)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,
                         nextKey = if (position > response.data!!.total!!) null else position + 20
                     )
                 }
+
                 Enums.Event -> {
-                    //for Events
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllCreatorsOfEvents(id,position)
+                    val response = marvelApi.getAllCreatorsOfEvents(id, position)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,
                         nextKey = if (position > response.data!!.total!!) null else position + 20
                     )
                 }
+
                 else -> {
                     LoadResult.Error(Exception())
                 }

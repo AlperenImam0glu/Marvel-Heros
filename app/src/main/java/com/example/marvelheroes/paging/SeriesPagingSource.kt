@@ -7,7 +7,11 @@ import com.example.marvelheroes.paging.network.RetrofitService
 import com.example.marvelheroes.series.SeriesResults
 import com.example.marvelheroes.util.Enums
 
-class SeriesPagingSource(private val marvelApi: RetrofitService, private val type: Enums, private val id:String ="0") : PagingSource<Int, SeriesResults>() {
+class SeriesPagingSource(
+    private val marvelApi: RetrofitService,
+    private val type: Enums,
+    private val id: String = "0"
+) : PagingSource<Int, SeriesResults>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SeriesResults> {
         return try {
@@ -22,6 +26,7 @@ class SeriesPagingSource(private val marvelApi: RetrofitService, private val typ
                         nextKey = if (position > response.data!!.total!!) null else position + 20
                     )
                 }
+
                 Enums.Character -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
                     val response = marvelApi.getAllSeriesOfCharacter(id, position)
@@ -32,6 +37,7 @@ class SeriesPagingSource(private val marvelApi: RetrofitService, private val typ
                         nextKey = if (position > response.data!!.total!!) null else position + 20
                     )
                 }
+
                 Enums.Creator -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
                     val response = marvelApi.getAllSeriesOfCreators(id, position)
@@ -42,6 +48,7 @@ class SeriesPagingSource(private val marvelApi: RetrofitService, private val typ
                         nextKey = if (position > response.data!!.total!!) null else position + 20
                     )
                 }
+
                 Enums.Story -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
                     val response = marvelApi.getAllSeriesOfStories(id, position)
@@ -52,6 +59,7 @@ class SeriesPagingSource(private val marvelApi: RetrofitService, private val typ
                         nextKey = if (position > response.data!!.total!!) null else position + 20
                     )
                 }
+
                 else -> {
                     LoadResult.Error(Exception())
                 }

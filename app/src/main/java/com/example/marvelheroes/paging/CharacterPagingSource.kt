@@ -21,7 +21,6 @@ class CharacterPagingSource(private val marvelApi: RetrofitService,private val t
                     )
                 }
                 Enums.Comic -> {
-                    // Comics
                     val position = params.key ?: FIRST_PAGE_INDEX
                     val response = marvelApi.getAllCharactersOfComic(id,position)
                     LoadResult.Page(
@@ -30,7 +29,6 @@ class CharacterPagingSource(private val marvelApi: RetrofitService,private val t
                         nextKey = if (position > response.data!!.total!!) null else position + 20)
                 }
                 Enums.Event -> {
-                    //events
                     val position = params.key ?: FIRST_PAGE_INDEX
                     val response = marvelApi.getAllCharactersOfEvents(id,position)
                     LoadResult.Page(
@@ -39,7 +37,6 @@ class CharacterPagingSource(private val marvelApi: RetrofitService,private val t
                         nextKey = if (position > response.data!!.total!!) null else position + 20)
                 }
                 Enums.Series -> {
-                    //Series
                     val position = params.key ?: FIRST_PAGE_INDEX
                     val response = marvelApi.getAllCharactersOfSeries(id,position)
                     LoadResult.Page(
@@ -48,7 +45,6 @@ class CharacterPagingSource(private val marvelApi: RetrofitService,private val t
                         nextKey = if (position > response.data!!.total!!) null else position + 20)
                 }
                 Enums.Story -> {
-                    //Story
                     val position = params.key ?: FIRST_PAGE_INDEX
                     val response = marvelApi.getAllCharactersOfStories(id,position)
                     LoadResult.Page(

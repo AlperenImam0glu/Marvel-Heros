@@ -294,6 +294,8 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_comics"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
                     android:layout_width="0dp"
                     android:layout_height="12dp"
                     android:layout_marginStart="20dp"
@@ -305,6 +307,8 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_series"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
                     android:layout_width="0dp"
                     android:layout_height="12dp"
                     android:layout_marginStart="20dp"
@@ -318,6 +322,8 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_events"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
                     android:layout_width="0dp"
                     android:layout_height="12dp"
                     android:layout_marginStart="20dp"
@@ -329,6 +335,8 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_stories"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
                     android:layout_width="0dp"
                     android:layout_height="12dp"
                     android:layout_marginStart="20dp"
