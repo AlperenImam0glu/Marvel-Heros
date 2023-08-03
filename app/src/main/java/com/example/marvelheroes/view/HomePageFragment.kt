@@ -1,7 +1,12 @@
 package com.example.marvelheroes.view
 
 import android.animation.ValueAnimator
+import android.app.Activity
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +24,8 @@ import com.example.marvelheroes.adapter.itemAdapters.EventListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.SeriesListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.StoriesListAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
-import com.example.marvelheroes.util.Enums
+import com.example.marvelheroes.paging.network.ConnectivityObserver
+import com.example.marvelheroes.paging.network.NetworkConnectivityObserver
 import com.example.marvelheroes.view.HomePage.InitViewModelForHomePage
 import com.example.marvelheroes.viewmodel.HomePageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
@@ -38,7 +44,9 @@ class HomePageFragment : Fragment() {
     private lateinit var seriesListAdapter: SeriesListAdapter
     private lateinit var storiesListAdapter: StoriesListAdapter
     private val sharedViewModel: SharedViewModel by activityViewModels()
-    lateinit var inıtViewModelForHomePage: InitViewModelForHomePage
+    private lateinit var initViewModelForHomePage: InitViewModelForHomePage
+    private lateinit var countDownTimer: CountDownTimer
+    private var networkState:Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +66,9 @@ class HomePageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        startTimer()
+        networkState= isInternetAvailable(requireContext())
+
         binding.shimmer.startShimmer()
 
         comicsListAdapter = ComicsListAdapter(requireContext(), "Comics", sharedViewModel)
@@ -67,7 +78,7 @@ class HomePageFragment : Fragment() {
         seriesListAdapter = SeriesListAdapter(requireContext(), "Series", sharedViewModel)
         storiesListAdapter = StoriesListAdapter(requireContext(), "Stories", sharedViewModel)
 
-        inıtViewModelForHomePage = InitViewModelForHomePage(
+        initViewModelForHomePage = InitViewModelForHomePage(
             viewModelPaging,
             lifecycle,
             characterListAdapter,
@@ -79,12 +90,9 @@ class HomePageFragment : Fragment() {
             binding
         )
 
-        binding.buttons.heroButton.setOnClickListener {
-          val action = HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment()
-           Navigation.findNavController(it).navigate(action)
-        }
+        setListeners()
 
-        inıtViewModelForHomePage.initViewModel()
+        initViewModelForHomePage.initViewModel()
 
         concatAdapter = ConcatAdapter(
             characterListAdapter,
@@ -94,6 +102,20 @@ class HomePageFragment : Fragment() {
             seriesListAdapter,
             storiesListAdapter
         )
+
+        binding.homepageRv.adapter = concatAdapter
+    }
+
+    fun setListeners(){
+
+
+        binding.buttons.heroButton.setOnClickListener {
+            if(networkState){
+                val action = HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment()
+                Navigation.findNavController(it).navigate(action)
+            }
+
+        }
 
         binding.homepageRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -105,13 +127,41 @@ class HomePageFragment : Fragment() {
                 }
             }
         })
+    }
 
-        binding.homepageRv.adapter = concatAdapter
+
+    private fun startTimer(){
+        countDownTimer = object : CountDownTimer(10000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+
+            }
+            override fun onFinish() {
+               networkState = isInternetAvailable(requireContext())
+                if(!networkState && binding.homepageRv.visibility!= View.VISIBLE){
+                    binding.shimmer.visibility=View.GONE
+                    binding.networkText.visibility = View.VISIBLE
+                }
+            }
+        }
+        countDownTimer.start()
+    }
+
+    fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        val networkCapabilities = connectivityManager.activeNetwork ?: return false
+        val actNw =
+            connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+
+        return actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
     }
 
     private fun closeViewWithAnimation(view: View) {
-        val initialHeight = view.height
-        val valueAnimator = ValueAnimator.ofInt(initialHeight, 0)
+        val height = view.height
+        val valueAnimator = ValueAnimator.ofInt(height, 0)
         valueAnimator.addUpdateListener {
             val value = it.animatedValue as Int
             val layoutParams = view.layoutParams

@@ -30,10 +30,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
         <include
             android:id="@+id/title"
-            layout="@layout/homepage_header"
-            />
+            layout="@layout/homepage_header" />
     </LinearLayout>
 
 
@@ -43,28 +43,27 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/headerLayout">
+
         <include
             android:id="@+id/buttons"
-            layout="@layout/homepage_buttons"
-            />
+            layout="@layout/homepage_buttons" />
     </LinearLayout>
 
 
-
-
     <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLayout"
-        android:id="@+id/shimmer"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/buttonLayout">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <include layout="@layout/shimmer_layout"></include>
         </LinearLayout>
 
@@ -73,16 +72,29 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
 
+    <TextView
+        android:id="@+id/network_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:fontFamily="@font/gilroy_semibold"
+        android:text="Internet connection not found"
+        android:textSize="@dimen/home_subtitle_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLayout">
 
+    </TextView>
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/homepage_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:orientation="vertical"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
