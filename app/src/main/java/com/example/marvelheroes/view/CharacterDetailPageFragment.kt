@@ -1,10 +1,12 @@
 package com.example.marvelheroes.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -27,6 +29,7 @@ import com.example.marvelheroes.loadImageFromInternet
 import com.example.marvelheroes.models.events.EventsResults
 import com.example.marvelheroes.series.SeriesResults
 import com.example.marvelheroes.stories.StoriesResults
+import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.view.DetailPage.InıtViewModelForDetailPage
 import com.example.marvelheroes.viewmodel.DetailPageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
@@ -50,7 +53,7 @@ class CharacterDetailPageFragment : Fragment() {
     lateinit var storiesAdapter: StoriesPagingAdapter
     lateinit var charactersAdapter: CharacterPagingAdapter
     lateinit var creatorsAdapter: CreatorsPagingAdapter
-    private var type: Int = 0
+    lateinit private var type: Enums
     lateinit var inıtViewModelForDetailPage: InıtViewModelForDetailPage
 
     override fun onCreateView(
@@ -80,22 +83,33 @@ class CharacterDetailPageFragment : Fragment() {
             creatorsAdapter
         )
         arguments?.let {
-            type = CharacterDetailPageFragmentArgs.fromBundle(it).type
+            type = CharacterDetailPageFragmentArgs.fromBundle(it).dataType
         }
 
         createViewByType(type)
 
         setToolbarPosition()
 
+        binding.scrollView.viewTreeObserver.addOnScrollChangedListener {
+            if (binding.scrollView.scrollY > 1) {
+                binding.toolbar.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.toolbar_shadow)
+
+            }
+            if (binding.scrollView.scrollY < 1) {
+                binding.toolbar.background = null
+                //  android:foreground="@drawable/gradient_dark"
+            }
+        }
+
         binding.toolbarBackBtn.setOnClickListener {
             findNavController(this).popBackStack()
         }
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
-        if (type == 0) {
+        if (type == Enums.Character) {
             var newList = sharedViewModel.getCharacter()
             newList?.let {
                 if (newList.isNotEmpty()) {
@@ -104,7 +118,7 @@ class CharacterDetailPageFragment : Fragment() {
                 }
             }
         }
-        if (type == 1) {
+        if (type == Enums.Comic) {
             var newList = sharedViewModel.getComic()
             newList?.let {
                 if (newList.isNotEmpty()) {
@@ -113,7 +127,7 @@ class CharacterDetailPageFragment : Fragment() {
                 }
             }
         }
-        if (type == 2) {
+        if (type == Enums.Event) {
             var newList = sharedViewModel.getEvent()
             newList?.let {
                 if (newList.isNotEmpty()) {
@@ -122,7 +136,7 @@ class CharacterDetailPageFragment : Fragment() {
                 }
             }
         }
-        if (type == 3) {
+        if (type == Enums.Creator) {
             var newList = sharedViewModel.getCreators()
             newList?.let {
                 if (newList.isNotEmpty()) {
@@ -131,7 +145,7 @@ class CharacterDetailPageFragment : Fragment() {
                 }
             }
         }
-        if (type == 4) {
+        if (type == Enums.Series) {
             var newList = sharedViewModel.getSeries()
             newList?.let {
                 if (newList.isNotEmpty()) {
@@ -140,7 +154,7 @@ class CharacterDetailPageFragment : Fragment() {
                 }
             }
         }
-        if (type == 5) {
+        if (type == Enums.Story) {
             var newList = sharedViewModel.getStories()
             newList?.let {
                 if (newList.isNotEmpty()) {
@@ -151,11 +165,12 @@ class CharacterDetailPageFragment : Fragment() {
         }
     }
 
-    fun createViewByType(type: Int) {
-        if (type == 0) {
+    fun createViewByType(type: Enums) {
+        if (type == Enums.Character) {
             sharedViewModel.getCharacter()?.let {
                 charactersData = it.last()
                 viewModelPaging.id = charactersData.id.toString()
+                binding.toolbarTypeText.text = "Character"
 
                 setCharactersToView(charactersData)
 
@@ -174,15 +189,18 @@ class CharacterDetailPageFragment : Fragment() {
 
                 inıtViewModelForDetailPage.initViewModelForCharacter()
 
-                val layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                binding.rv.layoutManager = layoutManager
-                binding.rv.adapter = comicsAdapter
+                if (charactersData.comics!!.available!! != 0) {
+                    binding.rv.adapter = comicsAdapter
+                } else {
+                    binding.rv.visibility = View.GONE
+                }
             }
-        } else if (type == 1) {
+        } else if (type == Enums.Comic) {
             sharedViewModel.getComic()?.let {
                 comicsData = it.last()
                 viewModelPaging.id = comicsData.id.toString()
+
+                binding.toolbarTypeText.text = "Comic"
                 setComicsToView(comicsData)
                 inıtViewModelForDetailPage.initViewModelForComics()
 
@@ -198,14 +216,17 @@ class CharacterDetailPageFragment : Fragment() {
                     arrayListOf("Characters", "Creators", "Events", "Stories")
                 setClickListeners(adapterList, stringList)
 
-                val layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                binding.rv.layoutManager = layoutManager
-                binding.rv.adapter = charactersAdapter
+                if (comicsData.characters!!.available!! != 0) {
+                    binding.rv.adapter = charactersAdapter
+                } else {
+                    binding.rv.visibility = View.GONE
+                }
             }
-        } else if (type == 2) {
+        } else if (type == Enums.Event) {
+
             sharedViewModel.getEvent()?.let {
                 eventsData = it.last()
+                binding.toolbarTypeText.text = "Event"
                 viewModelPaging.id = eventsData.id.toString()
                 setEventToView(eventsData)
                 inıtViewModelForDetailPage.initViewModelForEvents()
@@ -220,14 +241,18 @@ class CharacterDetailPageFragment : Fragment() {
                 val stringList: ArrayList<String> =
                     arrayListOf("Characters", "Creators", "Comics", "Stories")
                 setClickListeners(adapterList, stringList)
-                val layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                binding.rv.layoutManager = layoutManager
-                binding.rv.adapter = charactersAdapter
+
+                if (eventsData.characters!!.available!! != 0) {
+                    binding.rv.adapter = charactersAdapter
+                } else {
+                    binding.rv.visibility = View.GONE
+                }
             }
-        } else if (type == 3) {
+        } else if (type == Enums.Creator) {
             sharedViewModel.getCreators()?.let {
                 creatorsData = it.last()
+
+                binding.toolbarTypeText.text = "Creator"
                 viewModelPaging.id = creatorsData.id.toString()
                 setCreatorToView(creatorsData)
 
@@ -244,14 +269,16 @@ class CharacterDetailPageFragment : Fragment() {
                     arrayListOf("Comics", "Series", "Events", "Stories")
                 setClickListeners(adapterList, stringList)
 
-                val layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                binding.rv.layoutManager = layoutManager
-                binding.rv.adapter = comicsAdapter
+                if (creatorsData.comics!!.available!! != 0) {
+                    binding.rv.adapter = comicsAdapter
+                } else {
+                    binding.rv.visibility = View.GONE
+                }
             }
-        } else if (type == 4) {
+        } else if (type == Enums.Series) {
             sharedViewModel.getSeries()?.let {
                 seriesData = it.last()
+                binding.toolbarTypeText.text = "Series"
                 viewModelPaging.id = seriesData.id.toString()
                 setSeriesToView(seriesData)
                 inıtViewModelForDetailPage.initViewModelForSeries()
@@ -267,14 +294,16 @@ class CharacterDetailPageFragment : Fragment() {
                     arrayListOf("Characters", "Comics", "Events", "Stories")
                 setClickListeners(adapterList, stringList)
 
-                val layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                binding.rv.layoutManager = layoutManager
-                binding.rv.adapter = charactersAdapter
+                if (seriesData.characters!!.available!! != 0) {
+                    binding.rv.adapter = charactersAdapter
+                } else {
+                    binding.rv.visibility = View.GONE
+                }
             }
-        } else if (type == 5) {
+        } else if (type == Enums.Story) {
             sharedViewModel.getStories()?.let {
                 storiesData = it.last()
+                binding.toolbarTypeText.text = "Story"
                 viewModelPaging.id = storiesData.id.toString()
                 setStoriesToView(storiesData)
                 inıtViewModelForDetailPage.initViewModelForStories()
@@ -285,15 +314,17 @@ class CharacterDetailPageFragment : Fragment() {
                     storiesData.series!!.available!!
                 )
                 val adapterList: ArrayList<Any> =
-                    arrayListOf(charactersAdapter, eventsAdapter, comicsAdapter, seriesAdapter)
+                    arrayListOf(charactersAdapter, comicsAdapter, eventsAdapter, seriesAdapter)
                 val stringList: ArrayList<String> =
                     arrayListOf("Characters", "Events", "Comics", "Series")
                 setClickListeners(adapterList, stringList)
 
-                val layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                binding.rv.layoutManager = layoutManager
-                binding.rv.adapter = charactersAdapter
+                if (storiesData.characters!!.available!! != 0) {
+                    binding.rv.adapter = charactersAdapter
+                } else {
+                    binding.rv.visibility = View.GONE
+                }
+
             }
         }
     }
@@ -416,27 +447,40 @@ class CharacterDetailPageFragment : Fragment() {
 
     fun setClickListeners(adapterList: ArrayList<Any>, stringList: ArrayList<String>) {
 
+
         binding.img1.setOnClickListener {
-            binding.rv.adapter = adapterList[0] as RecyclerView.Adapter<*>
-            binding.rvTitle.text = stringList[0]
-            scrollToRv()
+            if (binding.textComicsCount.text != "0") {
+                binding.rv.visibility = View.VISIBLE
+                binding.rv.adapter = adapterList[0] as RecyclerView.Adapter<*>
+                binding.rvTitle.text = stringList[0]
+                scrollToRv()
+            }
         }
         binding.img2.setOnClickListener {
-            binding.rv.adapter = adapterList[1] as RecyclerView.Adapter<*>
-            binding.rvTitle.text = stringList[1]
-            scrollToRv()
+            if (binding.textSeriesCount.text != "0") {
+                binding.rv.visibility = View.VISIBLE
+                binding.rv.adapter = adapterList[1] as RecyclerView.Adapter<*>
+                binding.rvTitle.text = stringList[1]
+                scrollToRv()
+            }
         }
 
         binding.img3.setOnClickListener {
-            binding.rv.adapter = adapterList[2] as RecyclerView.Adapter<*>
-            binding.rvTitle.text = stringList[2]
-            scrollToRv()
+            if (binding.textEventsCount.text != "0") {
+                binding.rv.visibility = View.VISIBLE
+                binding.rv.adapter = adapterList[2] as RecyclerView.Adapter<*>
+                binding.rvTitle.text = stringList[2]
+                scrollToRv()
+            }
         }
 
         binding.img4.setOnClickListener {
-            binding.rv.adapter = adapterList[3] as RecyclerView.Adapter<*>
-            binding.rvTitle.text = stringList[3]
-            scrollToRv()
+            if (binding.textStoriesCount.text != "0") {
+                binding.rv.visibility = View.VISIBLE
+                binding.rv.adapter = adapterList[3] as RecyclerView.Adapter<*>
+                binding.rvTitle.text = stringList[3]
+                scrollToRv()
+            }
         }
     }
 
@@ -447,8 +491,8 @@ class CharacterDetailPageFragment : Fragment() {
         fourthBarValue: Int?
     ) {
         binding.recyclerviewComics.adapter = CustomAttributeBarAdapter(firstBarValue ?: 0)
-        binding.recyclerviewSeries.adapter = CustomAttributeBarAdapter(secondBarValue ?: 0)
-        binding.recyclerviewEvents.adapter = CustomAttributeBarAdapter(thirdValue ?: 0)
+        binding.recyclerviewSeries.adapter = CustomAttributeBarAdapter(thirdValue ?: 0)
+        binding.recyclerviewEvents.adapter = CustomAttributeBarAdapter(secondBarValue ?: 0)
         binding.recyclerviewStories.adapter = CustomAttributeBarAdapter(fourthBarValue ?: 0)
     }
 

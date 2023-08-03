@@ -13,6 +13,7 @@ import com.example.marvelheroes.ComicsResults
 import com.example.marvelheroes.R
 import com.example.marvelheroes.databinding.HomepageCardDesignBinding
 import com.example.marvelheroes.loadImageFromInternet
+import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.view.CharacterDetailPageFragmentDirections
 import com.example.marvelheroes.view.HomePageFragmentDirections
 import com.example.marvelheroes.viewmodel.SharedViewModel
@@ -33,7 +34,7 @@ class ComicsPagingAdapter(var context: Context, val viewModel: SharedViewModel) 
                 var flag = true
                 try {
                     if(flag){
-                        val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(1)
+                        val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(1,  Enums.Comic)
                         Navigation.findNavController(it).navigate(action)
                         flag = false
                     }
@@ -43,7 +44,7 @@ class ComicsPagingAdapter(var context: Context, val viewModel: SharedViewModel) 
                 try {
                     if(flag){
                         val action =
-                            CharacterDetailPageFragmentDirections.detailPageFragmentToDetailPageFragment(1)
+                            CharacterDetailPageFragmentDirections.detailPageFragmentToDetailPageFragment(1,Enums.Comic)
                         Navigation.findNavController(it).navigate(action)
                         flag = false
                     }

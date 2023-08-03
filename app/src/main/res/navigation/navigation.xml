@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homePageFragment_to_characterDetailPageFragment"
             app:destination="@id/characterDetailPageFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_seeAllPageFragment"
+            app:destination="@id/seeAllPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/characterDetailPageFragment"
@@ -24,5 +27,13 @@
         <argument
             android:name="type"
             app:argType="integer" />
+        <argument
+            android:name="dataType"
+            app:argType="com.example.marvelheroes.util.Enums" />
     </fragment>
+    <fragment
+        android:id="@+id/seeAllPageFragment"
+        android:name="com.example.marvelheroes.view.SeeAllPageFragment"
+        android:label="fragment_see_all_page"
+        tools:layout="@layout/fragment_see_all_page" />
 </navigation>

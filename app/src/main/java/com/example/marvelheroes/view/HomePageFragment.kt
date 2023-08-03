@@ -9,6 +9,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelheroes.adapter.itemAdapters.CharaterListAdapter
@@ -18,6 +19,7 @@ import com.example.marvelheroes.adapter.itemAdapters.EventListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.SeriesListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.StoriesListAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
+import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.view.HomePage.InitViewModelForHomePage
 import com.example.marvelheroes.viewmodel.HomePageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
@@ -77,6 +79,11 @@ class HomePageFragment : Fragment() {
             binding
         )
 
+        binding.buttons.heroButton.setOnClickListener {
+          val action = HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment()
+           Navigation.findNavController(it).navigate(action)
+        }
+
         inıtViewModelForHomePage.initViewModel()
 
         concatAdapter = ConcatAdapter(
@@ -119,7 +126,5 @@ class HomePageFragment : Fragment() {
         valueAnimator.start()
         viewModelPaging.isOpen.value = false
     }
-
-
 
 }

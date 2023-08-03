@@ -14,6 +14,7 @@ import com.example.marvelheroes.R
 import com.example.marvelheroes.databinding.HomepageCardDesignBinding
 import com.example.marvelheroes.loadImageFromInternet
 import com.example.marvelheroes.models.events.EventsResults
+import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.view.CharacterDetailPageFragmentDirections
 import com.example.marvelheroes.view.HomePageFragmentDirections
 import com.example.marvelheroes.viewmodel.SharedViewModel
@@ -34,7 +35,7 @@ class EventsPagingAdapter(var context: Context,val viewModel: SharedViewModel) :
                 var flag = true
                 try {
                     if(flag){
-                        val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(2)
+                        val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(2,  Enums.Event)
                         Navigation.findNavController(it).navigate(action)
                         flag = false
                     }
@@ -44,7 +45,7 @@ class EventsPagingAdapter(var context: Context,val viewModel: SharedViewModel) :
                 try {
                     if(flag){
                         val action =
-                            CharacterDetailPageFragmentDirections.detailPageFragmentToDetailPageFragment(2)
+                            CharacterDetailPageFragmentDirections.detailPageFragmentToDetailPageFragment(2, Enums.Event)
                         Navigation.findNavController(it).navigate(action)
                         flag = false
                     }
