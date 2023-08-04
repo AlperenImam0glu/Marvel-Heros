@@ -3,6 +3,7 @@ package com.example.marvelheroes.paging
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.marvelheroes.BuildConfig
 import com.example.marvelheroes.CreatorResults
 import com.example.marvelheroes.paging.network.RetrofitService
 import com.example.marvelheroes.util.Enums
@@ -12,13 +13,15 @@ class CreatorsPagingSource(
     private val type: Enums,
     private val id: String = "0"
 ) : PagingSource<Int, CreatorResults>() {
-
+    private val api_key = BuildConfig.API_KEY
+    private val ts="1"
+    private val hash= BuildConfig.HASH
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CreatorResults> {
         return try {
             when (type) {
                 Enums.Home -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllCreatorsWithPage(position)
+                    val response = marvelApi.getAllCreatorsWithPage(ts,api_key,hash,position)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,
@@ -28,7 +31,7 @@ class CreatorsPagingSource(
 
                 Enums.Comic -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllCreatorsOfComics(id, position)
+                    val response = marvelApi.getAllCreatorsOfComics(id,ts,api_key,hash,position)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,
@@ -38,7 +41,7 @@ class CreatorsPagingSource(
 
                 Enums.Event -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllCreatorsOfEvents(id, position)
+                    val response = marvelApi.getAllCreatorsOfEvents(id,ts,api_key,hash,position)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,

@@ -12,165 +12,267 @@ import retrofit2.http.Query
 
 interface RetrofitService {
 
-    @GET("v1/public/characters?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
-    suspend fun getAllCharactersWithPage(@Query("offset") offset: Int): Character
+    @GET("characters")
+    suspend fun getAllCharactersWithPage(
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
+        @Query("offset") offset: Int
+    ): Character
 
-    @GET("v1/public/comics?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
-    suspend fun getAllComicsWithPage(@Query("offset") offset: Int): MainComics
+    @GET("comics")
+    suspend fun getAllComicsWithPage(
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
+        @Query("offset") offset: Int
+    ): MainComics
 
-    @GET("v1/public/creators?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
-    suspend fun getAllCreatorsWithPage(@Query("offset") offset: Int): MainCreators
+    @GET("creators")
+    suspend fun getAllCreatorsWithPage(
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
+        @Query("offset") offset: Int
+    ): MainCreators
 
-    @GET("v1/public/events?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
-    suspend fun getAllEventsWithPage(@Query("offset") offset: Int): MainEvents
+    @GET("events")
+    suspend fun getAllEventsWithPage(
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
+        @Query("offset") offset: Int
+    ): MainEvents
 
-    @GET("v1/public/series?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
-    suspend fun getAllSeriesWithPage(@Query("offset") offset: Int): MainSeries
+    @GET("series")
+    suspend fun getAllSeriesWithPage(
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
+        @Query("offset") offset: Int
+    ): MainSeries
 
-    @GET("v1/public/stories?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
-    suspend fun getAllStoriesWithPage(@Query("offset") offset: Int): MainStories
+    @GET("stories")
+    suspend fun getAllStoriesWithPage(
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
+        @Query("offset") offset: Int
+    ): MainStories
 
-    @GET("v1/public/characters/{id}/comics?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("characters/{id}/comics")
     suspend fun getAllComicsOfCharacter(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainComics
 
-    @GET("v1/public/characters/{id}/series?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("characters/{id}/series")
     suspend fun getAllSeriesOfCharacter(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainSeries
 
-    @GET("v1/public/characters/{id}/events?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("characters/{id}/events")
     suspend fun getAllEventsOfCharacter(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainEvents
 
-    @GET("v1/public/characters/{id}/stories?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("characters/{id}/stories")
     suspend fun getAllStoriesOfCharacter(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainStories
 
-    @GET("v1/public/comics/{id}/characters?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("comics/{id}/characters")
     suspend fun getAllCharactersOfComic(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): Character
 
-    @GET("v1/public/comics/{id}/creators?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("comics/{id}/creators")
     suspend fun getAllCreatorsOfComics(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainCreators
 
-    @GET("v1/public/comics/{id}/events?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("comics/{id}/events")
     suspend fun getAllEventsOfComics(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainEvents
 
-    @GET("v1/public/comics/{id}/stories?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("comics/{id}/stories")
     suspend fun getAllStoriesOfComics(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainStories
 
-    @GET("v1/public/events/{id}/characters?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("events/{id}/characters")
     suspend fun getAllCharactersOfEvents(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): Character
 
-    @GET("v1/public/events/{id}/comics?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("events/{id}/comics")
     suspend fun getAllComicsOfEvents(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainComics
 
-    @GET("v1/public/events/{id}/creators?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("events/{id}/creators")
     suspend fun getAllCreatorsOfEvents(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainCreators
 
-    @GET("v1/public/events/{id}/stories?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("events/{id}/stories")
     suspend fun getAllStoriesOfEvents(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainStories
 
-    @GET("v1/public/creators/{id}/comics?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("creators/{id}/comics")
     suspend fun getAllComicsOfCreators(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainComics
 
-    @GET("v1/public/creators/{id}/stories?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("creators/{id}/stories")
     suspend fun getAllStoriesOfCreators(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainStories
 
-    @GET("v1/public/creators/{id}/series?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("creators/{id}/series")
     suspend fun getAllSeriesOfCreators(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainSeries
 
-    @GET("v1/public/creators/{id}/events?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("creators/{id}/events")
     suspend fun getAllEventsOfCreators(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainEvents
 
-    @GET("v1/public/series/{id}/characters?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("series/{id}/characters")
     suspend fun getAllCharactersOfSeries(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): Character
 
-    @GET("v1/public/series/{id}/comics?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("series/{id}/comics")
     suspend fun getAllComicsOfSeries(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainComics
 
-    @GET("v1/public/series/{id}/events?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("series/{id}/events")
     suspend fun getAllEventsOfSeries(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainEvents
 
-    @GET("v1/public/series/{id}/stories?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("series/{id}/stories")
     suspend fun getAllStoriesOfSeries(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainStories
 
-    @GET("v1/public/stories/{id}/characters?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("stories/{id}/characters")
     suspend fun getAllCharactersOfStories(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): Character
 
-    @GET("v1/public/stories/{id}/comics?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("stories/{id}/comics")
     suspend fun getAllComicsOfStories(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainComics
 
-    @GET("v1/public/stories/{id}/events?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("stories/{id}/events")
     suspend fun getAllEventsOfStories(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainEvents
 
-    @GET("v1/public/stories/{id}/series?ts=1&apikey=7532a6400c01747cfe46a0570dc1d611&hash=afdae4c1c3a8bc29dadf27415ba090f4")
+    @GET("stories/{id}/series")
     suspend fun getAllSeriesOfStories(
         @Path("id") id: String,
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
         @Query("offset") offset: Int
     ): MainSeries
 

@@ -3,6 +3,7 @@ package com.example.marvelheroes.paging
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.marvelheroes.BuildConfig
 import com.example.marvelheroes.paging.network.RetrofitService
 import com.example.marvelheroes.series.SeriesResults
 import com.example.marvelheroes.util.Enums
@@ -12,13 +13,15 @@ class SeriesPagingSource(
     private val type: Enums,
     private val id: String = "0"
 ) : PagingSource<Int, SeriesResults>() {
-
+    private val api_key = BuildConfig.API_KEY
+    private val ts="1"
+    private val hash= BuildConfig.HASH
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, SeriesResults> {
         return try {
             when (type) {
                 Enums.Home -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllSeriesWithPage(position)
+                    val response = marvelApi.getAllSeriesWithPage(ts,api_key,hash,position)
 
                     LoadResult.Page(
                         data = response.data!!.results,
@@ -29,7 +32,7 @@ class SeriesPagingSource(
 
                 Enums.Character -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllSeriesOfCharacter(id, position)
+                    val response = marvelApi.getAllSeriesOfCharacter(id,ts,api_key,hash,position)
 
                     LoadResult.Page(
                         data = response.data!!.results,
@@ -40,7 +43,7 @@ class SeriesPagingSource(
 
                 Enums.Creator -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllSeriesOfCreators(id, position)
+                    val response = marvelApi.getAllSeriesOfCreators(id,ts,api_key,hash,position)
 
                     LoadResult.Page(
                         data = response.data!!.results,
@@ -51,7 +54,7 @@ class SeriesPagingSource(
 
                 Enums.Story -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllSeriesOfStories(id, position)
+                    val response = marvelApi.getAllSeriesOfStories(id,ts,api_key,hash,position)
 
                     LoadResult.Page(
                         data = response.data!!.results,

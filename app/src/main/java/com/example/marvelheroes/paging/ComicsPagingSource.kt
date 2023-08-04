@@ -3,6 +3,7 @@ package com.example.marvelheroes.paging
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.marvelheroes.BuildConfig
 import com.example.marvelheroes.ComicsResults
 import com.example.marvelheroes.paging.network.RetrofitService
 import com.example.marvelheroes.util.Enums
@@ -13,12 +14,16 @@ class ComicsPagingSource(
     private val id: String = "0"
 ) : PagingSource<Int, ComicsResults>() {
 
+    private val api_key = BuildConfig.API_KEY
+    private val ts="1"
+    private val hash= BuildConfig.HASH
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ComicsResults> {
         return try {
             when (type) {
                 Enums.Home -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllComicsWithPage(position)
+                    val response = marvelApi.getAllComicsWithPage(ts,api_key,hash,position)
 
                     LoadResult.Page(
                         data = response.data!!.results,
@@ -29,7 +34,7 @@ class ComicsPagingSource(
 
                 Enums.Character -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllComicsOfCharacter(id, position)
+                    val response = marvelApi.getAllComicsOfCharacter(id,ts,api_key,hash,position)
 
                     LoadResult.Page(
                         data = response.data!!.results,
@@ -40,7 +45,7 @@ class ComicsPagingSource(
 
                 Enums.Event -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllComicsOfEvents(id, position)
+                    val response = marvelApi.getAllComicsOfEvents(id,ts,api_key,hash,position)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,
@@ -51,7 +56,7 @@ class ComicsPagingSource(
 
                 Enums.Creator -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllComicsOfCreators(id, position)
+                    val response = marvelApi.getAllComicsOfCreators(id,ts,api_key,hash,position)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,
@@ -62,7 +67,7 @@ class ComicsPagingSource(
 
                 Enums.Series -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllComicsOfSeries(id, position)
+                    val response = marvelApi.getAllComicsOfSeries(id,ts,api_key,hash,position)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,
@@ -73,7 +78,7 @@ class ComicsPagingSource(
 
                 Enums.Story -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
-                    val response = marvelApi.getAllComicsOfStories(id, position)
+                    val response = marvelApi.getAllComicsOfStories(id,ts,api_key,hash,position)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position < 20) null else position - 20,
