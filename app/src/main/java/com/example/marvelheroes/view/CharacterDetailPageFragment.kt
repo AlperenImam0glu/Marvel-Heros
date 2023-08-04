@@ -1,23 +1,22 @@
 package com.example.marvelheroes.view
 
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.marvelheroes.ComicsResults
-import com.example.marvelheroes.R
 import com.example.marvelheroes.CharactersResults
+import com.example.marvelheroes.ComicsResults
 import com.example.marvelheroes.CreatorResults
+import com.example.marvelheroes.R
 import com.example.marvelheroes.adapter.CustomAttributeBarAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.CharacterPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.ComicsPagingAdapter
@@ -35,6 +34,7 @@ import com.example.marvelheroes.view.DetailPage.InıtViewModelForDetailPage
 import com.example.marvelheroes.viewmodel.DetailPageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class CharacterDetailPageFragment : Fragment() {
@@ -62,12 +62,19 @@ class CharacterDetailPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity?.let {
+            it.window?.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
         binding = FragmentCharacterDetailPageBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         comicsAdapter = ComicsPagingAdapter(requireContext(), sharedViewModel)
         seriesAdapter = SeriesPagingAdapter(requireContext(), sharedViewModel)
@@ -91,7 +98,7 @@ class CharacterDetailPageFragment : Fragment() {
 
         createViewByType(type)
 
-        setToolbarPosition()
+       // setToolbarPosition()
 
         binding.scrollView.viewTreeObserver.addOnScrollChangedListener {
             if (binding.scrollView.scrollY > 1) {
@@ -112,6 +119,8 @@ class CharacterDetailPageFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+
+
         if (type == Enums.Character) {
             var newList = sharedViewModel.getCharacter()
             newList?.let {
@@ -333,7 +342,7 @@ class CharacterDetailPageFragment : Fragment() {
                 val adapterList: ArrayList<Any> =
                     arrayListOf(charactersAdapter, comicsAdapter, eventsAdapter, seriesAdapter)
                 val stringList: ArrayList<String> =
-                    arrayListOf("Characters", "Events", "Comics", "Series")
+                    arrayListOf("Characters", "Comics", "Events", "Series")
                 setClickListeners(adapterList, stringList)
 
                 if (storiesData.characters!!.available!! != 0) {
@@ -380,6 +389,10 @@ class CharacterDetailPageFragment : Fragment() {
         binding.textSeriesCount.text = storiesResults.comics!!.available.toString()
         binding.textStoriesCount.text = storiesResults.series!!.available.toString()
 
+        binding.textComicsBar.text ="Characters"
+        binding.textSeriesBar.text ="Comics"
+        binding.textStoriesBar.text ="Series"
+
         if (storiesResults.thumbnail != null) {
             setImage(
                 binding.image,
@@ -404,8 +417,9 @@ class CharacterDetailPageFragment : Fragment() {
         binding.textEventsCount.text = seriesResults.events!!.available.toString()
         binding.textSeriesCount.text = seriesResults.creators!!.available.toString()
         binding.textStoriesCount.text = seriesResults.stories!!.available.toString()
+
         binding.textComicsBar.text = "Characters"
-        binding.textSeriesBar.text = "Creators"
+        binding.textSeriesBar.text="Comics"
         setImage(
             binding.image,
             seriesResults.thumbnail!!.path!!,
@@ -425,6 +439,10 @@ class CharacterDetailPageFragment : Fragment() {
         binding.textEventsCount.text = eventsResults.series!!.available.toString()
         binding.textSeriesCount.text = eventsResults.creators!!.available.toString()
         binding.textStoriesCount.text = eventsResults.stories!!.available.toString()
+
+        binding.textComicsBar.text="Characters"
+        binding.textSeriesBar.text="Creators"
+        binding.textEventsBar.text="Comics"
         setImage(
             binding.image,
             eventsResults.thumbnail!!.path!!,

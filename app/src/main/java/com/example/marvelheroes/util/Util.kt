@@ -9,6 +9,9 @@ fun ImageView.loadImageFromInternet(url:String,view: ImageView) {
     url?.let {
         isImageEmpty = url!!.contains("image_not_available")
     }
+    if(url.length<10){
+        isImageEmpty=true
+    }
     if(isImageEmpty){
         imageUrl = "https://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/portrait_xlarge.jpg"
     }else{

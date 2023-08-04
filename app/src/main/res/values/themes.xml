@@ -2,19 +2,17 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MarvelHeroes" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:statusBarColor">@color/primary_white</item>
         <item name="colorPrimary">@color/primary_black</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
     <style name ="Theme.App.SplashScreen" parent="Theme.SplashScreen">
-
         <item name="windowSplashScreenBackground">@color/marvel_red</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/splah_image</item>
         <item name="postSplashScreenTheme">@style/Base.Theme.MarvelHeroes</item>
     </style>
-
     <style name="Theme.MarvelHeroes" parent="Base.Theme.MarvelHeroes" />
 </resources>
