@@ -1,7 +1,6 @@
 package com.example.marvelheroes.view
 
 import android.animation.ValueAnimator
-import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -24,8 +23,6 @@ import com.example.marvelheroes.adapter.itemAdapters.EventListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.SeriesListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.StoriesListAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
-import com.example.marvelheroes.paging.network.ConnectivityObserver
-import com.example.marvelheroes.paging.network.NetworkConnectivityObserver
 import com.example.marvelheroes.view.HomePage.InitViewModelForHomePage
 import com.example.marvelheroes.viewmodel.HomePageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
@@ -66,7 +63,7 @@ class HomePageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        startTimer()
+        startConnectionChecker()
         networkState= isInternetAvailable(requireContext())
 
         binding.shimmer.startShimmer()
@@ -106,8 +103,7 @@ class HomePageFragment : Fragment() {
         binding.homepageRv.adapter = concatAdapter
     }
 
-    fun setListeners(){
-
+    private fun setListeners(){
 
         binding.buttons.heroButton.setOnClickListener {
             if(networkState){
@@ -130,10 +126,9 @@ class HomePageFragment : Fragment() {
     }
 
 
-    private fun startTimer(){
+    private fun startConnectionChecker(){
         countDownTimer = object : CountDownTimer(10000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-
             }
             override fun onFinish() {
                networkState = isInternetAvailable(requireContext())
@@ -147,12 +142,9 @@ class HomePageFragment : Fragment() {
     }
 
     fun isInternetAvailable(context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkCapabilities = connectivityManager.activeNetwork ?: return false
-        val actNw =
-            connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+        val actNw = connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
 
         return actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
                 actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||

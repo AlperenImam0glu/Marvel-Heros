@@ -17,7 +17,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailPageViewModel @Inject constructor(private val repository: MainRepository,)  : ViewModel() {
+class DetailPageViewModel @Inject constructor(private val repository: MainRepository)  : ViewModel() {
 
     var id ="0"
     val allComicsOfTheCharacter = Pager(config = PagingConfig(pageSize = 30),

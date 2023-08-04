@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -55,6 +56,7 @@ class CharacterDetailPageFragment : Fragment() {
     lateinit var creatorsAdapter: CreatorsPagingAdapter
     lateinit private var type: Enums
     lateinit var inıtViewModelForDetailPage: InıtViewModelForDetailPage
+    private val noDataString = "No data to show"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,6 +75,7 @@ class CharacterDetailPageFragment : Fragment() {
         storiesAdapter = StoriesPagingAdapter(requireContext(), sharedViewModel)
         charactersAdapter = CharacterPagingAdapter(requireContext(), sharedViewModel)
         creatorsAdapter = CreatorsPagingAdapter(requireContext(), sharedViewModel)
+
 
         inıtViewModelForDetailPage = InıtViewModelForDetailPage(
             viewModelPaging, lifecycle, comicsAdapter,
@@ -193,6 +196,7 @@ class CharacterDetailPageFragment : Fragment() {
                     binding.rv.adapter = comicsAdapter
                 } else {
                     binding.rv.visibility = View.GONE
+                    binding.rvTitle.text = noDataString
                 }
             }
         } else if (type == Enums.Comic) {
@@ -217,9 +221,11 @@ class CharacterDetailPageFragment : Fragment() {
                 setClickListeners(adapterList, stringList)
 
                 if (comicsData.characters!!.available!! != 0) {
+                    binding.rvTitle.text ="Characters"
                     binding.rv.adapter = charactersAdapter
                 } else {
                     binding.rv.visibility = View.GONE
+                    binding.rvTitle.text = noDataString
                 }
             }
         } else if (type == Enums.Event) {
@@ -243,9 +249,11 @@ class CharacterDetailPageFragment : Fragment() {
                 setClickListeners(adapterList, stringList)
 
                 if (eventsData.characters!!.available!! != 0) {
+                    binding.rvTitle.text ="Characters"
                     binding.rv.adapter = charactersAdapter
                 } else {
                     binding.rv.visibility = View.GONE
+                    binding.rvTitle.text = noDataString
                 }
             }
         } else if (type == Enums.Creator) {
@@ -270,9 +278,11 @@ class CharacterDetailPageFragment : Fragment() {
                 setClickListeners(adapterList, stringList)
 
                 if (creatorsData.comics!!.available!! != 0) {
+                    binding.rvTitle.text ="Comics"
                     binding.rv.adapter = comicsAdapter
                 } else {
                     binding.rv.visibility = View.GONE
+                    binding.rvTitle.text = noDataString
                 }
             }
         } else if (type == Enums.Series) {
@@ -295,9 +305,11 @@ class CharacterDetailPageFragment : Fragment() {
                 setClickListeners(adapterList, stringList)
 
                 if (seriesData.characters!!.available!! != 0) {
+                    binding.rvTitle.text ="Characters"
                     binding.rv.adapter = charactersAdapter
                 } else {
                     binding.rv.visibility = View.GONE
+                    binding.rvTitle.text = noDataString
                 }
             }
         } else if (type == Enums.Story) {
@@ -320,9 +332,11 @@ class CharacterDetailPageFragment : Fragment() {
                 setClickListeners(adapterList, stringList)
 
                 if (storiesData.characters!!.available!! != 0) {
+                    binding.rvTitle.text ="Characters"
                     binding.rv.adapter = charactersAdapter
                 } else {
                     binding.rv.visibility = View.GONE
+                    binding.rvTitle.text = noDataString
                 }
 
             }
