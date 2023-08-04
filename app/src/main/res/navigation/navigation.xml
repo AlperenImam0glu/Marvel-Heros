@@ -12,18 +12,30 @@
         tools:layout="@layout/fragment_home_page" >
         <action
             android:id="@+id/action_homePageFragment_to_characterDetailPageFragment"
-            app:destination="@id/characterDetailPageFragment" />
+            app:destination="@id/characterDetailPageFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/action_homePageFragment_to_seeAllPageFragment"
-            app:destination="@id/seeAllPageFragment" />
+            app:destination="@id/seeAllPageFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
     <fragment
         android:id="@+id/characterDetailPageFragment"
         android:name="com.example.marvelheroes.view.CharacterDetailPageFragment"
         android:label="CharacterDetailPageFragment">
-    <action
-        android:id="@+id/detailPageFragmentTo_detailPageFragment"
-        app:destination="@id/characterDetailPageFragment" />
+        <action
+            android:id="@+id/detailPageFragmentTo_detailPageFragment"
+            app:destination="@id/characterDetailPageFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
         <argument
             android:name="type"
             app:argType="integer" />

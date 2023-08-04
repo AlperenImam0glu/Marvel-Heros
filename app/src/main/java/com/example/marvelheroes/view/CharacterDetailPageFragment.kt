@@ -196,6 +196,7 @@ class CharacterDetailPageFragment : Fragment() {
                     binding.rv.adapter = comicsAdapter
                 } else {
                     binding.rv.visibility = View.GONE
+                    binding.sizedBox.visibility = View.VISIBLE
                     binding.rvTitle.text = noDataString
                 }
             }
@@ -225,6 +226,7 @@ class CharacterDetailPageFragment : Fragment() {
                     binding.rv.adapter = charactersAdapter
                 } else {
                     binding.rv.visibility = View.GONE
+                    binding.sizedBox.visibility = View.VISIBLE
                     binding.rvTitle.text = noDataString
                 }
             }
@@ -253,6 +255,7 @@ class CharacterDetailPageFragment : Fragment() {
                     binding.rv.adapter = charactersAdapter
                 } else {
                     binding.rv.visibility = View.GONE
+                    binding.sizedBox.visibility = View.VISIBLE
                     binding.rvTitle.text = noDataString
                 }
             }
@@ -282,6 +285,7 @@ class CharacterDetailPageFragment : Fragment() {
                     binding.rv.adapter = comicsAdapter
                 } else {
                     binding.rv.visibility = View.GONE
+                    binding.sizedBox.visibility = View.VISIBLE
                     binding.rvTitle.text = noDataString
                 }
             }
@@ -309,6 +313,7 @@ class CharacterDetailPageFragment : Fragment() {
                     binding.rv.adapter = charactersAdapter
                 } else {
                     binding.rv.visibility = View.GONE
+                    binding.sizedBox.visibility = View.VISIBLE
                     binding.rvTitle.text = noDataString
                 }
             }
@@ -336,6 +341,7 @@ class CharacterDetailPageFragment : Fragment() {
                     binding.rv.adapter = charactersAdapter
                 } else {
                     binding.rv.visibility = View.GONE
+                    binding.sizedBox.visibility = View.VISIBLE
                     binding.rvTitle.text = noDataString
                 }
 
