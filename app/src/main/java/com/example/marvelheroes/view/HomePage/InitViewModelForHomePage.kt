@@ -28,12 +28,48 @@ class InitViewModelForHomePage(
 
 ) : LifecycleOwner {
 
-   fun initViewModel() {
+    fun initViewModel() {
         lifecycleScope.launch {
             characterListAdapter.characterPagingAdapter.loadStateFlow.collectLatest { loadStates ->
                 if (loadStates.refresh is LoadState.NotLoading) {
-                    binding.shimmer.visibility = View.GONE
-                    binding.homepageRv.visibility = View.VISIBLE
+                    viewModelPaging.characterLoadingState.value = false
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            comicsListAdapter.comicsPagingAdapter.loadStateFlow.collectLatest { loadStates ->
+                if (loadStates.refresh is LoadState.NotLoading) {
+                    viewModelPaging.comicsLoadingState.value = false
+                }
+            }
+        }
+        lifecycleScope.launch {
+            creatorListAdapter.creatorsPagingAdapter.loadStateFlow.collectLatest { loadStates ->
+                if (loadStates.refresh is LoadState.NotLoading) {
+                    viewModelPaging.creatorsLoadingState.value = false
+                }
+            }
+        }
+        lifecycleScope.launch {
+            eventListAdapter.evetPagingAdapter.loadStateFlow.collectLatest { loadStates ->
+                if (loadStates.refresh is LoadState.NotLoading) {
+                    viewModelPaging.eventsLoadingState.value = false
+                }
+            }
+        }
+        lifecycleScope.launch {
+            seriesListAdapter.seriesPagingAdapter.loadStateFlow.collectLatest { loadStates ->
+                if (loadStates.refresh is LoadState.NotLoading) {
+                    viewModelPaging.seriesLoadingState.value = false
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            storiesListAdapter.storiesPagingAdapter.loadStateFlow.collectLatest { loadStates ->
+                if (loadStates.refresh is LoadState.NotLoading) {
+                    viewModelPaging.storiesLoadingState.value = false
                 }
             }
         }

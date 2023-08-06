@@ -1,6 +1,5 @@
 package com.example.marvelheroes.view
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +7,9 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -63,11 +65,25 @@ class CharacterDetailPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         activity?.let {
+            WindowCompat.getInsetsController(it.window,it.window.decorView).apply {
+                systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                hide(WindowInsetsCompat.Type.statusBars())
+            }
+
+            it.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            /*
             it.window?.setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
+
+            WindowCompat.setDecorFitsSystemWindows(it.window, false);
+            val windowInsetsController = WindowInsetsControllerCompat(it.window, it.window.decorView)
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())*/
         }
+
+
         binding = FragmentCharacterDetailPageBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -98,7 +114,7 @@ class CharacterDetailPageFragment : Fragment() {
 
         createViewByType(type)
 
-       // setToolbarPosition()
+        // setToolbarPosition()
 
         binding.scrollView.viewTreeObserver.addOnScrollChangedListener {
             if (binding.scrollView.scrollY > 1) {
@@ -231,7 +247,7 @@ class CharacterDetailPageFragment : Fragment() {
                 setClickListeners(adapterList, stringList)
 
                 if (comicsData.characters!!.available!! != 0) {
-                    binding.rvTitle.text ="Characters"
+                    binding.rvTitle.text = "Characters"
                     binding.rv.adapter = charactersAdapter
                 } else {
                     binding.rv.visibility = View.GONE
@@ -260,7 +276,7 @@ class CharacterDetailPageFragment : Fragment() {
                 setClickListeners(adapterList, stringList)
 
                 if (eventsData.characters!!.available!! != 0) {
-                    binding.rvTitle.text ="Characters"
+                    binding.rvTitle.text = "Characters"
                     binding.rv.adapter = charactersAdapter
                 } else {
                     binding.rv.visibility = View.GONE
@@ -290,7 +306,7 @@ class CharacterDetailPageFragment : Fragment() {
                 setClickListeners(adapterList, stringList)
 
                 if (creatorsData.comics!!.available!! != 0) {
-                    binding.rvTitle.text ="Comics"
+                    binding.rvTitle.text = "Comics"
                     binding.rv.adapter = comicsAdapter
                 } else {
                     binding.rv.visibility = View.GONE
@@ -318,7 +334,7 @@ class CharacterDetailPageFragment : Fragment() {
                 setClickListeners(adapterList, stringList)
 
                 if (seriesData.characters!!.available!! != 0) {
-                    binding.rvTitle.text ="Characters"
+                    binding.rvTitle.text = "Characters"
                     binding.rv.adapter = charactersAdapter
                 } else {
                     binding.rv.visibility = View.GONE
@@ -346,7 +362,7 @@ class CharacterDetailPageFragment : Fragment() {
                 setClickListeners(adapterList, stringList)
 
                 if (storiesData.characters!!.available!! != 0) {
-                    binding.rvTitle.text ="Characters"
+                    binding.rvTitle.text = "Characters"
                     binding.rv.adapter = charactersAdapter
                 } else {
                     binding.rv.visibility = View.GONE
@@ -389,9 +405,9 @@ class CharacterDetailPageFragment : Fragment() {
         binding.textSeriesCount.text = storiesResults.comics!!.available.toString()
         binding.textStoriesCount.text = storiesResults.series!!.available.toString()
 
-        binding.textComicsBar.text ="Characters"
-        binding.textSeriesBar.text ="Comics"
-        binding.textStoriesBar.text ="Series"
+        binding.textComicsBar.text = "Characters"
+        binding.textSeriesBar.text = "Comics"
+        binding.textStoriesBar.text = "Series"
 
         if (storiesResults.thumbnail != null) {
             setImage(
@@ -419,7 +435,7 @@ class CharacterDetailPageFragment : Fragment() {
         binding.textStoriesCount.text = seriesResults.stories!!.available.toString()
 
         binding.textComicsBar.text = "Characters"
-        binding.textSeriesBar.text="Comics"
+        binding.textSeriesBar.text = "Comics"
         setImage(
             binding.image,
             seriesResults.thumbnail!!.path!!,
@@ -440,9 +456,9 @@ class CharacterDetailPageFragment : Fragment() {
         binding.textSeriesCount.text = eventsResults.creators!!.available.toString()
         binding.textStoriesCount.text = eventsResults.stories!!.available.toString()
 
-        binding.textComicsBar.text="Characters"
-        binding.textSeriesBar.text="Creators"
-        binding.textEventsBar.text="Comics"
+        binding.textComicsBar.text = "Characters"
+        binding.textSeriesBar.text = "Creators"
+        binding.textEventsBar.text = "Comics"
         setImage(
             binding.image,
             eventsResults.thumbnail!!.path!!,

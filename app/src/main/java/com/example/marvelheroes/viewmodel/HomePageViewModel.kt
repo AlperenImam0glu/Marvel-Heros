@@ -21,8 +21,16 @@ import javax.inject.Inject
 @HiltViewModel
 class HomePageViewModel @Inject constructor(private val repository: MainRepository) : ViewModel() {
 
-    val isOpen = MutableLiveData<Boolean>()
-    private val PAGE_SIZE =30
+
+    private val PAGE_SIZE = 30
+    val isHeadTextOpen = MutableLiveData<Boolean>()
+    val characterLoadingState = MutableLiveData<Boolean>()
+    val comicsLoadingState = MutableLiveData<Boolean>()
+    val eventsLoadingState = MutableLiveData<Boolean>()
+    val seriesLoadingState = MutableLiveData<Boolean>()
+    val storiesLoadingState = MutableLiveData<Boolean>()
+    val creatorsLoadingState = MutableLiveData<Boolean>()
+
 
     val charactersData = Pager(config = PagingConfig(pageSize = PAGE_SIZE),
         pagingSourceFactory = {

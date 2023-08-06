@@ -6,11 +6,16 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -28,6 +33,8 @@ import com.example.marvelheroes.view.HomePage.InitViewModelForHomePage
 import com.example.marvelheroes.viewmodel.HomePageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.Exception
+import kotlin.concurrent.thread
 
 @AndroidEntryPoint
 class HomePageFragment : Fragment() {
@@ -44,7 +51,7 @@ class HomePageFragment : Fragment() {
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var initViewModelForHomePage: InitViewModelForHomePage
     private lateinit var countDownTimer: CountDownTimer
-    private var networkState:Boolean = false
+    private var networkState: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +60,11 @@ class HomePageFragment : Fragment() {
 
         activity?.let {
             it.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+            WindowCompat.getInsetsController(it.window,it.window.decorView).apply {
+                systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                show(WindowInsetsCompat.Type.statusBars())
+            }
         }
         binding = FragmentHomePageBinding.inflate(inflater, container, false)
         return binding.root
@@ -60,7 +72,7 @@ class HomePageFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (viewModelPaging.isOpen.value == false) {
+        if (viewModelPaging.isHeadTextOpen.value == false) {
             binding.headerLayout.visibility = View.GONE
         }
     }
@@ -69,12 +81,12 @@ class HomePageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         startConnectionChecker()
-        networkState= isInternetAvailable(requireContext())
+        networkState = isInternetAvailable(requireContext())
 
         binding.shimmer.startShimmer()
 
         comicsListAdapter = ComicsListAdapter(requireContext(), "Comics", sharedViewModel)
-        characterListAdapter = CharaterListAdapter(requireContext(), "Heroes", sharedViewModel)
+        characterListAdapter = CharaterListAdapter(requireContext(), "Characters", sharedViewModel)
         creatorListAdapter = CreatorListAdapter(requireContext(), "Creators", sharedViewModel)
         eventListAdapter = EventListAdapter(requireContext(), "Events", sharedViewModel)
         seriesListAdapter = SeriesListAdapter(requireContext(), "Series", sharedViewModel)
@@ -96,22 +108,17 @@ class HomePageFragment : Fragment() {
 
         initViewModelForHomePage.initViewModel()
 
-        concatAdapter = ConcatAdapter(
-            characterListAdapter,
-            comicsListAdapter,
-            creatorListAdapter,
-            eventListAdapter,
-            seriesListAdapter,
-            storiesListAdapter
-        )
+        concatAdapter = ConcatAdapter()
+
+        observer()
 
         binding.homepageRv.adapter = concatAdapter
     }
 
-    private fun setListeners(){
+    private fun setListeners() {
 
         binding.buttons.heroButton.setOnClickListener {
-            if(networkState){
+            if (networkState) {
                 val action = HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment()
                 Navigation.findNavController(it).navigate(action)
             }
@@ -131,23 +138,30 @@ class HomePageFragment : Fragment() {
     }
 
 
-    private fun startConnectionChecker(){
+    private fun startConnectionChecker() {
         countDownTimer = object : CountDownTimer(10000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
             }
+
             override fun onFinish() {
-               networkState = isInternetAvailable(requireContext())
-                if(!networkState && binding.homepageRv.visibility!= View.VISIBLE){
-                    binding.shimmer.visibility=View.GONE
+                networkState = isInternetAvailable(requireContext())
+                if (!networkState && binding.homepageRv.visibility != View.VISIBLE) {
+                    binding.shimmer.visibility = View.GONE
+                    binding.networkText.visibility = View.VISIBLE
+                }else if(binding.homepageRv.visibility != View.VISIBLE){
+                    networkState = false
+                    binding.shimmer.visibility = View.GONE
                     binding.networkText.visibility = View.VISIBLE
                 }
+
             }
         }
         countDownTimer.start()
     }
 
     fun isInternetAvailable(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkCapabilities = connectivityManager.activeNetwork ?: return false
         val actNw = connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
 
@@ -171,7 +185,77 @@ class HomePageFragment : Fragment() {
         valueAnimator.interpolator = AccelerateDecelerateInterpolator()
         valueAnimator.duration = 500
         valueAnimator.start()
-        viewModelPaging.isOpen.value = false
+        viewModelPaging.isHeadTextOpen.value = false
     }
+    fun showData(){
+        binding.homepageRv.smoothScrollToPosition(0)
+        binding.shimmer.visibility=View.GONE
+        binding.homepageRv.visibility = View.VISIBLE
+    }
+    fun observer() {
+        viewModelPaging.comicsLoadingState.observe(viewLifecycleOwner) {
+            if (!it) {
+                try {
+                    concatAdapter.addAdapter(0,characterListAdapter)
+                }catch (e:Exception){
+                    concatAdapter.addAdapter(characterListAdapter)
+                }
+                showData()
+            }
+        }
+        viewModelPaging.comicsLoadingState.observe(viewLifecycleOwner) {
+            if (!it) {
+                try {
+                    concatAdapter.addAdapter(1,comicsListAdapter)
+                }catch (e:Exception){
+                    concatAdapter.addAdapter(comicsListAdapter)
+                }
+                showData()
+            }
+        }
+        viewModelPaging.creatorsLoadingState.observe(viewLifecycleOwner) {
+            if (!it) {
+                try {
+                    concatAdapter.addAdapter(2,creatorListAdapter)
+                }catch (e:Exception){
+                    concatAdapter.addAdapter(creatorListAdapter)
+                }
+                showData()
+            }
+        }
+        viewModelPaging.seriesLoadingState.observe(viewLifecycleOwner) {
+            if (!it) {
+                try {
+                    concatAdapter.addAdapter(3,seriesListAdapter)
+                }catch (e:Exception){
+                    concatAdapter.addAdapter(seriesListAdapter)
+                }
+                showData()
+            }
+        }
+        viewModelPaging.eventsLoadingState.observe(viewLifecycleOwner) {
+            if (!it) {
+                try {
+                    concatAdapter.addAdapter(4,eventListAdapter)
+                }catch (e:Exception){
+                    concatAdapter.addAdapter(eventListAdapter)
+                }
+                showData()
+            }
+        }
+
+        viewModelPaging.storiesLoadingState.observe(viewLifecycleOwner) {
+            if (!it) {
+                try {
+                    concatAdapter.addAdapter(5,storiesListAdapter)
+                }catch (e:Exception){
+                    concatAdapter.addAdapter(storiesListAdapter)
+                }
+                showData()
+            }
+        }
+    }
+
+
 
 }

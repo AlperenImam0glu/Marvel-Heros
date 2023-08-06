@@ -59,15 +59,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonLayout">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <LinearLayout
+            android:id="@+id/shimmer_lineerlayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <include layout="@layout/shimmer_layout"></include>
-        </LinearLayout>
+            <include layout="@layout/shimmer_layout"></include>
+            <include layout="@layout/shimmer_layout"></include>
+            <include layout="@layout/shimmer_layout"></include>
+            <include layout="@layout/shimmer_layout"></include>
+        </LinearLayout></ScrollView>
 
-        <include layout="@layout/shimmer_layout"></include>
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -84,7 +91,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonLayout">
-
     </TextView>
 
 
