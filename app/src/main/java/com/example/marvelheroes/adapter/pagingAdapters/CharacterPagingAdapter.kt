@@ -36,7 +36,7 @@ class CharacterPagingAdapter(var context: Context,val viewModel: SharedViewModel
                 viewModel.setCharacter(newDataList)
 
                 viewModel.getCurrentPage()!!.value?.let { value ->
-                    Navigation.findNavController(it).safeNavigate(value)
+                    Navigation.findNavController(it).safeNavigate(value,Enums.Character)
                 }
 
 

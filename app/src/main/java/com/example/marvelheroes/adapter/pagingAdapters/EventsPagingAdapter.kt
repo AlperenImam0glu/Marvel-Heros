@@ -36,7 +36,7 @@ class EventsPagingAdapter(var context: Context,val viewModel: SharedViewModel) :
                 viewModel.setEvent(newDataList)
 
                 viewModel.getCurrentPage()!!.value?.let { value ->
-                    Navigation.findNavController(it).safeNavigate(value)
+                    Navigation.findNavController(it).safeNavigate(value,Enums.Event)
                 }
             }
         }

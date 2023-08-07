@@ -36,7 +36,7 @@ class StoriesPagingAdapter(var context: Context, val viewModel: SharedViewModel)
                 viewModel.setStories(newDataList)
 
                 viewModel.getCurrentPage()!!.value?.let { value ->
-                    Navigation.findNavController(it).safeNavigate(value)
+                    Navigation.findNavController(it).safeNavigate(value,Enums.Story)
                 }
             }
         }

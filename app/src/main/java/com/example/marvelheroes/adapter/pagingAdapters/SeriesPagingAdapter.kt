@@ -36,7 +36,7 @@ class SeriesPagingAdapter(var context: Context,val viewModel:SharedViewModel) :
                 viewModel.setSeries(newDataList)
 
                 viewModel.getCurrentPage()!!.value?.let { value ->
-                    Navigation.findNavController(it).safeNavigate(value)
+                    Navigation.findNavController(it).safeNavigate(value,Enums.Series)
                 }
             }
         }

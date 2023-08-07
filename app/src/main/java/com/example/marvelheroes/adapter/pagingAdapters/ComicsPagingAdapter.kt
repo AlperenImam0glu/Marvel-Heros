@@ -35,7 +35,7 @@ class ComicsPagingAdapter(var context: Context, val viewModel: SharedViewModel) 
                 viewModel.setComic(newDataList)
 
                 viewModel.getCurrentPage()!!.value?.let { value ->
-                    Navigation.findNavController(it).safeNavigate(value)
+                    Navigation.findNavController(it).safeNavigate(value,Enums.Comic)
                 }
 
 

@@ -95,6 +95,7 @@ class CharacterDetailPageFragment : Fragment() {
         charactersAdapter = CharacterPagingAdapter(requireContext(), sharedViewModel)
         creatorsAdapter = CreatorsPagingAdapter(requireContext(), sharedViewModel)
 
+
         inıtViewModelForDetailPage = InıtViewModelForDetailPage(
             detailPageViewModel, lifecycle, comicsAdapter,
             seriesAdapter,
@@ -211,6 +212,8 @@ class CharacterDetailPageFragment : Fragment() {
                 inıtViewModelForDetailPage.initViewModelForCharacter()
 
                 if (charactersData.comics!!.available!! != 0) {
+
+
                     binding.rv.adapter = comicsAdapter
                 } else {
                     binding.rv.visibility = View.GONE
