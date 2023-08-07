@@ -10,10 +10,18 @@
         android:label="HomePageFragment" >
         <action
             android:id="@+id/action_homePageFragment_to_detailPageFragment"
-            app:destination="@id/detailPageFragment" />
+            app:destination="@id/detailPageFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/action_homePageFragment_to_seeAllPageFragment"
-            app:destination="@id/seeAllPageFragment" />
+            app:destination="@id/seeAllPageFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
     <fragment
         android:id="@+id/detailPageFragment"
@@ -22,7 +30,11 @@
         tools:layout="@layout/fragment_character_detail_page" >
         <action
             android:id="@+id/detailPageFragmentTo_detailPageFragment"
-            app:destination="@id/detailPageFragment" />
+            app:destination="@id/detailPageFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
         <argument
             android:name="dataType"
             app:argType="com.example.marvelheroes.util.Enums" />
@@ -31,5 +43,16 @@
         android:id="@+id/seeAllPageFragment"
         android:name="com.example.marvelheroes.view.SeeAllPage.SeeAllPageFragment"
         android:label="fragment_see_all_page"
-        tools:layout="@layout/fragment_see_all_page" />
+        tools:layout="@layout/fragment_see_all_page" >
+        <action
+            android:id="@+id/action_seeAllPageFragment_to_detailPageFragment"
+            app:destination="@id/detailPageFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+        <argument
+            android:name="dataType"
+            app:argType="com.example.marvelheroes.util.Enums" />
+    </fragment>
 </navigation>

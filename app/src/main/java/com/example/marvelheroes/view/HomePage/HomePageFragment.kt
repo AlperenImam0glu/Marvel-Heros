@@ -122,7 +122,59 @@ class HomePageFragment : Fragment() {
             if (networkState) {
                 try {
                     val action =
-                        HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment()
+                        HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Character)
+                    Navigation.findNavController(it).navigate(action)
+                }catch (e:Exception){
+                }
+
+            }
+
+        }
+
+        binding.buttons.villianButton.setOnClickListener {
+            if (networkState) {
+                try {
+                    val action =
+                        HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Comic)
+                    Navigation.findNavController(it).navigate(action)
+                }catch (e:Exception){
+                }
+
+            }
+
+        }
+
+        binding.buttons.antiHeroButton.setOnClickListener {
+            if (networkState) {
+                try {
+                    val action =
+                        HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Creator)
+                    Navigation.findNavController(it).navigate(action)
+                }catch (e:Exception){
+                }
+
+            }
+
+        }
+
+        binding.buttons.alienButton.setOnClickListener {
+            if (networkState) {
+                try {
+                    val action =
+                        HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Series)
+                    Navigation.findNavController(it).navigate(action)
+                }catch (e:Exception){
+                }
+
+            }
+
+        }
+
+        binding.buttons.humanButton.setOnClickListener {
+            if (networkState) {
+                try {
+                    val action =
+                        HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Story)
                     Navigation.findNavController(it).navigate(action)
                 }catch (e:Exception){
                 }
