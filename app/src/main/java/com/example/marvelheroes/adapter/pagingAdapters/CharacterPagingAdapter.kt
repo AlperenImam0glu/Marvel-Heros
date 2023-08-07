@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -13,6 +14,7 @@ import com.example.marvelheroes.R
 import com.example.marvelheroes.CharactersResults
 import com.example.marvelheroes.databinding.HomepageCardDesignBinding
 import com.example.marvelheroes.loadImageFromInternet
+import com.example.marvelheroes.safeNavigate
 import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.view.CharacterDetailPageFragmentDirections
 import com.example.marvelheroes.view.HomePageFragmentDirections
@@ -32,25 +34,12 @@ class CharacterPagingAdapter(var context: Context,val viewModel: SharedViewModel
                 var newDataList = viewModel.getCharacter() ?: ArrayList<CharactersResults>()
                 newDataList.add(data)
                 viewModel.setCharacter(newDataList)
-                var flag = true
-                try {
-                    if(flag){
-                        val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(0,
-                            Enums.Character)
-                        Navigation.findNavController(it).navigate(action)
-                        flag = false
-                    }
 
-                }catch (e:Exception){
+                viewModel.getCurrentPage()!!.value?.let { value ->
+                    Navigation.findNavController(it).safeNavigate(value)
                 }
-                try {
-                    if(flag){
-                        flag = false
-                        val action =
-                            CharacterDetailPageFragmentDirections.detailPageFragmentToDetailPageFragment(0,  Enums.Character)
-                        Navigation.findNavController(it).navigate(action)
-                    }
-                }catch (e:Exception){}
+
+
             }
         }
     }

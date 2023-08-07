@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -13,13 +14,14 @@ import com.example.marvelheroes.CreatorResults
 import com.example.marvelheroes.R
 import com.example.marvelheroes.databinding.HomepageCardDesignBinding
 import com.example.marvelheroes.loadImageFromInternet
+import com.example.marvelheroes.safeNavigate
 import com.example.marvelheroes.stories.StoriesResults
 import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.view.CharacterDetailPageFragmentDirections
 import com.example.marvelheroes.view.HomePageFragmentDirections
 import com.example.marvelheroes.viewmodel.SharedViewModel
 
-class StoriesPagingAdapter(var context: Context,val viewModel: SharedViewModel) :
+class StoriesPagingAdapter(var context: Context, val viewModel: SharedViewModel) :
     PagingDataAdapter<StoriesResults, StoriesPagingAdapter.MyViewHolder>(DiffUtilCallBack()) {
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -32,24 +34,10 @@ class StoriesPagingAdapter(var context: Context,val viewModel: SharedViewModel) 
                 var newDataList = viewModel.getStories() ?: ArrayList<StoriesResults>()
                 newDataList.add(data)
                 viewModel.setStories(newDataList)
-                var flag = true
-                try {
-                    if(flag){
-                        val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(5,  Enums.Story)
-                        Navigation.findNavController(it).navigate(action)
-                        flag = false
-                    }
 
-                }catch (e:Exception){
+                viewModel.getCurrentPage()!!.value?.let { value ->
+                    Navigation.findNavController(it).safeNavigate(value)
                 }
-                try {
-                    if(flag){
-                        val action =
-                            CharacterDetailPageFragmentDirections.detailPageFragmentToDetailPageFragment(5,  Enums.Story)
-                        Navigation.findNavController(it).navigate(action)
-                        flag = false
-                    }
-                }catch (e:Exception){}
             }
         }
     }
@@ -64,13 +52,13 @@ class StoriesPagingAdapter(var context: Context,val viewModel: SharedViewModel) 
 
     fun setImage(view: ImageView, data: StoriesResults) {
 
-        if(data.thumbnail != null){
+        if (data.thumbnail != null) {
             data.thumbnail?.let {
                 var url = data.thumbnail!!.path
                 url += "." + data.thumbnail!!.extension
                 view.loadImageFromInternet(url!!, view)
             }
-        }else{
+        } else {
             view.setImageResource(R.drawable.portrait_xlarge).apply {
                 view.scaleType = ImageView.ScaleType.CENTER_CROP
             }

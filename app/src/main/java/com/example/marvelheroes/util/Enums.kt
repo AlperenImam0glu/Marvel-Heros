@@ -7,5 +7,7 @@ enum class Enums {
     Series,
     Story,
     Event,
-    Creator
+    Creator,
+    Detail,
+    SeeAll
 }

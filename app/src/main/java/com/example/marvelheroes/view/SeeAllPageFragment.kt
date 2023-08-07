@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.marvelheroes.adapter.itemAdapters.CharaterListAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.CharacterPagingAdapter
 import com.example.marvelheroes.databinding.FragmentSeeAllPageBinding
+import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.viewmodel.SeeAllPageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +35,7 @@ class SeeAllPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        sharedViewModel.setCurrentPage(Enums.SeeAll)
         binding = FragmentSeeAllPageBinding.inflate(inflater, container, false)
 
         return binding.root

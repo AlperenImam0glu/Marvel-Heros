@@ -29,6 +29,7 @@ import com.example.marvelheroes.adapter.itemAdapters.EventListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.SeriesListAdapter
 import com.example.marvelheroes.adapter.itemAdapters.StoriesListAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
+import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.view.HomePage.InitViewModelForHomePage
 import com.example.marvelheroes.viewmodel.HomePageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
@@ -66,6 +67,7 @@ class HomePageFragment : Fragment() {
                 show(WindowInsetsCompat.Type.statusBars())
             }
         }
+        sharedViewModel.setCurrentPage(Enums.Home)
         binding = FragmentHomePageBinding.inflate(inflater, container, false)
         return binding.root
     }

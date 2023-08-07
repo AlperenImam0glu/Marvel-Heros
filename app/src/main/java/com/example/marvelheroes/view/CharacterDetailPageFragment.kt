@@ -65,23 +65,20 @@ class CharacterDetailPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         activity?.let {
-            WindowCompat.getInsetsController(it.window,it.window.decorView).apply {
-                systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            WindowCompat.getInsetsController(it.window, it.window.decorView).apply {
+                systemBarsBehavior =
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
                 hide(WindowInsetsCompat.Type.statusBars())
             }
 
-            it.window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            /*
-            it.window?.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
+            it.window.setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+            );
 
-            WindowCompat.setDecorFitsSystemWindows(it.window, false);
-            val windowInsetsController = WindowInsetsControllerCompat(it.window, it.window.decorView)
-            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())*/
         }
+
+        sharedViewModel.setCurrentPage(Enums.Detail)
 
 
         binding = FragmentCharacterDetailPageBinding.inflate(inflater, container, false)

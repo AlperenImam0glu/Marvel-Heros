@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -14,6 +15,7 @@ import com.example.marvelheroes.R
 import com.example.marvelheroes.databinding.HomepageCardDesignBinding
 import com.example.marvelheroes.loadImageFromInternet
 import com.example.marvelheroes.models.events.EventsResults
+import com.example.marvelheroes.safeNavigate
 import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.view.CharacterDetailPageFragmentDirections
 import com.example.marvelheroes.view.HomePageFragmentDirections
@@ -32,24 +34,10 @@ class CreatorsPagingAdapter(var context: Context,val viewModel: SharedViewModel)
                 var newDataList = viewModel.getCreators() ?: ArrayList<CreatorResults>()
                 newDataList.add(data)
                 viewModel.setCreators(newDataList)
-                var flag = true
-                try {
-                    if(flag){
-                        val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(3,  Enums.Creator)
-                        Navigation.findNavController(it).navigate(action)
-                        flag = false
-                    }
 
-                }catch (e:Exception){
+                viewModel.getCurrentPage()!!.value?.let { value ->
+                    Navigation.findNavController(it).safeNavigate(value)
                 }
-                try {
-                    if(flag){
-                        val action =
-                            CharacterDetailPageFragmentDirections.detailPageFragmentToDetailPageFragment(3,Enums.Creator)
-                        Navigation.findNavController(it).navigate(action)
-                        flag = false
-                    }
-                }catch (e:Exception){}
             }
         }
     }

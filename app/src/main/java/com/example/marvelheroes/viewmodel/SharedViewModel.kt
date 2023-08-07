@@ -8,15 +8,22 @@ import com.example.marvelheroes.CharactersResults
 import com.example.marvelheroes.models.events.EventsResults
 import com.example.marvelheroes.series.SeriesResults
 import com.example.marvelheroes.stories.StoriesResults
+import com.example.marvelheroes.util.Enums
 
 class SharedViewModel : ViewModel() {
 
+
+    private val _currentPage = MutableLiveData<Enums>()
     private val _character = MutableLiveData<ArrayList<CharactersResults>>()
     private val _comics = MutableLiveData<ArrayList<ComicsResults>>()
     private val _events = MutableLiveData<ArrayList<EventsResults>>()
     private val _series = MutableLiveData<ArrayList<SeriesResults>>()
     private val _stories = MutableLiveData<ArrayList<StoriesResults>>()
     private val _creators = MutableLiveData<ArrayList<CreatorResults>>()
+    fun setCurrentPage(results: Enums) {
+        _currentPage.value = results
+    }
+    fun getCurrentPage(): MutableLiveData<Enums>? = _currentPage
 
     fun setCharacter(results: ArrayList<CharactersResults>) {
         _character.value = results
