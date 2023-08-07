@@ -34,7 +34,6 @@ class InitViewModelForSeeAllPage (
 
 ) : LifecycleOwner {
 
-
     fun getAllCharacters() {
         lifecycleScope.launch {
             viewModel.getAllCharacters.collectLatest {

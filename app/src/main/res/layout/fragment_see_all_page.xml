@@ -77,7 +77,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/shimmer_layout_full_screen"></include>
+            <include layout="@layout/shimmer_layout_see_all"></include>
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
 

@@ -276,4 +276,13 @@ interface RetrofitService {
         @Query("offset") offset: Int
     ): MainSeries
 
+    @GET("characters")
+    suspend fun getCharacterWithName(
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
+        @Query("offset") offset: Int,
+        @Query("nameStartsWith") title: String
+    ): MainCharacter
+
 }

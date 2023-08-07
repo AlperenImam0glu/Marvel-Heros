@@ -1,6 +1,7 @@
 package com.example.marvelheroes.view.SeeAllPage
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,11 @@ import android.view.WindowManager
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.marvelheroes.adapter.pagingAdapters.CharacterPagingAdapter
@@ -24,6 +27,8 @@ import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.viewmodel.SeeAllPageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SeeAllPageFragment : Fragment() {
@@ -88,10 +93,40 @@ class SeeAllPageFragment : Fragment() {
         observer()
         createViewByType()
 
+        binding.editTextSearch.addTextChangedListener { editable ->
+            val query = editable.toString().trim()
+            viewModel.name.value = query
+            if (query == "") {
+               characterPagingAdapter = CharacterPagingAdapter(requireContext(), sharedViewModel)
+                binding.recyclerView.adapter = characterPagingAdapter
+                getAll()
+            }else{
+                search()
+            }
+
+        }
+
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
         binding.toolbarBackBtn.setOnClickListener {
             NavHostFragment.findNavController(this).popBackStack()
+        }
+    }
+
+    fun search() {
+
+        lifecycleScope.launch {
+            viewModel.getCharactersWithName.collect {
+                characterPagingAdapter.submitData(it)
+            }
+        }
+    }
+
+    fun getAll() {
+        lifecycleScope.launch {
+            viewModel.getAllCharacters.collectLatest {
+                characterPagingAdapter.submitData(it)
+            }
         }
     }
 
@@ -101,43 +136,42 @@ class SeeAllPageFragment : Fragment() {
             Enums.Character -> {
                 binding.recyclerView.adapter = characterPagingAdapter
                 initViewModelForSeeAllPage.getAllCharacters()
-                binding.toolbarText.text ="All Characters"
+                binding.toolbarText.text = "All Characters"
             }
 
             Enums.Comic -> {
                 binding.recyclerView.adapter = comicsPagingAdapter
                 initViewModelForSeeAllPage.getAllComics()
-                binding.toolbarText.text ="All Comics"
+                binding.toolbarText.text = "All Comics"
             }
 
             Enums.Creator -> {
                 binding.recyclerView.adapter = creatorPagingsAdapter
                 initViewModelForSeeAllPage.getAllCreators()
-                binding.toolbarText.text ="All Creators"
+                binding.toolbarText.text = "All Creators"
             }
 
             Enums.Series -> {
                 binding.recyclerView.adapter = seriesPagingAdapter
                 initViewModelForSeeAllPage.getAllSeries()
-                binding.toolbarText.text ="All Series"
+                binding.toolbarText.text = "All Series"
             }
 
             Enums.Story -> {
                 binding.recyclerView.adapter = storiesPagingAdapter
                 initViewModelForSeeAllPage.getAllStories()
-                binding.toolbarText.text ="All Stories"
+                binding.toolbarText.text = "All Stories"
             }
 
             Enums.Event -> {
                 binding.recyclerView.adapter = eventsPagingAdapter
                 initViewModelForSeeAllPage.getAllEvent()
-                binding.toolbarText.text ="All Events"
+                binding.toolbarText.text = "All Events"
             }
-            else -> {
 
+            else -> {
             }
         }
-
     }
 
     override fun onResume() {

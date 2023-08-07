@@ -4,19 +4,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelheroes.R
-import com.example.marvelheroes.databinding.CustomAttributeBarItemBinding
+import com.example.marvelheroes.databinding.DetailpageAttributeBarItemBinding
 
 
 class CustomAttributeBarAdapter( var value: Int) :
     RecyclerView.Adapter<CustomAttributeBarAdapter.ViewHolder>() {
     val ITEM_COUNT = 44
 
-    class ViewHolder(val binding: CustomAttributeBarItemBinding) :
+    class ViewHolder(val binding: DetailpageAttributeBarItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = CustomAttributeBarItemBinding.inflate(
+        val binding = DetailpageAttributeBarItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

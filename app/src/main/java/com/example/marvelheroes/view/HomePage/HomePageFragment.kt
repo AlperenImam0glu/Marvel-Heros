@@ -1,6 +1,5 @@
 package com.example.marvelheroes.view.HomePage
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -10,16 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelheroes.adapter.itemAdaptersForConcat.CharaterListAdapter
 import com.example.marvelheroes.adapter.itemAdaptersForConcat.ComicsListAdapter
 import com.example.marvelheroes.adapter.itemAdaptersForConcat.CreatorListAdapter
@@ -28,7 +24,6 @@ import com.example.marvelheroes.adapter.itemAdaptersForConcat.SeriesListAdapter
 import com.example.marvelheroes.adapter.itemAdaptersForConcat.StoriesListAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
 import com.example.marvelheroes.util.Enums
-import com.example.marvelheroes.view.HomePage.HomePageFragmentDirections
 import com.example.marvelheroes.viewmodel.HomePageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint

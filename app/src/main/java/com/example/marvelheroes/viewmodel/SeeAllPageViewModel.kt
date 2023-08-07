@@ -22,11 +22,16 @@ class SeeAllPageViewModel @Inject constructor(private val repository: MainReposi
 
     private val PAGE_SIZE =30
     val dataLoadingState = MutableLiveData<Boolean>()
-
+    var name= MutableLiveData<String>()
     val getAllCharacters = Pager(config = PagingConfig(pageSize = PAGE_SIZE),
         pagingSourceFactory = {
             CharacterPagingSource(repository.retroService(), Enums.Home)
         }).flow.cachedIn(viewModelScope)
+
+    val getCharactersWithName = Pager(config = PagingConfig(pageSize = PAGE_SIZE),
+        pagingSourceFactory = {
+            CharacterPagingSource(repository.retroService(), Enums.Search, name = name.value?:"")
+        }).flow
 
     val getAllComics = Pager(config = PagingConfig(pageSize = PAGE_SIZE),
         pagingSourceFactory = {

@@ -10,5 +10,6 @@ enum class Enums {
     Creator,
     Detail,
     SeeAll,
-    HomeToSeeAll
+    HomeToSeeAll,
+    Search
 }

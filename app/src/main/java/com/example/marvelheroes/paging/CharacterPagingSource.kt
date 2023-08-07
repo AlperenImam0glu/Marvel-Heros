@@ -1,5 +1,6 @@
 package com.example.marvelheroes.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.marvelheroes.BuildConfig
@@ -7,7 +8,7 @@ import com.example.marvelheroes.CharactersResults
 import com.example.marvelheroes.paging.network.RetrofitService
 import com.example.marvelheroes.util.Enums
 
-class CharacterPagingSource(private val marvelApi: RetrofitService,private val type:Enums,private  val id:String="0") : PagingSource<Int, CharactersResults>() {
+class CharacterPagingSource(private val marvelApi: RetrofitService,private val type:Enums,private val id:String="0",val name:String="") : PagingSource<Int, CharactersResults>() {
 
     private val api_key =BuildConfig.API_KEY
     private val ts="1"
@@ -51,6 +52,16 @@ class CharacterPagingSource(private val marvelApi: RetrofitService,private val t
                 Enums.Story -> {
                     val position = params.key ?: FIRST_PAGE_INDEX
                     val response = marvelApi.getAllCharactersOfStories(id,ts,api_key,hash,position)
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position == 1) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20)
+                }
+                Enums.Search -> {
+
+                    Log.e("arama","$name")
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getCharacterWithName(ts,api_key,hash,position,name)
                     LoadResult.Page(
                         data = response.data!!.results,
                         prevKey = if (position == 1) null else position - 20,
