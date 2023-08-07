@@ -31,7 +31,7 @@ fun NavController.safeNavigate(currentPage: Enums, dataType: Enums) {
     when (currentPage) {
         Enums.Home -> {
             val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(0,
-                Enums.Character)
+                dataType)
            navigate(action)
 
         }
