@@ -1,5 +1,6 @@
 package com.example.marvelheroes
 
+import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.navigation.NavController
@@ -30,30 +31,44 @@ fun ImageView.loadImageFromInternet(url: String, view: ImageView) {
 
 fun NavController.safeNavigate(currentPage: Enums, dataType: Enums) {
 
-    when (currentPage) {
-        Enums.Home -> {
-            val action =
-                HomePageFragmentDirections.actionHomePageFragmentToDetailPageFragment(dataType)
-            navigate(action)
+    try {
+        when (currentPage) {
+            Enums.Home -> {
+                val action =
+                    HomePageFragmentDirections.actionHomePageFragmentToDetailPageFragment(dataType)
+                navigate(action)
 
+            }
+
+            Enums.HomeToSeeAll -> {
+                val action =
+                    HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(dataType)
+                navigate(action)
+
+            }
+
+            Enums.Detail -> {
+                val action =
+                    DetailPageFragmentDirections.detailPageFragmentToDetailPageFragment(dataType)
+                navigate(action)
+
+            }
+
+            Enums.SeeAll -> {
+                val action =
+                    SeeAllPageFragmentDirections.actionSeeAllPageFragmentToDetailPageFragment(
+                        dataType
+                    )
+                navigate(action)
+            }
+
+            else -> {
+                Toast.makeText(context, "Navigasyon in development stage", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
-
-        Enums.Detail -> {
-            val action =
-                DetailPageFragmentDirections.detailPageFragmentToDetailPageFragment(dataType)
-            navigate(action)
-
-        }
-
-        Enums.SeeAll -> {
-            val action =
-                SeeAllPageFragmentDirections.actionSeeAllPageFragmentToDetailPageFragment(dataType)
-            navigate(action)
-        }
-
-        else -> {
-            Toast.makeText(context, "Navigasyon in development stage", Toast.LENGTH_SHORT).show()
-        }
+    } catch (e: Exception) {
+        Log.e("Exception", e.message.toString())
     }
 
 }

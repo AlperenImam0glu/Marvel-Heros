@@ -6,6 +6,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
+import com.example.marvelheroes.safeNavigate
 import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.viewmodel.HomePageViewModel
 
@@ -13,66 +14,29 @@ class HomePageListeners(
     val binding: FragmentHomePageBinding,
     val homePageViewModel: HomePageViewModel
 ) {
+    private val destinationPage = Enums.HomeToSeeAll
 
-    private fun setListeners() {
+    fun setListeners() {
 
         binding.buttons.heroButton.setOnClickListener {
-
-            try {
-                val action =
-                    HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Character)
-                Navigation.findNavController(it).navigate(action)
-            } catch (e: Exception) {
-            }
-
-
+                Navigation.findNavController(it).safeNavigate(destinationPage,Enums.Character)
         }
 
         binding.buttons.villianButton.setOnClickListener {
-
-            try {
-                val action =
-                    HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Comic)
-                Navigation.findNavController(it).navigate(action)
-            } catch (e: Exception) {
-            }
-
+            Navigation.findNavController(it).safeNavigate(destinationPage,Enums.Comic)
 
         }
 
         binding.buttons.antiHeroButton.setOnClickListener {
-
-            try {
-                val action =
-                    HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Creator)
-                Navigation.findNavController(it).navigate(action)
-            } catch (e: Exception) {
-            }
-
-
+            Navigation.findNavController(it).safeNavigate(destinationPage,Enums.Creator)
         }
 
         binding.buttons.alienButton.setOnClickListener {
-
-            try {
-                val action =
-                    HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Series)
-                Navigation.findNavController(it).navigate(action)
-            } catch (e: Exception) {
-            }
-
-
+            Navigation.findNavController(it).safeNavigate(destinationPage,Enums.Series)
         }
 
         binding.buttons.humanButton.setOnClickListener {
-
-            try {
-                val action =
-                    HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Story)
-                Navigation.findNavController(it).navigate(action)
-            } catch (e: Exception) {
-            }
-
+            Navigation.findNavController(it).safeNavigate(destinationPage,Enums.Story)
 
         }
 

@@ -1,6 +1,5 @@
 package com.example.marvelheroes.view.SeeAllPage
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +24,6 @@ import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.viewmodel.SeeAllPageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class SeeAllPageFragment : Fragment() {
@@ -135,7 +133,6 @@ class SeeAllPageFragment : Fragment() {
                 initViewModelForSeeAllPage.getAllEvent()
                 binding.toolbarText.text ="All Events"
             }
-
             else -> {
 
             }

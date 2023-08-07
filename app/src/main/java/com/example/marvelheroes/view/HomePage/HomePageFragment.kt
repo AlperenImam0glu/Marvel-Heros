@@ -50,6 +50,7 @@ class HomePageFragment : Fragment() {
     private lateinit var initViewModelForHomePage: InitViewModelForHomePage
     private lateinit var countDownTimer: CountDownTimer
     private var networkState: Boolean = false
+    private lateinit var homePageListeners: HomePageListeners
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +59,8 @@ class HomePageFragment : Fragment() {
 
         activity?.let {
             WindowCompat.getInsetsController(it.window, it.window.decorView).apply {
-                systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                systemBarsBehavior =
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
                 show(WindowInsetsCompat.Type.statusBars())
             }
 
@@ -104,8 +106,8 @@ class HomePageFragment : Fragment() {
             storiesListAdapter,
             binding
         )
-
-        setListeners()
+        homePageListeners = HomePageListeners(binding, homePageViewModel)
+        homePageListeners.setListeners()
 
         initViewModelForHomePage.initViewModel()
 
@@ -116,102 +118,20 @@ class HomePageFragment : Fragment() {
         binding.homepageRv.adapter = concatAdapter
     }
 
-    private fun setListeners() {
-
-        binding.buttons.heroButton.setOnClickListener {
-            if (networkState) {
-                try {
-                    val action =
-                        HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Character)
-                    Navigation.findNavController(it).navigate(action)
-                }catch (e:Exception){
-                }
-
-            }
-
-        }
-
-        binding.buttons.villianButton.setOnClickListener {
-            if (networkState) {
-                try {
-                    val action =
-                        HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Comic)
-                    Navigation.findNavController(it).navigate(action)
-                }catch (e:Exception){
-                }
-
-            }
-
-        }
-
-        binding.buttons.antiHeroButton.setOnClickListener {
-            if (networkState) {
-                try {
-                    val action =
-                        HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Creator)
-                    Navigation.findNavController(it).navigate(action)
-                }catch (e:Exception){
-                }
-
-            }
-
-        }
-
-        binding.buttons.alienButton.setOnClickListener {
-            if (networkState) {
-                try {
-                    val action =
-                        HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Series)
-                    Navigation.findNavController(it).navigate(action)
-                }catch (e:Exception){
-                }
-
-            }
-
-        }
-
-        binding.buttons.humanButton.setOnClickListener {
-            if (networkState) {
-                try {
-                    val action =
-                        HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment(Enums.Story)
-                    Navigation.findNavController(it).navigate(action)
-                }catch (e:Exception){
-                }
-
-            }
-
-        }
-
-        binding.homepageRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                when (newState) {
-                    RecyclerView.SCROLL_STATE_DRAGGING -> {
-                        closeViewWithAnimation(binding.headerLayout)
-                    }
-                }
-            }
-        })
-    }
-
-
     private fun startConnectionChecker() {
         countDownTimer = object : CountDownTimer(10000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
             }
-
             override fun onFinish() {
                 networkState = isInternetAvailable(requireContext())
                 if (!networkState && binding.homepageRv.visibility != View.VISIBLE) {
                     binding.shimmer.visibility = View.GONE
                     binding.networkText.visibility = View.VISIBLE
-                }else if(binding.homepageRv.visibility != View.VISIBLE){
+                } else if (binding.homepageRv.visibility != View.VISIBLE) {
                     networkState = false
                     binding.shimmer.visibility = View.GONE
                     binding.networkText.visibility = View.VISIBLE
                 }
-
             }
         }
         countDownTimer.start()
@@ -228,34 +148,18 @@ class HomePageFragment : Fragment() {
                 actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
     }
 
-    private fun closeViewWithAnimation(view: View) {
-        val height = view.height
-        val valueAnimator = ValueAnimator.ofInt(height, 0)
-        valueAnimator.addUpdateListener {
-            val value = it.animatedValue as Int
-            val layoutParams = view.layoutParams
-            layoutParams.height = value
-            view.layoutParams = layoutParams
-            if (value == 0) {
-                view.visibility = View.GONE
-            }
-        }
-        valueAnimator.interpolator = AccelerateDecelerateInterpolator()
-        valueAnimator.duration = 500
-        valueAnimator.start()
-        homePageViewModel.isHeadTextOpen.value = false
-    }
-    fun showData(){
+    fun showData() {
         binding.homepageRv.smoothScrollToPosition(0)
-        binding.shimmer.visibility=View.GONE
+        binding.shimmer.visibility = View.GONE
         binding.homepageRv.visibility = View.VISIBLE
     }
+
     fun observer() {
         homePageViewModel.comicsLoadingState.observe(viewLifecycleOwner) {
             if (!it) {
                 try {
-                    concatAdapter.addAdapter(0,characterListAdapter)
-                }catch (e:Exception){
+                    concatAdapter.addAdapter(0, characterListAdapter)
+                } catch (e: Exception) {
                     concatAdapter.addAdapter(characterListAdapter)
                 }
                 showData()
@@ -264,8 +168,8 @@ class HomePageFragment : Fragment() {
         homePageViewModel.comicsLoadingState.observe(viewLifecycleOwner) {
             if (!it) {
                 try {
-                    concatAdapter.addAdapter(1,comicsListAdapter)
-                }catch (e:Exception){
+                    concatAdapter.addAdapter(1, comicsListAdapter)
+                } catch (e: Exception) {
                     concatAdapter.addAdapter(comicsListAdapter)
                 }
                 showData()
@@ -274,8 +178,8 @@ class HomePageFragment : Fragment() {
         homePageViewModel.creatorsLoadingState.observe(viewLifecycleOwner) {
             if (!it) {
                 try {
-                    concatAdapter.addAdapter(2,creatorListAdapter)
-                }catch (e:Exception){
+                    concatAdapter.addAdapter(2, creatorListAdapter)
+                } catch (e: Exception) {
                     concatAdapter.addAdapter(creatorListAdapter)
                 }
                 showData()
@@ -284,8 +188,8 @@ class HomePageFragment : Fragment() {
         homePageViewModel.seriesLoadingState.observe(viewLifecycleOwner) {
             if (!it) {
                 try {
-                    concatAdapter.addAdapter(3,seriesListAdapter)
-                }catch (e:Exception){
+                    concatAdapter.addAdapter(3, seriesListAdapter)
+                } catch (e: Exception) {
                     concatAdapter.addAdapter(seriesListAdapter)
                 }
                 showData()
@@ -294,8 +198,8 @@ class HomePageFragment : Fragment() {
         homePageViewModel.eventsLoadingState.observe(viewLifecycleOwner) {
             if (!it) {
                 try {
-                    concatAdapter.addAdapter(4,eventListAdapter)
-                }catch (e:Exception){
+                    concatAdapter.addAdapter(4, eventListAdapter)
+                } catch (e: Exception) {
                     concatAdapter.addAdapter(eventListAdapter)
                 }
                 showData()
@@ -305,15 +209,14 @@ class HomePageFragment : Fragment() {
         homePageViewModel.storiesLoadingState.observe(viewLifecycleOwner) {
             if (!it) {
                 try {
-                    concatAdapter.addAdapter(5,storiesListAdapter)
-                }catch (e:Exception){
+                    concatAdapter.addAdapter(5, storiesListAdapter)
+                } catch (e: Exception) {
                     concatAdapter.addAdapter(storiesListAdapter)
                 }
                 showData()
             }
         }
     }
-
 
 
 }

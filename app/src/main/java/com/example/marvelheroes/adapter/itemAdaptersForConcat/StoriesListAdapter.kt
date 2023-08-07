@@ -3,10 +3,13 @@ package com.example.marvelheroes.adapter.itemAdaptersForConcat
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelheroes.adapter.pagingAdapters.StoriesPagingAdapter
 import com.example.marvelheroes.databinding.HomepageMainRecyclerviewBinding
+import com.example.marvelheroes.safeNavigate
+import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.viewmodel.SharedViewModel
 
 class StoriesListAdapter(var context: Context,var title: String,viewModel: SharedViewModel) :
@@ -20,6 +23,9 @@ class StoriesListAdapter(var context: Context,var title: String,viewModel: Share
             binding.rv.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = storiesPagingAdapter
+            }
+            binding.heroListSubTitle.setOnClickListener {
+                Navigation.findNavController(it).safeNavigate(Enums.HomeToSeeAll, Enums.Story)
             }
         }
     }

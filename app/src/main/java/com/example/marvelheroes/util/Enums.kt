@@ -9,5 +9,6 @@ enum class Enums {
     Event,
     Creator,
     Detail,
-    SeeAll
+    SeeAll,
+    HomeToSeeAll
 }
