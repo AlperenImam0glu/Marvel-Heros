@@ -1,4 +1,4 @@
-package com.example.marvelheroes.view
+package com.example.marvelheroes.view.SeeAllPage
 
 import android.os.Bundle
 import android.view.LayoutInflater

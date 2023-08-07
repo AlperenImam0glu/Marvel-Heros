@@ -5,8 +5,8 @@ import android.widget.Toast
 import androidx.navigation.NavController
 import com.bumptech.glide.Glide
 import com.example.marvelheroes.util.Enums
-import com.example.marvelheroes.view.CharacterDetailPageFragmentDirections
-import com.example.marvelheroes.view.HomePageFragmentDirections
+import com.example.marvelheroes.view.DetailPage.DetailPageFragmentDirections
+import com.example.marvelheroes.view.HomePage.HomePageFragmentDirections
 
 fun ImageView.loadImageFromInternet(url:String,view: ImageView) {
     var isImageEmpty = false
@@ -30,14 +30,14 @@ fun NavController.safeNavigate(currentPage: Enums, dataType: Enums) {
 
     when (currentPage) {
         Enums.Home -> {
-            val action = HomePageFragmentDirections.actionHomePageFragmentToCharacterDetailPageFragment(0,
-                dataType)
+            val action = HomePageFragmentDirections.actionHomePageFragmentToDetailPageFragment(dataType)
            navigate(action)
 
         }
         Enums.Detail -> {
-            val action =
-                CharacterDetailPageFragmentDirections.detailPageFragmentToDetailPageFragment(0,  dataType)
+            val action =DetailPageFragmentDirections.detailPageFragmentToDetailPageFragment(dataType)
+
+              //  CharacterDetailPageFragmentDirections.detailPageFragmentToDetailPageFragment(0,  dataType)
            navigate(action)
 
         }

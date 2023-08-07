@@ -4,48 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
     app:startDestination="@id/homePageFragment">
-
     <fragment
         android:id="@+id/homePageFragment"
-        android:name="com.example.marvelheroes.view.HomePageFragment"
-        android:label="fragment_home_page"
-        tools:layout="@layout/fragment_home_page" >
+        android:name="com.example.marvelheroes.view.HomePage.HomePageFragment"
+        android:label="HomePageFragment" >
         <action
-            android:id="@+id/action_homePageFragment_to_characterDetailPageFragment"
-            app:destination="@id/characterDetailPageFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right" />
+            android:id="@+id/action_homePageFragment_to_detailPageFragment"
+            app:destination="@id/detailPageFragment" />
         <action
             android:id="@+id/action_homePageFragment_to_seeAllPageFragment"
-            app:destination="@id/seeAllPageFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right" />
+            app:destination="@id/seeAllPageFragment" />
     </fragment>
     <fragment
-        android:id="@+id/characterDetailPageFragment"
-        android:name="com.example.marvelheroes.view.CharacterDetailPageFragment"
-        android:label="CharacterDetailPageFragment">
+        android:id="@+id/detailPageFragment"
+        android:name="com.example.marvelheroes.view.DetailPage.DetailPageFragment"
+        android:label="fragment_character_detail_page"
+        tools:layout="@layout/fragment_character_detail_page" >
         <action
             android:id="@+id/detailPageFragmentTo_detailPageFragment"
-            app:destination="@id/characterDetailPageFragment"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right" />
-        <argument
-            android:name="type"
-            app:argType="integer" />
+            app:destination="@id/detailPageFragment" />
         <argument
             android:name="dataType"
             app:argType="com.example.marvelheroes.util.Enums" />
     </fragment>
     <fragment
         android:id="@+id/seeAllPageFragment"
-        android:name="com.example.marvelheroes.view.SeeAllPageFragment"
+        android:name="com.example.marvelheroes.view.SeeAllPage.SeeAllPageFragment"
         android:label="fragment_see_all_page"
         tools:layout="@layout/fragment_see_all_page" />
 </navigation>

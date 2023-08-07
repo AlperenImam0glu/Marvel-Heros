@@ -16,8 +16,6 @@ import com.example.marvelheroes.databinding.HomepageCardDesignBinding
 import com.example.marvelheroes.loadImageFromInternet
 import com.example.marvelheroes.safeNavigate
 import com.example.marvelheroes.util.Enums
-import com.example.marvelheroes.view.CharacterDetailPageFragmentDirections
-import com.example.marvelheroes.view.HomePageFragmentDirections
 import com.example.marvelheroes.viewmodel.SharedViewModel
 
 class ComicsPagingAdapter(var context: Context, val viewModel: SharedViewModel) :

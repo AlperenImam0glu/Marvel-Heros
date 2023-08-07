@@ -1,6 +1,6 @@
 package com.example.marvelheroes.paging.network
 
-import com.example.marvelheroes.Character
+import com.example.marvelheroes.MainCharacter
 import com.example.marvelheroes.MainComics
 import com.example.marvelheroes.MainCreators
 import com.example.marvelheroes.models.MainEvents
@@ -18,7 +18,7 @@ interface RetrofitService {
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
         @Query("offset") offset: Int
-    ): Character
+    ): MainCharacter
 
     @GET("comics")
     suspend fun getAllComicsWithPage(
@@ -103,7 +103,7 @@ interface RetrofitService {
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
         @Query("offset") offset: Int
-    ): Character
+    ): MainCharacter
 
     @GET("comics/{id}/creators")
     suspend fun getAllCreatorsOfComics(
@@ -139,7 +139,7 @@ interface RetrofitService {
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
         @Query("offset") offset: Int
-    ): Character
+    ): MainCharacter
 
     @GET("events/{id}/comics")
     suspend fun getAllComicsOfEvents(
@@ -211,7 +211,7 @@ interface RetrofitService {
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
         @Query("offset") offset: Int
-    ): Character
+    ): MainCharacter
 
     @GET("series/{id}/comics")
     suspend fun getAllComicsOfSeries(
@@ -247,7 +247,7 @@ interface RetrofitService {
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
         @Query("offset") offset: Int
-    ): Character
+    ): MainCharacter
 
     @GET("stories/{id}/comics")
     suspend fun getAllComicsOfStories(

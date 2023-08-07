@@ -1,4 +1,4 @@
-package com.example.marvelheroes.view
+package com.example.marvelheroes.view.DetailPage
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -32,14 +32,13 @@ import com.example.marvelheroes.models.events.EventsResults
 import com.example.marvelheroes.series.SeriesResults
 import com.example.marvelheroes.stories.StoriesResults
 import com.example.marvelheroes.util.Enums
-import com.example.marvelheroes.view.DetailPage.InıtViewModelForDetailPage
 import com.example.marvelheroes.viewmodel.DetailPageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class CharacterDetailPageFragment : Fragment() {
+class DetailPageFragment : Fragment() {
 
     private lateinit var charactersData: CharactersResults
     private lateinit var comicsData: ComicsResults
@@ -106,7 +105,7 @@ class CharacterDetailPageFragment : Fragment() {
         )
 
         arguments?.let {
-            type = CharacterDetailPageFragmentArgs.fromBundle(it).dataType
+            type = DetailPageFragmentArgs.fromBundle(it).dataType
         }
 
         createViewByType(type)
@@ -192,7 +191,7 @@ class CharacterDetailPageFragment : Fragment() {
             sharedViewModel.getCharacter()?.let {
                 charactersData = it.last()
                 detailPageViewModel.id = charactersData.id.toString()
-                binding.toolbarTypeText.text = "Character"
+                binding.toolbarText.text = "Character"
 
                 setCharactersToView(charactersData)
 
@@ -226,7 +225,7 @@ class CharacterDetailPageFragment : Fragment() {
                 comicsData = it.last()
                 detailPageViewModel.id = comicsData.id.toString()
 
-                binding.toolbarTypeText.text = "Comic"
+                binding.toolbarText.text = "Comic"
                 setComicsToView(comicsData)
                 inıtViewModelForDetailPage.initViewModelForComics()
 
@@ -255,7 +254,7 @@ class CharacterDetailPageFragment : Fragment() {
 
             sharedViewModel.getEvent()?.let {
                 eventsData = it.last()
-                binding.toolbarTypeText.text = "Event"
+                binding.toolbarText.text = "Event"
                 detailPageViewModel.id = eventsData.id.toString()
                 setEventToView(eventsData)
                 inıtViewModelForDetailPage.initViewModelForEvents()
@@ -284,7 +283,7 @@ class CharacterDetailPageFragment : Fragment() {
             sharedViewModel.getCreators()?.let {
                 creatorsData = it.last()
 
-                binding.toolbarTypeText.text = "Creator"
+                binding.toolbarText.text = "Creator"
                 detailPageViewModel.id = creatorsData.id.toString()
                 setCreatorToView(creatorsData)
 
@@ -313,7 +312,7 @@ class CharacterDetailPageFragment : Fragment() {
         } else if (type == Enums.Series) {
             sharedViewModel.getSeries()?.let {
                 seriesData = it.last()
-                binding.toolbarTypeText.text = "Series"
+                binding.toolbarText.text = "Series"
                 detailPageViewModel.id = seriesData.id.toString()
                 setSeriesToView(seriesData)
                 inıtViewModelForDetailPage.initViewModelForSeries()
@@ -341,7 +340,7 @@ class CharacterDetailPageFragment : Fragment() {
         } else if (type == Enums.Story) {
             sharedViewModel.getStories()?.let {
                 storiesData = it.last()
-                binding.toolbarTypeText.text = "Story"
+                binding.toolbarText.text = "Story"
                 detailPageViewModel.id = storiesData.id.toString()
                 setStoriesToView(storiesData)
                 inıtViewModelForDetailPage.initViewModelForStories()
@@ -376,16 +375,16 @@ class CharacterDetailPageFragment : Fragment() {
     }
     fun setComicsToView(comicsData: ComicsResults) {
         if (comicsData.description.toString() != "") {
-            binding.textView7.text = comicsData.description
+            binding.textDescription.text = comicsData.description
         } else {
-            binding.textView7.text = resources.getString(R.string.desc)
+            binding.textDescription.text = resources.getString(R.string.desc)
         }
         binding.textNameTitle.text = comicsData.title
         binding.textNameSubtitle.text = comicsData.id.toString()
-        binding.textComicsCount.text = comicsData.characters!!.available.toString()
-        binding.textEventsCount.text = comicsData.events!!.available.toString()
-        binding.textSeriesCount.text = comicsData.creators!!.available.toString()
-        binding.textStoriesCount.text = comicsData.stories!!.available.toString()
+        binding.textImg1.text = comicsData.characters!!.available.toString()
+        binding.textImg3.text = comicsData.events!!.available.toString()
+        binding.textImg2.text = comicsData.creators!!.available.toString()
+        binding.textImg4.text = comicsData.stories!!.available.toString()
         binding.textComicsBar.text = "Characters"
         binding.textSeriesBar.text = "Creators"
         setImage(binding.image, comicsData.thumbnail!!.path!!, comicsData.thumbnail!!.extension!!)
@@ -393,17 +392,17 @@ class CharacterDetailPageFragment : Fragment() {
 
     fun setStoriesToView(storiesResults: StoriesResults) {
         if (storiesResults.description.toString() != "" && storiesResults.description != null) {
-            binding.textView7.text = storiesResults.description
+            binding.textDescription.text = storiesResults.description
         } else {
-            binding.textView7.text = resources.getString(R.string.desc)
+            binding.textDescription.text = resources.getString(R.string.desc)
         }
 
         binding.textNameTitle.text = storiesResults.title
         binding.textNameSubtitle.text = storiesResults.id.toString()
-        binding.textComicsCount.text = storiesResults.characters!!.available.toString()
-        binding.textEventsCount.text = storiesResults.events!!.available.toString()
-        binding.textSeriesCount.text = storiesResults.comics!!.available.toString()
-        binding.textStoriesCount.text = storiesResults.series!!.available.toString()
+        binding.textImg1.text = storiesResults.characters!!.available.toString()
+        binding.textImg2.text = storiesResults.comics!!.available.toString()
+        binding.textImg3.text = storiesResults.events!!.available.toString()
+        binding.textImg4.text = storiesResults.series!!.available.toString()
 
         binding.textComicsBar.text = "Characters"
         binding.textSeriesBar.text = "Comics"
@@ -422,17 +421,17 @@ class CharacterDetailPageFragment : Fragment() {
 
     fun setSeriesToView(seriesResults: SeriesResults) {
         if (seriesResults.description.toString() != "" && seriesResults.description != null) {
-            binding.textView7.text = seriesResults.description
+            binding.textDescription.text = seriesResults.description
         } else {
-            binding.textView7.text = resources.getString(R.string.desc)
+            binding.textDescription.text = resources.getString(R.string.desc)
         }
 
         binding.textNameTitle.text = seriesResults.title
         binding.textNameSubtitle.text = seriesResults.id.toString()
-        binding.textComicsCount.text = seriesResults.characters!!.available.toString()
-        binding.textEventsCount.text = seriesResults.events!!.available.toString()
-        binding.textSeriesCount.text = seriesResults.creators!!.available.toString()
-        binding.textStoriesCount.text = seriesResults.stories!!.available.toString()
+        binding.textImg1.text = seriesResults.characters!!.available.toString()
+        binding.textImg3.text = seriesResults.events!!.available.toString()
+        binding.textImg2.text = seriesResults.creators!!.available.toString()
+        binding.textImg4.text = seriesResults.stories!!.available.toString()
 
         binding.textComicsBar.text = "Characters"
         binding.textSeriesBar.text = "Comics"
@@ -445,16 +444,16 @@ class CharacterDetailPageFragment : Fragment() {
 
     fun setEventToView(eventsResults: EventsResults) {
         if (eventsResults.description.toString() != "") {
-            binding.textView7.text = eventsResults.description
+            binding.textDescription.text = eventsResults.description
         } else {
-            binding.textView7.text = resources.getString(R.string.desc)
+            binding.textDescription.text = resources.getString(R.string.desc)
         }
         binding.textNameTitle.text = eventsResults.title
         binding.textNameSubtitle.text = eventsResults.id.toString()
-        binding.textComicsCount.text = eventsResults.characters!!.available.toString()
-        binding.textEventsCount.text = eventsResults.series!!.available.toString()
-        binding.textSeriesCount.text = eventsResults.creators!!.available.toString()
-        binding.textStoriesCount.text = eventsResults.stories!!.available.toString()
+        binding.textImg1.text = eventsResults.characters!!.available.toString()
+        binding.textImg3.text = eventsResults.series!!.available.toString()
+        binding.textImg2.text = eventsResults.creators!!.available.toString()
+        binding.textImg4.text = eventsResults.stories!!.available.toString()
 
         binding.textComicsBar.text = "Characters"
         binding.textSeriesBar.text = "Creators"
@@ -469,10 +468,10 @@ class CharacterDetailPageFragment : Fragment() {
     fun setCreatorToView(creatorResults: CreatorResults) {
         binding.textNameTitle.text = creatorResults.fullName
         binding.textNameSubtitle.text = creatorResults.id.toString()
-        binding.textComicsCount.text = creatorResults.comics!!.available.toString()
-        binding.textEventsCount.text = creatorResults.events!!.available.toString()
-        binding.textSeriesCount.text = creatorResults.series!!.available.toString()
-        binding.textStoriesCount.text = creatorResults.stories!!.available.toString()
+        binding.textImg1.text = creatorResults.comics!!.available.toString()
+        binding.textImg3.text = creatorResults.events!!.available.toString()
+        binding.textImg2.text = creatorResults.series!!.available.toString()
+        binding.textImg4.text = creatorResults.stories!!.available.toString()
         setImage(
             binding.image,
             creatorResults.thumbnail!!.path!!,
@@ -482,16 +481,16 @@ class CharacterDetailPageFragment : Fragment() {
 
     fun setCharactersToView(characterData: CharactersResults) {
         if (characterData.description.toString() != "") {
-            binding.textView7.text = characterData.description
+            binding.textDescription.text = characterData.description
         } else {
-            binding.textView7.text = resources.getString(R.string.desc)
+            binding.textDescription.text = resources.getString(R.string.desc)
         }
         binding.textNameTitle.text = characterData.name
         binding.textNameSubtitle.text = characterData.id.toString()
-        binding.textComicsCount.text = characterData.comics!!.available.toString()
-        binding.textEventsCount.text = characterData.events!!.available.toString()
-        binding.textSeriesCount.text = characterData.series!!.available.toString()
-        binding.textStoriesCount.text = characterData.stories!!.available.toString()
+        binding.textImg1.text = characterData.comics!!.available.toString()
+        binding.textImg3.text = characterData.events!!.available.toString()
+        binding.textImg2.text = characterData.series!!.available.toString()
+        binding.textImg4.text = characterData.stories!!.available.toString()
         setImage(
             binding.image,
             characterData.thumbnail!!.path!!,
@@ -502,7 +501,7 @@ class CharacterDetailPageFragment : Fragment() {
     fun setClickListeners(adapterList: ArrayList<Any>, stringList: ArrayList<String>) {
 
         binding.img1.setOnClickListener {
-            if (binding.textComicsCount.text != "0") {
+            if (binding.textImg1.text != "0") {
                 binding.rv.visibility = View.VISIBLE
                 binding.rv.adapter = adapterList[0] as RecyclerView.Adapter<*>
                 binding.rvTitle.text = stringList[0]
@@ -510,7 +509,7 @@ class CharacterDetailPageFragment : Fragment() {
             }
         }
         binding.img2.setOnClickListener {
-            if (binding.textSeriesCount.text != "0") {
+            if (binding.textImg2.text != "0") {
                 binding.rv.visibility = View.VISIBLE
                 binding.rv.adapter = adapterList[1] as RecyclerView.Adapter<*>
                 binding.rvTitle.text = stringList[1]
@@ -519,7 +518,7 @@ class CharacterDetailPageFragment : Fragment() {
         }
 
         binding.img3.setOnClickListener {
-            if (binding.textEventsCount.text != "0") {
+            if (binding.textImg3.text != "0") {
                 binding.rv.visibility = View.VISIBLE
                 binding.rv.adapter = adapterList[2] as RecyclerView.Adapter<*>
                 binding.rvTitle.text = stringList[2]
@@ -528,7 +527,7 @@ class CharacterDetailPageFragment : Fragment() {
         }
 
         binding.img4.setOnClickListener {
-            if (binding.textStoriesCount.text != "0") {
+            if (binding.textImg4.text != "0") {
                 binding.rv.visibility = View.VISIBLE
                 binding.rv.adapter = adapterList[3] as RecyclerView.Adapter<*>
                 binding.rvTitle.text = stringList[3]

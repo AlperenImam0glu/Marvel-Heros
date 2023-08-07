@@ -16,11 +16,9 @@ import com.example.marvelheroes.databinding.HomepageCardDesignBinding
 import com.example.marvelheroes.loadImageFromInternet
 import com.example.marvelheroes.safeNavigate
 import com.example.marvelheroes.util.Enums
-import com.example.marvelheroes.view.CharacterDetailPageFragmentDirections
-import com.example.marvelheroes.view.HomePageFragmentDirections
 import com.example.marvelheroes.viewmodel.SharedViewModel
 
-class CharacterPagingAdapter(var context: Context,val viewModel: SharedViewModel) :
+class CharacterPagingAdapter(var context: Context, val viewModel: SharedViewModel) :
     PagingDataAdapter<CharactersResults, CharacterPagingAdapter.MyViewHolder>(DiffUtilCallBack()) {
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -36,7 +34,7 @@ class CharacterPagingAdapter(var context: Context,val viewModel: SharedViewModel
                 viewModel.setCharacter(newDataList)
 
                 viewModel.getCurrentPage()!!.value?.let { value ->
-                    Navigation.findNavController(it).safeNavigate(value,Enums.Character)
+                    Navigation.findNavController(it).safeNavigate(value, Enums.Character)
                 }
 
 
@@ -58,15 +56,19 @@ class CharacterPagingAdapter(var context: Context,val viewModel: SharedViewModel
     fun setImage(view: ImageView, data: CharactersResults) {
         var url = data.thumbnail!!.path
         url += "." + data.thumbnail!!.extension
-        view.loadImageFromInternet(url!!,view)
+        view.loadImageFromInternet(url!!, view)
     }
 
     class DiffUtilCallBack : DiffUtil.ItemCallback<CharactersResults>() {
-        override fun areItemsTheSame(oldItem: CharactersResults, newItem: CharactersResults): Boolean {
+        override fun areItemsTheSame(
+            oldItem: CharactersResults, newItem: CharactersResults
+        ): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: CharactersResults, newItem: CharactersResults): Boolean {
+        override fun areContentsTheSame(
+            oldItem: CharactersResults, newItem: CharactersResults
+        ): Boolean {
             return oldItem == newItem
         }
 
