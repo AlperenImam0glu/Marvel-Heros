@@ -60,12 +60,12 @@ class HomePageFragment : Fragment() {
     ): View? {
 
         activity?.let {
-            it.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
-            WindowCompat.getInsetsController(it.window,it.window.decorView).apply {
+            WindowCompat.getInsetsController(it.window, it.window.decorView).apply {
                 systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
                 show(WindowInsetsCompat.Type.statusBars())
             }
+
+            it.window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         }
         sharedViewModel.setCurrentPage(Enums.Home)
         binding = FragmentHomePageBinding.inflate(inflater, container, false)
@@ -78,6 +78,7 @@ class HomePageFragment : Fragment() {
             binding.headerLayout.visibility = View.GONE
         }
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
