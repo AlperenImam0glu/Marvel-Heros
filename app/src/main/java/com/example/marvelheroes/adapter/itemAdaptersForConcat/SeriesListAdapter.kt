@@ -1,30 +1,25 @@
-package com.example.marvelheroes.adapter.itemAdapters
+package com.example.marvelheroes.adapter.itemAdaptersForConcat
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.marvelheroes.adapter.pagingAdapters.CharacterPagingAdapter
+import com.example.marvelheroes.adapter.pagingAdapters.SeriesPagingAdapter
 import com.example.marvelheroes.databinding.HomepageMainRecyclerviewBinding
 import com.example.marvelheroes.viewmodel.SharedViewModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
+class SeriesListAdapter(var context: Context,var title: String,viewModel: SharedViewModel) :
+    RecyclerView.Adapter<SeriesListAdapter.ViewHolder>() {
 
-class CharaterListAdapter(var context: Context, var title: String,viewModel:SharedViewModel) :
-    RecyclerView.Adapter<CharaterListAdapter.ViewHolder>() {
-
-    var characterPagingAdapter = CharacterPagingAdapter(context,viewModel)
+    var seriesPagingAdapter = SeriesPagingAdapter(context,viewModel)
 
     inner class ViewHolder(var binding: HomepageMainRecyclerviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
             binding.rv.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                adapter = characterPagingAdapter
+                adapter = seriesPagingAdapter
             }
         }
     }
@@ -35,10 +30,11 @@ class CharaterListAdapter(var context: Context, var title: String,viewModel:Shar
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = 1
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.heroListTitle.text = title
         holder.bind()
     }
+
+    override fun getItemCount(): Int = 1
+
 }

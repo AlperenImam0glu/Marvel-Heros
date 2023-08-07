@@ -6,7 +6,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,19 +14,18 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.marvelheroes.adapter.itemAdapters.CharaterListAdapter
-import com.example.marvelheroes.adapter.itemAdapters.ComicsListAdapter
-import com.example.marvelheroes.adapter.itemAdapters.CreatorListAdapter
-import com.example.marvelheroes.adapter.itemAdapters.EventListAdapter
-import com.example.marvelheroes.adapter.itemAdapters.SeriesListAdapter
-import com.example.marvelheroes.adapter.itemAdapters.StoriesListAdapter
+import com.example.marvelheroes.adapter.itemAdaptersForConcat.CharaterListAdapter
+import com.example.marvelheroes.adapter.itemAdaptersForConcat.ComicsListAdapter
+import com.example.marvelheroes.adapter.itemAdaptersForConcat.CreatorListAdapter
+import com.example.marvelheroes.adapter.itemAdaptersForConcat.EventListAdapter
+import com.example.marvelheroes.adapter.itemAdaptersForConcat.SeriesListAdapter
+import com.example.marvelheroes.adapter.itemAdaptersForConcat.StoriesListAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
 import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.view.HomePage.InitViewModelForHomePage
@@ -35,13 +33,12 @@ import com.example.marvelheroes.viewmodel.HomePageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Exception
-import kotlin.concurrent.thread
 
 @AndroidEntryPoint
 class HomePageFragment : Fragment() {
 
     private lateinit var binding: FragmentHomePageBinding
-    private val viewModelPaging: HomePageViewModel by viewModels()
+    private val homePageViewModel: HomePageViewModel by viewModels()
     private var concatAdapter = ConcatAdapter()
     private lateinit var characterListAdapter: CharaterListAdapter
     private lateinit var comicsListAdapter: ComicsListAdapter
@@ -74,7 +71,7 @@ class HomePageFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (viewModelPaging.isHeadTextOpen.value == false) {
+        if (homePageViewModel.isHeadTextOpen.value == false) {
             binding.headerLayout.visibility = View.GONE
         }
     }
@@ -96,7 +93,7 @@ class HomePageFragment : Fragment() {
         storiesListAdapter = StoriesListAdapter(requireContext(), "Stories", sharedViewModel)
 
         initViewModelForHomePage = InitViewModelForHomePage(
-            viewModelPaging,
+            homePageViewModel,
             lifecycle,
             characterListAdapter,
             comicsListAdapter,
@@ -188,7 +185,7 @@ class HomePageFragment : Fragment() {
         valueAnimator.interpolator = AccelerateDecelerateInterpolator()
         valueAnimator.duration = 500
         valueAnimator.start()
-        viewModelPaging.isHeadTextOpen.value = false
+        homePageViewModel.isHeadTextOpen.value = false
     }
     fun showData(){
         binding.homepageRv.smoothScrollToPosition(0)
@@ -196,7 +193,7 @@ class HomePageFragment : Fragment() {
         binding.homepageRv.visibility = View.VISIBLE
     }
     fun observer() {
-        viewModelPaging.comicsLoadingState.observe(viewLifecycleOwner) {
+        homePageViewModel.comicsLoadingState.observe(viewLifecycleOwner) {
             if (!it) {
                 try {
                     concatAdapter.addAdapter(0,characterListAdapter)
@@ -206,7 +203,7 @@ class HomePageFragment : Fragment() {
                 showData()
             }
         }
-        viewModelPaging.comicsLoadingState.observe(viewLifecycleOwner) {
+        homePageViewModel.comicsLoadingState.observe(viewLifecycleOwner) {
             if (!it) {
                 try {
                     concatAdapter.addAdapter(1,comicsListAdapter)
@@ -216,7 +213,7 @@ class HomePageFragment : Fragment() {
                 showData()
             }
         }
-        viewModelPaging.creatorsLoadingState.observe(viewLifecycleOwner) {
+        homePageViewModel.creatorsLoadingState.observe(viewLifecycleOwner) {
             if (!it) {
                 try {
                     concatAdapter.addAdapter(2,creatorListAdapter)
@@ -226,7 +223,7 @@ class HomePageFragment : Fragment() {
                 showData()
             }
         }
-        viewModelPaging.seriesLoadingState.observe(viewLifecycleOwner) {
+        homePageViewModel.seriesLoadingState.observe(viewLifecycleOwner) {
             if (!it) {
                 try {
                     concatAdapter.addAdapter(3,seriesListAdapter)
@@ -236,7 +233,7 @@ class HomePageFragment : Fragment() {
                 showData()
             }
         }
-        viewModelPaging.eventsLoadingState.observe(viewLifecycleOwner) {
+        homePageViewModel.eventsLoadingState.observe(viewLifecycleOwner) {
             if (!it) {
                 try {
                     concatAdapter.addAdapter(4,eventListAdapter)
@@ -247,7 +244,7 @@ class HomePageFragment : Fragment() {
             }
         }
 
-        viewModelPaging.storiesLoadingState.observe(viewLifecycleOwner) {
+        homePageViewModel.storiesLoadingState.observe(viewLifecycleOwner) {
             if (!it) {
                 try {
                     concatAdapter.addAdapter(5,storiesListAdapter)

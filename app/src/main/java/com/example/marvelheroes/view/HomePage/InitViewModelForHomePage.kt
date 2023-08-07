@@ -1,16 +1,15 @@
 package com.example.marvelheroes.view.HomePage
 
-import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import com.example.marvelheroes.adapter.itemAdapters.CharaterListAdapter
-import com.example.marvelheroes.adapter.itemAdapters.ComicsListAdapter
-import com.example.marvelheroes.adapter.itemAdapters.CreatorListAdapter
-import com.example.marvelheroes.adapter.itemAdapters.EventListAdapter
-import com.example.marvelheroes.adapter.itemAdapters.SeriesListAdapter
-import com.example.marvelheroes.adapter.itemAdapters.StoriesListAdapter
+import com.example.marvelheroes.adapter.itemAdaptersForConcat.CharaterListAdapter
+import com.example.marvelheroes.adapter.itemAdaptersForConcat.ComicsListAdapter
+import com.example.marvelheroes.adapter.itemAdaptersForConcat.CreatorListAdapter
+import com.example.marvelheroes.adapter.itemAdaptersForConcat.EventListAdapter
+import com.example.marvelheroes.adapter.itemAdaptersForConcat.SeriesListAdapter
+import com.example.marvelheroes.adapter.itemAdaptersForConcat.StoriesListAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
 import com.example.marvelheroes.viewmodel.HomePageViewModel
 import kotlinx.coroutines.flow.collectLatest

@@ -19,7 +19,7 @@ import com.example.marvelheroes.CharactersResults
 import com.example.marvelheroes.ComicsResults
 import com.example.marvelheroes.CreatorResults
 import com.example.marvelheroes.R
-import com.example.marvelheroes.adapter.CustomAttributeBarAdapter
+import com.example.marvelheroes.adapter.customAdapters.CustomAttributeBarAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.CharacterPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.ComicsPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.CreatorsPagingAdapter
@@ -48,7 +48,7 @@ class CharacterDetailPageFragment : Fragment() {
     private lateinit var seriesData: SeriesResults
     private lateinit var storiesData: StoriesResults
     lateinit var binding: FragmentCharacterDetailPageBinding
-    private val viewModelPaging: DetailPageViewModel by viewModels()
+    private val detailPageViewModel: DetailPageViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
     lateinit var comicsAdapter: ComicsPagingAdapter
     lateinit var seriesAdapter: SeriesPagingAdapter
@@ -88,7 +88,6 @@ class CharacterDetailPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         comicsAdapter = ComicsPagingAdapter(requireContext(), sharedViewModel)
         seriesAdapter = SeriesPagingAdapter(requireContext(), sharedViewModel)
         eventsAdapter = EventsPagingAdapter(requireContext(), sharedViewModel)
@@ -96,22 +95,20 @@ class CharacterDetailPageFragment : Fragment() {
         charactersAdapter = CharacterPagingAdapter(requireContext(), sharedViewModel)
         creatorsAdapter = CreatorsPagingAdapter(requireContext(), sharedViewModel)
 
-
         inıtViewModelForDetailPage = InıtViewModelForDetailPage(
-            viewModelPaging, lifecycle, comicsAdapter,
+            detailPageViewModel, lifecycle, comicsAdapter,
             seriesAdapter,
             eventsAdapter,
             storiesAdapter,
             charactersAdapter,
             creatorsAdapter
         )
+
         arguments?.let {
             type = CharacterDetailPageFragmentArgs.fromBundle(it).dataType
         }
 
         createViewByType(type)
-
-        // setToolbarPosition()
 
         binding.scrollView.viewTreeObserver.addOnScrollChangedListener {
             if (binding.scrollView.scrollY > 1) {
@@ -132,7 +129,6 @@ class CharacterDetailPageFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-
 
         if (type == Enums.Character) {
             var newList = sharedViewModel.getCharacter()
@@ -194,7 +190,7 @@ class CharacterDetailPageFragment : Fragment() {
         if (type == Enums.Character) {
             sharedViewModel.getCharacter()?.let {
                 charactersData = it.last()
-                viewModelPaging.id = charactersData.id.toString()
+                detailPageViewModel.id = charactersData.id.toString()
                 binding.toolbarTypeText.text = "Character"
 
                 setCharactersToView(charactersData)
@@ -225,7 +221,7 @@ class CharacterDetailPageFragment : Fragment() {
         } else if (type == Enums.Comic) {
             sharedViewModel.getComic()?.let {
                 comicsData = it.last()
-                viewModelPaging.id = comicsData.id.toString()
+                detailPageViewModel.id = comicsData.id.toString()
 
                 binding.toolbarTypeText.text = "Comic"
                 setComicsToView(comicsData)
@@ -257,7 +253,7 @@ class CharacterDetailPageFragment : Fragment() {
             sharedViewModel.getEvent()?.let {
                 eventsData = it.last()
                 binding.toolbarTypeText.text = "Event"
-                viewModelPaging.id = eventsData.id.toString()
+                detailPageViewModel.id = eventsData.id.toString()
                 setEventToView(eventsData)
                 inıtViewModelForDetailPage.initViewModelForEvents()
                 configureAbilitiesRecyclerView(
@@ -286,7 +282,7 @@ class CharacterDetailPageFragment : Fragment() {
                 creatorsData = it.last()
 
                 binding.toolbarTypeText.text = "Creator"
-                viewModelPaging.id = creatorsData.id.toString()
+                detailPageViewModel.id = creatorsData.id.toString()
                 setCreatorToView(creatorsData)
 
                 inıtViewModelForDetailPage.initViewModelForCreators()
@@ -315,7 +311,7 @@ class CharacterDetailPageFragment : Fragment() {
             sharedViewModel.getSeries()?.let {
                 seriesData = it.last()
                 binding.toolbarTypeText.text = "Series"
-                viewModelPaging.id = seriesData.id.toString()
+                detailPageViewModel.id = seriesData.id.toString()
                 setSeriesToView(seriesData)
                 inıtViewModelForDetailPage.initViewModelForSeries()
                 configureAbilitiesRecyclerView(
@@ -343,7 +339,7 @@ class CharacterDetailPageFragment : Fragment() {
             sharedViewModel.getStories()?.let {
                 storiesData = it.last()
                 binding.toolbarTypeText.text = "Story"
-                viewModelPaging.id = storiesData.id.toString()
+                detailPageViewModel.id = storiesData.id.toString()
                 setStoriesToView(storiesData)
                 inıtViewModelForDetailPage.initViewModelForStories()
                 configureAbilitiesRecyclerView(
@@ -498,7 +494,6 @@ class CharacterDetailPageFragment : Fragment() {
 
     fun setClickListeners(adapterList: ArrayList<Any>, stringList: ArrayList<String>) {
 
-
         binding.img1.setOnClickListener {
             if (binding.textComicsCount.text != "0") {
                 binding.rv.visibility = View.VISIBLE
@@ -547,17 +542,6 @@ class CharacterDetailPageFragment : Fragment() {
         binding.recyclerviewStories.adapter = CustomAttributeBarAdapter(fourthBarValue ?: 0)
     }
 
-    fun setToolbarPosition() {
-        //status barın yüksekliğini alıp toolbara ekliyoruz. Yoksa toolbar ekranın en tepesinden başlıyor
-        var statusBarHeight = 0
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            statusBarHeight = resources.getDimensionPixelSize(resourceId)
-        }
-        val param = binding.toolbar.layoutParams as ViewGroup.MarginLayoutParams
-        param.setMargins(0, statusBarHeight, 0, 0)
-        binding.toolbar.layoutParams = param
-    }
 
     fun scrollToRv() {
         binding.scrollView.smoothScrollBy(0, binding.rv.bottom)

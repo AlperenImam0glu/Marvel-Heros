@@ -1,25 +1,25 @@
-package com.example.marvelheroes.adapter.itemAdapters
+package com.example.marvelheroes.adapter.itemAdaptersForConcat
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.marvelheroes.adapter.pagingAdapters.SeriesPagingAdapter
+import com.example.marvelheroes.adapter.pagingAdapters.StoriesPagingAdapter
 import com.example.marvelheroes.databinding.HomepageMainRecyclerviewBinding
 import com.example.marvelheroes.viewmodel.SharedViewModel
 
-class SeriesListAdapter(var context: Context,var title: String,viewModel: SharedViewModel) :
-    RecyclerView.Adapter<SeriesListAdapter.ViewHolder>() {
+class StoriesListAdapter(var context: Context,var title: String,viewModel: SharedViewModel) :
+    RecyclerView.Adapter<StoriesListAdapter.ViewHolder>() {
 
-    var seriesPagingAdapter = SeriesPagingAdapter(context,viewModel)
+    var storiesPagingAdapter = StoriesPagingAdapter(context,viewModel)
 
     inner class ViewHolder(var binding: HomepageMainRecyclerviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
             binding.rv.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                adapter = seriesPagingAdapter
+                adapter = storiesPagingAdapter
             }
         }
     }

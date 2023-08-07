@@ -1,6 +1,5 @@
-package com.example.marvelheroes.adapter
+package com.example.marvelheroes.adapter.customAdapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
