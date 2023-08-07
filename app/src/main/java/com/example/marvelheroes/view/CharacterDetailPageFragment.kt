@@ -78,7 +78,7 @@ class CharacterDetailPageFragment : Fragment() {
 
         }
 
-        sharedViewModel.setCurrentPage(Enums.Detail)
+
 
 
         binding = FragmentCharacterDetailPageBinding.inflate(inflater, container, false)
@@ -370,6 +370,10 @@ class CharacterDetailPageFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        sharedViewModel.setCurrentPage(Enums.Detail)
+    }
     fun setComicsToView(comicsData: ComicsResults) {
         if (comicsData.description.toString() != "") {
             binding.textView7.text = comicsData.description

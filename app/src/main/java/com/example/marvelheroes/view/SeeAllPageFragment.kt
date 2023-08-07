@@ -45,7 +45,6 @@ class SeeAllPageFragment : Fragment() {
 
             it.window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         }
-        sharedViewModel.setCurrentPage(Enums.SeeAll)
         binding = FragmentSeeAllPageBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -58,14 +57,17 @@ class SeeAllPageFragment : Fragment() {
         getData()
 
 
-
-
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerView.adapter = characterPagingAdapter
 
         binding.toolbarBackBtn.setOnClickListener {
             NavHostFragment.findNavController(this).popBackStack()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sharedViewModel.setCurrentPage(Enums.SeeAll)
     }
 
     fun getData() {

@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.paging.PagingSource
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelheroes.adapter.itemAdaptersForConcat.CharaterListAdapter
@@ -32,7 +33,7 @@ import com.example.marvelheroes.view.HomePage.InitViewModelForHomePage
 import com.example.marvelheroes.viewmodel.HomePageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.Exception
+import kotlin.Exception
 
 @AndroidEntryPoint
 class HomePageFragment : Fragment() {
@@ -64,7 +65,7 @@ class HomePageFragment : Fragment() {
 
             it.window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         }
-        sharedViewModel.setCurrentPage(Enums.Home)
+
         binding = FragmentHomePageBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -74,6 +75,7 @@ class HomePageFragment : Fragment() {
         if (homePageViewModel.isHeadTextOpen.value == false) {
             binding.headerLayout.visibility = View.GONE
         }
+        sharedViewModel.setCurrentPage(Enums.Home)
     }
 
 
@@ -119,8 +121,12 @@ class HomePageFragment : Fragment() {
 
         binding.buttons.heroButton.setOnClickListener {
             if (networkState) {
-                val action = HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment()
-                Navigation.findNavController(it).navigate(action)
+                try {
+                    val action = HomePageFragmentDirections.actionHomePageFragmentToSeeAllPageFragment()
+                    Navigation.findNavController(it).navigate(action)
+                }catch (e:Exception){
+                }
+
             }
 
         }
