@@ -50,6 +50,14 @@ class InitViewModelForSeeAllPage (
         }
     }
 
+    fun searchCharacter(){
+        lifecycleScope.launch {
+            viewModel.getCharactersWithName.collect {
+                characterPagingAdapter.submitData(it)
+            }
+        }
+    }
+
     fun getAllComics() {
         lifecycleScope.launch {
             viewModel.getAllComics.collectLatest {

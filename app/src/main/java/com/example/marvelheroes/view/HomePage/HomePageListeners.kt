@@ -19,25 +19,23 @@ class HomePageListeners(
     fun setListeners() {
 
         binding.buttons.heroButton.setOnClickListener {
-                Navigation.findNavController(it).safeNavigate(destinationPage,Enums.Character)
+            Navigation.findNavController(it).safeNavigate(destinationPage, Enums.Character)
         }
 
         binding.buttons.villianButton.setOnClickListener {
-            Navigation.findNavController(it).safeNavigate(destinationPage,Enums.Comic)
-
+            Navigation.findNavController(it).safeNavigate(destinationPage, Enums.Comic)
         }
 
         binding.buttons.antiHeroButton.setOnClickListener {
-            Navigation.findNavController(it).safeNavigate(destinationPage,Enums.Creator)
+            Navigation.findNavController(it).safeNavigate(destinationPage, Enums.Creator)
         }
 
         binding.buttons.alienButton.setOnClickListener {
-            Navigation.findNavController(it).safeNavigate(destinationPage,Enums.Series)
+            Navigation.findNavController(it).safeNavigate(destinationPage, Enums.Series)
         }
 
         binding.buttons.humanButton.setOnClickListener {
-            Navigation.findNavController(it).safeNavigate(destinationPage,Enums.Story)
-
+            Navigation.findNavController(it).safeNavigate(destinationPage, Enums.Story)
         }
 
         binding.homepageRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {

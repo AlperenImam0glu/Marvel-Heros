@@ -1,11 +1,16 @@
 package com.example.marvelheroes.view.SeeAllPage
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -56,7 +61,6 @@ class SeeAllPageFragment : Fragment() {
                     WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
                 show(WindowInsetsCompat.Type.statusBars())
             }
-
             it.window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         }
         binding = FragmentSeeAllPageBinding.inflate(inflater, container, false)
@@ -71,7 +75,7 @@ class SeeAllPageFragment : Fragment() {
         arguments?.let {
             type = SeeAllPageFragmentArgs.fromBundle(it).dataType
         }
-        type
+
         characterPagingAdapter = CharacterPagingAdapter(requireContext(), sharedViewModel)
         comicsPagingAdapter = ComicsPagingAdapter(requireContext(), sharedViewModel)
         seriesPagingAdapter = SeriesPagingAdapter(requireContext(), sharedViewModel)
@@ -93,32 +97,48 @@ class SeeAllPageFragment : Fragment() {
         observer()
         createViewByType()
 
-        binding.editTextSearch.addTextChangedListener { editable ->
-            val query = editable.toString().trim()
-            viewModel.name.value = query
-            if (query == "") {
-               characterPagingAdapter = CharacterPagingAdapter(requireContext(), sharedViewModel)
-                binding.recyclerView.adapter = characterPagingAdapter
-                getAll()
-            }else{
-                search()
+        val handler = Handler(Looper.getMainLooper())
+        val delayMillis = 500
+
+        binding.editTextSearch.addTextChangedListener(object : TextWatcher {
+            private var runnable: Runnable? = null
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
             }
 
-        }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                var input =""
+                s?.let {
+                    input = s.trim().toString()
+                }
+
+                runnable?.let { handler.removeCallbacks(it) }
+                if(input ==""){
+                    Log.e("girdi","aaaa")
+                    viewModel.name.value = input
+                    getAll()
+                }else{
+                    Log.e("girdi","bbbb")
+
+                    viewModel.name.value = input
+
+                    runnable = Runnable {
+                        initViewModelForSeeAllPage.searchCharacter()
+                    }
+
+                    handler.postDelayed(runnable!!, delayMillis.toLong())
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+        })
 
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-
         binding.toolbarBackBtn.setOnClickListener {
             NavHostFragment.findNavController(this).popBackStack()
-        }
-    }
-
-    fun search() {
-
-        lifecycleScope.launch {
-            viewModel.getCharactersWithName.collect {
-                characterPagingAdapter.submitData(it)
-            }
         }
     }
 
@@ -170,6 +190,7 @@ class SeeAllPageFragment : Fragment() {
             }
 
             else -> {
+                Log.e("error", "Incorrect Enum usage")
             }
         }
     }

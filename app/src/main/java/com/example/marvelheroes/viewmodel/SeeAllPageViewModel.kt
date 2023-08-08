@@ -33,7 +33,7 @@ class SeeAllPageViewModel @Inject constructor(private val repository: MainReposi
      val getCharactersWithName = Pager(config = PagingConfig(pageSize = PAGE_SIZE),
         pagingSourceFactory = {
             CharacterPagingSource(repository.retroService(), Enums.Search, name = name.value?:"")
-        }).flow.cachedIn(viewModelScope)
+        }).flow
 
     val getAllComics = Pager(config = PagingConfig(pageSize = PAGE_SIZE),
         pagingSourceFactory = {
