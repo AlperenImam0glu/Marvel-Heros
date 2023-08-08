@@ -15,8 +15,6 @@ import com.example.marvelheroes.paging.StoriesPagingSource
 import com.example.marvelheroes.repository.MainRepository
 import com.example.marvelheroes.util.Enums
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,6 +31,26 @@ class SeeAllPageViewModel @Inject constructor(private val repository: MainReposi
      val getCharactersWithName = Pager(config = PagingConfig(pageSize = PAGE_SIZE),
         pagingSourceFactory = {
             CharacterPagingSource(repository.retroService(), Enums.Search, name = name.value?:"")
+        }).flow
+
+    val getCreatorsWithName = Pager(config = PagingConfig(pageSize = PAGE_SIZE),
+        pagingSourceFactory = {
+            CreatorsPagingSource(repository.retroService(), Enums.Search, name = name.value?:"")
+        }).flow
+
+    val getEventsWithName = Pager(config = PagingConfig(pageSize = PAGE_SIZE),
+        pagingSourceFactory = {
+            EventsPagingSource(repository.retroService(), Enums.Search, name = name.value?:"")
+        }).flow
+
+    val getSeriesWithName = Pager(config = PagingConfig(pageSize = PAGE_SIZE),
+        pagingSourceFactory = {
+            SeriesPagingSource(repository.retroService(), Enums.Search, name = name.value?:"")
+        }).flow
+
+    val getComicsWithName = Pager(config = PagingConfig(pageSize = PAGE_SIZE),
+        pagingSourceFactory = {
+            ComicsPagingSource(repository.retroService(), Enums.Search, name = name.value?:"")
         }).flow
 
     val getAllComics = Pager(config = PagingConfig(pageSize = PAGE_SIZE),

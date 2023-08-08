@@ -11,7 +11,8 @@ import com.example.marvelheroes.util.Enums
 class CreatorsPagingSource(
     private val marvelApi: RetrofitService,
     private val type: Enums,
-    private val id: String = "0"
+    private val id: String = "0",
+    val name:String=""
 ) : PagingSource<Int, CreatorResults>() {
     private val api_key = BuildConfig.API_KEY
     private val ts="1"
@@ -47,6 +48,14 @@ class CreatorsPagingSource(
                         prevKey = if (position < 20) null else position - 20,
                         nextKey = if (position > response.data!!.total!!) null else position + 20
                     )
+                }
+                Enums.Search -> {
+                    val position = params.key ?: FIRST_PAGE_INDEX
+                    val response = marvelApi.getCreatorsWithName(ts,api_key,hash,position,name)
+                    LoadResult.Page(
+                        data = response.data!!.results,
+                        prevKey = if (position == 1) null else position - 20,
+                        nextKey = if (position > response.data!!.total!!) null else position + 20)
                 }
 
                 else -> {

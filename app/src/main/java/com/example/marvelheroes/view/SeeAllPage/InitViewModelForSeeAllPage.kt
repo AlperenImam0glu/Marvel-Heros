@@ -4,19 +4,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import com.example.marvelheroes.adapter.itemAdaptersForConcat.CharaterListAdapter
-import com.example.marvelheroes.adapter.itemAdaptersForConcat.ComicsListAdapter
-import com.example.marvelheroes.adapter.itemAdaptersForConcat.CreatorListAdapter
-import com.example.marvelheroes.adapter.itemAdaptersForConcat.EventListAdapter
-import com.example.marvelheroes.adapter.itemAdaptersForConcat.SeriesListAdapter
-import com.example.marvelheroes.adapter.itemAdaptersForConcat.StoriesListAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.CharacterPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.ComicsPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.CreatorsPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.EventsPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.SeriesPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.StoriesPagingAdapter
-import com.example.marvelheroes.databinding.FragmentHomePageBinding
 import com.example.marvelheroes.databinding.FragmentSeeAllPageBinding
 import com.example.marvelheroes.viewmodel.SeeAllPageViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -54,6 +47,35 @@ class InitViewModelForSeeAllPage (
         lifecycleScope.launch {
             viewModel.getCharactersWithName.collect {
                 characterPagingAdapter.submitData(it)
+            }
+        }
+    }
+    fun searchComics(){
+        lifecycleScope.launch {
+            viewModel.getComicsWithName.collect {
+                comicsPagingAdapter.submitData(it)
+            }
+        }
+    }
+    fun searchCreators(){
+        lifecycleScope.launch {
+            viewModel.getCreatorsWithName.collect {
+                creatorsPagingAdapter.submitData(it)
+            }
+        }
+    }
+    fun searchEvents(){
+        lifecycleScope.launch {
+            viewModel.getEventsWithName.collect {
+                eventsPagingAdapter.submitData(it)
+            }
+        }
+    }
+
+    fun searchSeries(){
+        lifecycleScope.launch {
+            viewModel.getSeriesWithName.collect {
+                seriesPagingAdapter.submitData(it)
             }
         }
     }

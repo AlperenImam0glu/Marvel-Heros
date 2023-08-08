@@ -285,4 +285,39 @@ interface RetrofitService {
         @Query("nameStartsWith") title: String
     ): MainCharacter
 
+    @GET("creators")
+    suspend fun getCreatorsWithName(
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
+        @Query("offset") offset: Int,
+        @Query("nameStartsWith") title: String
+    ): MainCreators
+
+    @GET("events")
+    suspend fun getEventsWithName(
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
+        @Query("offset") offset: Int,
+        @Query("nameStartsWith") title: String
+    ): MainEvents
+
+    @GET("series")
+    suspend fun getSeriesWithName(
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
+        @Query("offset") offset: Int,
+        @Query("titleStartsWith") title: String
+    ): MainSeries
+
+    @GET("comics")
+    suspend fun getComicsWithName(
+        @Query("ts") ts: String,
+        @Query("apikey") apikey: String,
+        @Query("hash") hash: String,
+        @Query("offset") offset: Int,
+        @Query("titleStartsWith") title: String
+    ): MainComics
 }

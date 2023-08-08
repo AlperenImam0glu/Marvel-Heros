@@ -50,6 +50,9 @@ class SeeAllPageFragment : Fragment() {
     private lateinit var characterPagingAdapter: CharacterPagingAdapter
     private lateinit var creatorPagingsAdapter: CreatorsPagingAdapter
     private lateinit var type: Enums
+    val handler = Handler(Looper.getMainLooper())
+    val delayMillis = 500
+    private var runnable: Runnable? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -94,43 +97,34 @@ class SeeAllPageFragment : Fragment() {
             storiesPagingAdapter,
             binding
         )
+
         observer()
         createViewByType()
 
-        val handler = Handler(Looper.getMainLooper())
-        val delayMillis = 500
-
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
-            private var runnable: Runnable? = null
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                var input =""
+                var input = ""
                 s?.let {
                     input = s.trim().toString()
                 }
 
-                runnable?.let { handler.removeCallbacks(it) }
-                if(input ==""){
-                    Log.e("girdi","aaaa")
+                if(input == "") {
+                    binding.recyclerView.smoothScrollToPosition(0)
                     viewModel.name.value = input
-                    getAll()
-                }else{
-                    Log.e("girdi","bbbb")
-
+                    createViewByType()
+                }else {
+                    binding.recyclerView.smoothScrollToPosition(0)
                     viewModel.name.value = input
-
+                    runnable?.let { handler.removeCallbacks(it) }
                     runnable = Runnable {
-                        initViewModelForSeeAllPage.searchCharacter()
+                        searchWithDataType()
                     }
-
                     handler.postDelayed(runnable!!, delayMillis.toLong())
                 }
             }
-
             override fun afterTextChanged(p0: Editable?) {
             }
 
@@ -142,15 +136,8 @@ class SeeAllPageFragment : Fragment() {
         }
     }
 
-    fun getAll() {
-        lifecycleScope.launch {
-            viewModel.getAllCharacters.collectLatest {
-                characterPagingAdapter.submitData(it)
-            }
-        }
-    }
-
     fun createViewByType() {
+        Log.e("cizim","çalıştı")
 
         when (type) {
             Enums.Character -> {
@@ -178,6 +165,10 @@ class SeeAllPageFragment : Fragment() {
             }
 
             Enums.Story -> {
+                binding.editTextSearch.hint="Search is not available for stories"
+                binding.editTextSearch.isEnabled = false
+                binding.editTextSearch.isFocusable = false
+                binding.editTextSearch.isFocusableInTouchMode = false
                 binding.recyclerView.adapter = storiesPagingAdapter
                 initViewModelForSeeAllPage.getAllStories()
                 binding.toolbarText.text = "All Stories"
@@ -187,6 +178,35 @@ class SeeAllPageFragment : Fragment() {
                 binding.recyclerView.adapter = eventsPagingAdapter
                 initViewModelForSeeAllPage.getAllEvent()
                 binding.toolbarText.text = "All Events"
+            }
+
+            else -> {
+                Log.e("error", "Incorrect Enum usage")
+            }
+        }
+    }
+
+    fun searchWithDataType() {
+
+        when (type) {
+            Enums.Character -> {
+                initViewModelForSeeAllPage.searchCharacter()
+            }
+
+            Enums.Comic -> {
+                initViewModelForSeeAllPage.searchComics()
+            }
+
+            Enums.Creator -> {
+                initViewModelForSeeAllPage.searchCreators()
+            }
+
+            Enums.Series -> {
+                initViewModelForSeeAllPage.searchSeries()
+            }
+
+            Enums.Event -> {
+                initViewModelForSeeAllPage.searchEvents()
             }
 
             else -> {
