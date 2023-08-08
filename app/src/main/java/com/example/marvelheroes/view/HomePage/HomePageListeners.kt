@@ -1,6 +1,7 @@
 package com.example.marvelheroes.view.HomePage
 
 import android.animation.ValueAnimator
+import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.navigation.Navigation
@@ -47,6 +48,15 @@ class HomePageListeners(
                     }
                 }
             }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (!recyclerView.canScrollVertically(-1)) {
+                    if(binding.headerLayout.visibility == View.GONE)
+                    openViewWithAnimation(binding.headerLayout,300)
+                }
+            }
         })
     }
 
@@ -66,5 +76,22 @@ class HomePageListeners(
         valueAnimator.duration = 500
         valueAnimator.start()
         homePageViewModel.isHeadTextOpen.value = false
+    }
+
+    private fun openViewWithAnimation(view: View, targetHeight: Int) {
+        val valueAnimator = ValueAnimator.ofInt(0, targetHeight)
+        valueAnimator.addUpdateListener {
+            val value = it.animatedValue as Int
+            val layoutParams = view.layoutParams
+            layoutParams.height = value
+            view.layoutParams = layoutParams
+            if (value > 0 && view.visibility != View.VISIBLE) {
+                view.visibility = View.VISIBLE
+            }
+        }
+        valueAnimator.interpolator = AccelerateDecelerateInterpolator()
+        valueAnimator.duration = 500
+        valueAnimator.start()
+        // Gerekirse diğer işlemleri burada yapabilirsiniz
     }
 }
