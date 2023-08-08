@@ -31,16 +31,12 @@ class ComicsPagingAdapter(var context: Context, val viewModel: SharedViewModel) 
                 var newDataList = viewModel.getComic() ?: ArrayList<ComicsResults>()
                 newDataList.add(data)
                 viewModel.setComic(newDataList)
-
                 viewModel.getCurrentPage()!!.value?.let { value ->
-                    Navigation.findNavController(it).safeNavigate(value,Enums.Comic)
+                    Navigation.findNavController(it).safeNavigate(value, Enums.Comic)
                 }
-
-
             }
         }
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
