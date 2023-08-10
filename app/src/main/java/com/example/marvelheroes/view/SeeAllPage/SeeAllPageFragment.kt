@@ -53,7 +53,8 @@ class SeeAllPageFragment : Fragment() {
     val handler = Handler(Looper.getMainLooper())
     val delayMillis = 500
     private var runnable: Runnable? = null
-
+    private var isInput = false
+    private var isInputChange = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -99,7 +100,11 @@ class SeeAllPageFragment : Fragment() {
         )
 
         observer()
-        createViewByType()
+        if(!isInput){
+            createViewByType()
+        }
+
+
 
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
 
@@ -109,13 +114,19 @@ class SeeAllPageFragment : Fragment() {
                 var input = ""
                 s?.let {
                     input = s.trim().toString()
+                    isInputChange=true
                 }
 
-                if(input == "") {
+                if(input == "" && isInput) {
+                    isInput=false
+                    Log.e("cizim","arama çalıştı sıfırlandı")
                     binding.recyclerView.smoothScrollToPosition(0)
                     viewModel.name.value = input
                     createViewByType()
-                }else {
+                }else if (input!= "" && isInputChange){
+                    isInput=true
+                    isInputChange=false
+                    Log.e("cizim","arama çalıştı arandı")
                     binding.recyclerView.smoothScrollToPosition(0)
                     viewModel.name.value = input
                     runnable?.let { handler.removeCallbacks(it) }
@@ -137,7 +148,7 @@ class SeeAllPageFragment : Fragment() {
     }
 
     fun createViewByType() {
-        Log.e("cizim","çalıştı")
+        Log.e("cizim","ekran türe göre çizildi")
 
         when (type) {
             Enums.Character -> {
@@ -190,22 +201,27 @@ class SeeAllPageFragment : Fragment() {
 
         when (type) {
             Enums.Character -> {
+                binding.recyclerView.adapter = characterPagingAdapter
                 initViewModelForSeeAllPage.searchCharacter()
             }
 
             Enums.Comic -> {
+                binding.recyclerView.adapter = comicsPagingAdapter
                 initViewModelForSeeAllPage.searchComics()
             }
 
             Enums.Creator -> {
+                binding.recyclerView.adapter = creatorPagingsAdapter
                 initViewModelForSeeAllPage.searchCreators()
             }
 
             Enums.Series -> {
+                binding.recyclerView.adapter = seriesPagingAdapter
                 initViewModelForSeeAllPage.searchSeries()
             }
 
             Enums.Event -> {
+                binding.recyclerView.adapter = eventsPagingAdapter
                 initViewModelForSeeAllPage.searchEvents()
             }
 
