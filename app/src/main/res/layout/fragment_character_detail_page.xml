@@ -65,7 +65,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/image"
+                    android:id="@+id/page_background_image"
                     android:layout_width="495dp"
                     android:layout_height="812dp"
                     android:foreground="@drawable/black_shadow"
@@ -232,7 +232,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
                 <TextView
-                    android:id="@+id/text_abilities_title"
+                    android:id="@+id/abilities_Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="24dp"
@@ -247,7 +247,7 @@
                 </TextView>
 
                 <TextView
-                    android:id="@+id/text_comics_bar"
+                    android:id="@+id/abilities_text1"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -258,11 +258,11 @@
                     android:textColor="@color/primary_white"
                     android:textSize="@dimen/ability_text_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_abilities_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/abilities_Title" />
 
 
                 <TextView
-                    android:id="@+id/text_series_bar"
+                    android:id="@+id/abilities_text2"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -273,10 +273,10 @@
                     android:textColor="@color/primary_white"
                     android:textSize="@dimen/ability_text_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_comics_bar" />
+                    app:layout_constraintTop_toBottomOf="@+id/abilities_text1" />
 
                 <TextView
-                    android:id="@+id/text_events_bar"
+                    android:id="@+id/abilities_text3"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -287,10 +287,10 @@
                     android:textColor="@color/primary_white"
                     android:textSize="@dimen/ability_text_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_series_bar" />
+                    app:layout_constraintTop_toBottomOf="@+id/abilities_text2" />
 
                 <TextView
-                    android:id="@+id/text_stories_bar"
+                    android:id="@+id/abilities_text4"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -301,61 +301,61 @@
                     android:textColor="@color/primary_white"
                     android:textSize="@dimen/ability_text_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_events_bar" />
+                    app:layout_constraintTop_toBottomOf="@+id/abilities_text3" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview_comics"
+                    android:id="@+id/abilities_rv_1"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:orientation="horizontal"
                     android:layout_width="0dp"
                     android:layout_height="12dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="45dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_comics_bar"
+                    app:layout_constraintBottom_toBottomOf="@+id/abilities_text1"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/text_comics_bar"
-                    app:layout_constraintTop_toTopOf="@+id/text_comics_bar" />
+                    app:layout_constraintStart_toEndOf="@+id/abilities_text1"
+                    app:layout_constraintTop_toTopOf="@+id/abilities_text1" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview_series"
+                    android:id="@+id/abilities_rv_2"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:orientation="horizontal"
                     android:layout_width="0dp"
                     android:layout_height="12dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="45dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_series_bar"
+                    app:layout_constraintBottom_toBottomOf="@+id/abilities_text2"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/text_series_bar"
-                    app:layout_constraintTop_toTopOf="@+id/text_series_bar" >
+                    app:layout_constraintStart_toEndOf="@+id/abilities_text2"
+                    app:layout_constraintTop_toTopOf="@+id/abilities_text2" >
 
                 </androidx.recyclerview.widget.RecyclerView>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview_events"
+                    android:id="@+id/abilities_rv_3"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:orientation="horizontal"
                     android:layout_width="0dp"
                     android:layout_height="12dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="45dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_events_bar"
+                    app:layout_constraintBottom_toBottomOf="@+id/abilities_text3"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/text_events_bar"
-                    app:layout_constraintTop_toTopOf="@+id/text_events_bar" />
+                    app:layout_constraintStart_toEndOf="@+id/abilities_text3"
+                    app:layout_constraintTop_toTopOf="@+id/abilities_text3" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview_stories"
+                    android:id="@+id/abilities_rv_4"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:orientation="horizontal"
                     android:layout_width="0dp"
                     android:layout_height="12dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="45dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_stories_bar"
+                    app:layout_constraintBottom_toBottomOf="@+id/abilities_text4"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/text_stories_bar"
-                    app:layout_constraintTop_toTopOf="@+id/text_stories_bar" />
+                    app:layout_constraintStart_toEndOf="@+id/abilities_text4"
+                    app:layout_constraintTop_toTopOf="@+id/abilities_text4" />
 
                 <TextView
                     android:id="@+id/rv_title"
@@ -367,7 +367,7 @@
                     android:fontFamily="@font/gilroy_bold"
                     android:textColor="@color/primary_white"
                     android:textSize="@dimen/section_title_size"
-                    app:layout_constraintTop_toBottomOf="@+id/text_stories_bar"
+                    app:layout_constraintTop_toBottomOf="@+id/abilities_text4"
                     app:layout_constraintEnd_toEndOf="parent"
                     />
 
@@ -416,6 +416,54 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/rv_title" />
+
+                <TextView
+                    android:id="@+id/abilities_rv_1_upper_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="1dp"
+                    android:text="0"
+                    android:textColor="@color/primary_white"
+                    android:textSize="@dimen/card_subtitle_size"
+                    app:layout_constraintBottom_toTopOf="@+id/abilities_rv_1"
+                    app:layout_constraintStart_toEndOf="@+id/abilities_text1" />
+
+                <TextView
+                    android:id="@+id/abilities_rv_2_upper_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="1dp"
+                    android:text="0"
+                    android:textColor="@color/primary_white"
+                    android:textSize="@dimen/card_subtitle_size"
+                    app:layout_constraintBottom_toTopOf="@+id/abilities_rv_2"
+                    app:layout_constraintStart_toEndOf="@+id/abilities_text2" />
+
+                <TextView
+                    android:id="@+id/abilities_rv_3_upper_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="1dp"
+                    android:text="0"
+                    android:textColor="@color/primary_white"
+                    android:textSize="@dimen/card_subtitle_size"
+                    app:layout_constraintBottom_toTopOf="@+id/abilities_rv_3"
+                    app:layout_constraintStart_toEndOf="@+id/abilities_text3" />
+
+                <TextView
+                    android:id="@+id/abilities_rv_4_upper_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="1dp"
+                    android:text="0"
+                    android:textColor="@color/primary_white"
+                    android:textSize="@dimen/card_subtitle_size"
+                    app:layout_constraintBottom_toTopOf="@+id/abilities_rv_4"
+                    app:layout_constraintStart_toEndOf="@+id/abilities_text4" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

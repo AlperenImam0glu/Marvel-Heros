@@ -1,5 +1,6 @@
 package com.example.marvelheroes.adapter.customAdapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,8 @@ class CustomAttributeBarAdapter( var value: Int) :
         var y = x / ITEM_COUNT
         var z = (value / y).toInt()
 
+
+
         if (value == 0) {
             holder.binding.image.setImageResource(R.drawable.bar_8dp)
             holder.binding.image.alpha = 0.25f
@@ -43,11 +46,14 @@ class CustomAttributeBarAdapter( var value: Int) :
                 holder.binding.image.setImageResource(R.drawable.bar_12dp)
             }
         } else if (z == position) {
+            Log.e("Değer","rc $z")
             holder.binding.image.setImageResource(R.drawable.bar_12dp)
         } else {
             holder.binding.image.setImageResource(R.drawable.bar_8dp)
             holder.binding.image.alpha = 0.25f
         }
+
+
     }
 
 }

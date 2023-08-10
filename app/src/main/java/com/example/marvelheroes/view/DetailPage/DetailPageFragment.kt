@@ -1,11 +1,14 @@
 package com.example.marvelheroes.view.DetailPage
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -84,6 +87,7 @@ class DetailPageFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -121,6 +125,8 @@ class DetailPageFragment : Fragment() {
                 //  android:foreground="@drawable/gradient_dark"
             }
         }
+
+
 
         binding.toolbarBackBtn.setOnClickListener {
             findNavController(this).popBackStack()
@@ -385,9 +391,9 @@ class DetailPageFragment : Fragment() {
         binding.textImg3.text = comicsData.events!!.available.toString()
         binding.textImg2.text = comicsData.creators!!.available.toString()
         binding.textImg4.text = comicsData.stories!!.available.toString()
-        binding.textComicsBar.text = "Characters"
-        binding.textSeriesBar.text = "Creators"
-        setImage(binding.image, comicsData.thumbnail!!.path!!, comicsData.thumbnail!!.extension!!)
+        binding.abilitiesText1.text = "Characters"
+        binding.abilitiesText2.text = "Creators"
+        setImage(binding.pageBackgroundImage, comicsData.thumbnail!!.path!!, comicsData.thumbnail!!.extension!!)
     }
 
     fun setStoriesToView(storiesResults: StoriesResults) {
@@ -404,18 +410,18 @@ class DetailPageFragment : Fragment() {
         binding.textImg3.text = storiesResults.events!!.available.toString()
         binding.textImg4.text = storiesResults.series!!.available.toString()
 
-        binding.textComicsBar.text = "Characters"
-        binding.textSeriesBar.text = "Comics"
-        binding.textStoriesBar.text = "Series"
+        binding.abilitiesText1.text = "Characters"
+        binding.abilitiesText2.text = "Comics"
+        binding.abilitiesText4.text = "Series"
 
         if (storiesResults.thumbnail != null) {
             setImage(
-                binding.image,
+                binding.pageBackgroundImage,
                 storiesResults.thumbnail!!.path!!,
                 storiesResults.thumbnail!!.extension!!
             )
         } else {
-            setImage(binding.image, "", "")
+            setImage(binding.pageBackgroundImage, "", "")
         }
     }
 
@@ -433,10 +439,10 @@ class DetailPageFragment : Fragment() {
         binding.textImg2.text = seriesResults.creators!!.available.toString()
         binding.textImg4.text = seriesResults.stories!!.available.toString()
 
-        binding.textComicsBar.text = "Characters"
-        binding.textSeriesBar.text = "Comics"
+        binding.abilitiesText1.text = "Characters"
+        binding.abilitiesText2.text = "Comics"
         setImage(
-            binding.image,
+            binding.pageBackgroundImage,
             seriesResults.thumbnail!!.path!!,
             seriesResults.thumbnail!!.extension!!
         )
@@ -455,11 +461,11 @@ class DetailPageFragment : Fragment() {
         binding.textImg2.text = eventsResults.creators!!.available.toString()
         binding.textImg4.text = eventsResults.stories!!.available.toString()
 
-        binding.textComicsBar.text = "Characters"
-        binding.textSeriesBar.text = "Creators"
-        binding.textEventsBar.text = "Comics"
+        binding.abilitiesText1.text = "Characters"
+        binding.abilitiesText2.text = "Creators"
+        binding.abilitiesText3.text = "Comics"
         setImage(
-            binding.image,
+            binding.pageBackgroundImage,
             eventsResults.thumbnail!!.path!!,
             eventsResults.thumbnail!!.extension!!
         )
@@ -473,7 +479,7 @@ class DetailPageFragment : Fragment() {
         binding.textImg2.text = creatorResults.series!!.available.toString()
         binding.textImg4.text = creatorResults.stories!!.available.toString()
         setImage(
-            binding.image,
+            binding.pageBackgroundImage,
             creatorResults.thumbnail!!.path!!,
             creatorResults.thumbnail!!.extension!!
         )
@@ -492,7 +498,7 @@ class DetailPageFragment : Fragment() {
         binding.textImg2.text = characterData.series!!.available.toString()
         binding.textImg4.text = characterData.stories!!.available.toString()
         setImage(
-            binding.image,
+            binding.pageBackgroundImage,
             characterData.thumbnail!!.path!!,
             characterData.thumbnail!!.extension!!
         )
@@ -542,10 +548,40 @@ class DetailPageFragment : Fragment() {
         thirdValue: Int?,
         fourthBarValue: Int?
     ) {
-        binding.recyclerviewComics.adapter = CustomAttributeBarAdapter(firstBarValue ?: 0)
-        binding.recyclerviewSeries.adapter = CustomAttributeBarAdapter(thirdValue ?: 0)
-        binding.recyclerviewEvents.adapter = CustomAttributeBarAdapter(secondBarValue ?: 0)
-        binding.recyclerviewStories.adapter = CustomAttributeBarAdapter(fourthBarValue ?: 0)
+
+
+        setLocationRvCountText(firstBarValue?:0 ,binding.abilitiesRv1UpperText)
+        setLocationRvCountText(thirdValue?:0 ,binding.abilitiesRv2UpperText)
+        setLocationRvCountText(secondBarValue?:0 ,binding.abilitiesRv3UpperText)
+        setLocationRvCountText(fourthBarValue?:0 ,binding.abilitiesRv4UpperText)
+
+        binding.abilitiesRv1.adapter = CustomAttributeBarAdapter(firstBarValue ?: 0)
+        binding.abilitiesRv2.adapter = CustomAttributeBarAdapter(thirdValue ?: 0)
+        binding.abilitiesRv3.adapter = CustomAttributeBarAdapter(secondBarValue ?: 0)
+        binding.abilitiesRv4.adapter = CustomAttributeBarAdapter(fourthBarValue ?: 0)
+    }
+
+    fun setLocationRvCountText( value: Int, view:TextView){
+        if(value ==0){
+            return
+        }
+        val coeff = resources.displayMetrics.density
+
+        var y = 150/44
+        var z =0
+        value?.let {
+            z = it/y
+        }
+        if(value!! >150){
+            z=43
+        }
+
+        val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+        val leftMargin = (((z*5)+20)*coeff+0.5f).toInt()
+        layoutParams.marginStart = leftMargin
+
+        view.layoutParams=layoutParams
+        view.text=value.toString()
     }
 
 
