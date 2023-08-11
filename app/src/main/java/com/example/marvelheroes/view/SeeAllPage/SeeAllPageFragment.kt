@@ -1,5 +1,7 @@
 package com.example.marvelheroes.view.SeeAllPage
 
+import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -21,6 +25,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelheroes.adapter.pagingAdapters.CharacterPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.ComicsPagingAdapter
 import com.example.marvelheroes.adapter.pagingAdapters.CreatorsPagingAdapter
@@ -100,9 +105,26 @@ class SeeAllPageFragment : Fragment() {
         )
 
         observer()
-        if(!isInput){
+        if (!isInput) {
             createViewByType()
         }
+
+
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                when (newState) {
+                    RecyclerView.SCROLL_STATE_DRAGGING -> {
+                        val imm =
+                            activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.hideSoftInputFromWindow(view!!.getWindowToken(), 0)
+                        binding.editTextSearch.clearFocus()
+                    }
+                }
+            }
+
+
+        })
 
 
 
@@ -110,23 +132,24 @@ class SeeAllPageFragment : Fragment() {
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 var input = ""
                 s?.let {
                     input = s.trim().toString()
-                    isInputChange=true
+                    isInputChange = true
                 }
 
-                if(input == "" && isInput) {
-                    isInput=false
-                    Log.e("cizim","arama çalıştı sıfırlandı")
+                if (input == "" && isInput) {
+                    isInput = false
+                    Log.e("cizim", "arama çalıştı sıfırlandı")
                     binding.recyclerView.smoothScrollToPosition(0)
                     viewModel.name.value = input
                     createViewByType()
-                }else if (input!= "" && isInputChange){
-                    isInput=true
-                    isInputChange=false
-                    Log.e("cizim","arama çalıştı arandı")
+                } else if (input != "" && isInputChange) {
+                    isInput = true
+                    isInputChange = false
+                    Log.e("cizim", "arama çalıştı arandı")
                     binding.recyclerView.smoothScrollToPosition(0)
                     viewModel.name.value = input
                     runnable?.let { handler.removeCallbacks(it) }
@@ -136,6 +159,7 @@ class SeeAllPageFragment : Fragment() {
                     handler.postDelayed(runnable!!, delayMillis.toLong())
                 }
             }
+
             override fun afterTextChanged(p0: Editable?) {
             }
 
@@ -148,7 +172,7 @@ class SeeAllPageFragment : Fragment() {
     }
 
     fun createViewByType() {
-        Log.e("cizim","ekran türe göre çizildi")
+        Log.e("cizim", "ekran türe göre çizildi")
 
         when (type) {
             Enums.Character -> {
@@ -176,7 +200,7 @@ class SeeAllPageFragment : Fragment() {
             }
 
             Enums.Story -> {
-                binding.editTextSearch.hint="Search is not available for stories"
+                binding.editTextSearch.hint = "Search is not available for stories"
                 binding.editTextSearch.isEnabled = false
                 binding.editTextSearch.isFocusable = false
                 binding.editTextSearch.isFocusableInTouchMode = false

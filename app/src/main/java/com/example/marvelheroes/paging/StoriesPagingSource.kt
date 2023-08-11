@@ -97,7 +97,7 @@ class StoriesPagingSource(
 
 
     override fun getRefreshKey(state: PagingState<Int, StoriesResults>): Int? {
-        TODO("Not yet implemented")
+        return FIRST_PAGE_INDEX
     }
 
 

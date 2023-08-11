@@ -89,7 +89,7 @@ class SeriesPagingSource(
 
 
     override fun getRefreshKey(state: PagingState<Int, SeriesResults>): Int? {
-        TODO("Not yet implemented")
+        return FIRST_PAGE_INDEX
     }
 
 

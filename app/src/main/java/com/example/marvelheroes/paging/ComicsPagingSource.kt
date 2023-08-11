@@ -115,7 +115,7 @@ class ComicsPagingSource(
 
 
     override fun getRefreshKey(state: PagingState<Int, ComicsResults>): Int? {
-        TODO("Not yet implemented")
+        return FIRST_PAGE_INDEX
     }
 
 

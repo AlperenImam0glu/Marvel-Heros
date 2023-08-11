@@ -127,7 +127,6 @@ class DetailPageFragment : Fragment() {
         }
 
 
-
         binding.toolbarBackBtn.setOnClickListener {
             findNavController(this).popBackStack()
         }

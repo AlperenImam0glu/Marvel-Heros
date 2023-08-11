@@ -73,7 +73,7 @@ class CreatorsPagingSource(
 
 
     override fun getRefreshKey(state: PagingState<Int, CreatorResults>): Int? {
-        TODO("Not yet implemented")
+        return FIRST_PAGE_INDEX
     }
 
 

@@ -106,7 +106,7 @@ class EventsPagingSource(
 
 
     override fun getRefreshKey(state: PagingState<Int, EventsResults>): Int? {
-        TODO("Not yet implemented")
+        return FIRST_PAGE_INDEX
     }
 
 

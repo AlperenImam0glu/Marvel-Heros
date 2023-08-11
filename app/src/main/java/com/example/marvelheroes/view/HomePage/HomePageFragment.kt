@@ -1,20 +1,29 @@
 package com.example.marvelheroes.view.HomePage
 
 import android.content.Context
+import android.content.Context.WIFI_SERVICE
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.wifi.WifiManager
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import com.example.marvelheroes.adapter.itemAdaptersForConcat.CharaterListAdapter
 import com.example.marvelheroes.adapter.itemAdaptersForConcat.ComicsListAdapter
@@ -23,10 +32,14 @@ import com.example.marvelheroes.adapter.itemAdaptersForConcat.EventListAdapter
 import com.example.marvelheroes.adapter.itemAdaptersForConcat.SeriesListAdapter
 import com.example.marvelheroes.adapter.itemAdaptersForConcat.StoriesListAdapter
 import com.example.marvelheroes.databinding.FragmentHomePageBinding
+import com.example.marvelheroes.paging.network.observeconnectivity.ConnectivityObserver
+import com.example.marvelheroes.paging.network.observeconnectivity.NetworkConnectivityObserver
 import com.example.marvelheroes.util.Enums
 import com.example.marvelheroes.viewmodel.HomePageViewModel
 import com.example.marvelheroes.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlin.Exception
 
 @AndroidEntryPoint
@@ -46,7 +59,8 @@ class HomePageFragment : Fragment() {
     private lateinit var countDownTimer: CountDownTimer
     private var networkState: Boolean = false
     private lateinit var homePageListeners: HomePageListeners
-
+    private lateinit var connectivityObserver: ConnectivityObserver
+    private var isAlertShowing = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,10 +72,8 @@ class HomePageFragment : Fragment() {
                     WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
                 show(WindowInsetsCompat.Type.statusBars())
             }
-
             it.window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         }
-
         binding = FragmentHomePageBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -78,9 +90,37 @@ class HomePageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        connectivityObserver = NetworkConnectivityObserver(requireContext())
+        alerDialogBuilder = AlertDialog.Builder(requireContext())
+
+
+
+        connectivityObserver.observe().onEach {
+
+            when (it) {
+                ConnectivityObserver.Status.Available -> {
+                    fetchDataAgain()
+                }
+
+                ConnectivityObserver.Status.Unavailable -> {
+
+                }
+
+                ConnectivityObserver.Status.Losing -> {
+
+                }
+
+                ConnectivityObserver.Status.Lost -> {
+                    showAlert()
+                }
+            }
+        }.launchIn(lifecycleScope)
+
+
+
+
         startConnectionChecker()
         networkState = isInternetAvailable(requireContext())
-
         binding.shimmer.startShimmer()
 
         comicsListAdapter = ComicsListAdapter(requireContext(), "Comics", sharedViewModel)
@@ -101,27 +141,70 @@ class HomePageFragment : Fragment() {
             storiesListAdapter,
             binding
         )
+        initViewModelForHomePage.initViewModel()
+
+
         homePageListeners = HomePageListeners(binding, homePageViewModel)
         homePageListeners.setListeners()
 
-        initViewModelForHomePage.initViewModel()
-
         concatAdapter = ConcatAdapter()
+        binding.homepageRv.adapter = concatAdapter
+
 
         observer()
 
-        binding.homepageRv.adapter = concatAdapter
+
+    }
+
+    lateinit var alerDialogBuilder: AlertDialog.Builder
+    private fun showAlert() {
+
+        if (!isAlertShowing) {
+            isAlertShowing=true
+            alerDialogBuilder.setTitle("Offline")
+            alerDialogBuilder.setMessage("Your network is unavaliable. Check your data or wifi connection")
+
+            alerDialogBuilder.setCancelable(false)
+            alerDialogBuilder.setPositiveButton("Close App") { dialog, which ->
+                ActivityCompat.finishAffinity(requireActivity())
+                System.exit(0);
+            }
+
+            alerDialogBuilder.setNegativeButton("Turn On Wifi") { dialog, which ->
+                val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
+                requireContext().startActivity(intent)
+                isAlertShowing=false
+            }
+
+            alerDialogBuilder.show()
+        }
+
+    }
+
+    private fun fetchDataAgain() {
+        if (binding.homepageRv.visibility != View.VISIBLE) {
+            binding.networkText.visibility = View.GONE
+            binding.shimmer.visibility = View.VISIBLE
+            characterListAdapter.characterPagingAdapter.refresh()
+            comicsListAdapter.comicsPagingAdapter.refresh()
+            creatorListAdapter.creatorsPagingAdapter.refresh()
+            eventListAdapter.evetPagingAdapter.refresh()
+            seriesListAdapter.seriesPagingAdapter.refresh()
+            storiesListAdapter.storiesPagingAdapter.refresh()
+        }
     }
 
     private fun startConnectionChecker() {
         countDownTimer = object : CountDownTimer(10000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
             }
+
             override fun onFinish() {
                 networkState = isInternetAvailable(requireContext())
                 if (!networkState && binding.homepageRv.visibility != View.VISIBLE) {
                     binding.shimmer.visibility = View.GONE
                     binding.networkText.visibility = View.VISIBLE
+                    showAlert()
                 } else if (binding.homepageRv.visibility != View.VISIBLE) {
                     networkState = false
                     binding.shimmer.visibility = View.GONE

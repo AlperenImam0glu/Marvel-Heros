@@ -466,6 +466,7 @@
                     app:layout_constraintStart_toEndOf="@+id/abilities_text4" />
 
 
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 

@@ -82,7 +82,7 @@ class CharacterPagingSource(private val marvelApi: RetrofitService,private val t
     }
 
     override fun getRefreshKey(state: PagingState<Int, CharactersResults>): Int? {
-        TODO("Not yet implemented")
+        return FIRST_PAGE_INDEX
     }
 
 
