@@ -61,26 +61,19 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    // Kotlin
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
-
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
-
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxJavaVersion"
 
-
     implementation 'com.github.bumptech.glide:glide:4.15.1'
 
-
     implementation("androidx.paging:paging-runtime:$paging_version")
-
-    // alternatively - without Android dependencies for tests
     testImplementation("androidx.paging:paging-common:$paging_version")
 
     implementation("com.google.dagger:hilt-android:2.44")
@@ -90,5 +83,6 @@ dependencies {
 
     implementation('com.facebook.shimmer:shimmer:0.5.0')
 
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
 
 }
