@@ -6,4 +6,10 @@
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam suscipit neque nulla,"
                     " bibendum malesuada nisi sagittis at. Sed venenatis accumsan risus eu tempor. Fusce "
                     "aliquam dapibus turpis, id ultricies nulla laoreet nec. Suspendisse mattis lectus sit amet"</string>
+    <string name="network_alert_title">Offline</string>
+    <string name="network_alert_message">Your network is unavaliable. Check your data or wifi connection</string>
+    <string name="network_alert_positive_button">Turn on wifi</string>
+    <string name="network_alert_negative_button">Close App</string>
+    <string name="homepage_header_subtitle">Welcome to Marvel Heroes</string>
+    <string name="homepage_title">Choose your \ncharacter</string>
 </resources>

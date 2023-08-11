@@ -1,5 +1,9 @@
 package com.example.marvelheroes.view.DetailPage
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
@@ -7,8 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.animation.addListener
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -503,18 +509,75 @@ class DetailPageFragment : Fragment() {
         )
     }
 
+    /*
+    var animatorSet=AnimatorSet()
+    fun startFloatingAnimation(view: View) {
+        val translateY = 20f
+        val translationYUp = ObjectAnimator.ofFloat(view, "translationY", 0f, -translateY)
+        val translationYDown = ObjectAnimator.ofFloat(view, "translationY", -translateY, 0f)
+         var animatorSet = AnimatorSet().apply {
+            play(translationYUp).before(translationYDown)
+            interpolator = AccelerateDecelerateInterpolator()
+            duration = 1000
+            start()
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    start()
+                }
+            })
+        }
+    }*/
+    private val animatorSets = mutableListOf<AnimatorSet>()
+
+    private fun startFloatingAnimation(imageView: ImageView) {
+        val translateY = 20f
+
+        val translationYUp = ObjectAnimator.ofFloat(imageView, "translationY", 0f, -translateY)
+        val translationYDown = ObjectAnimator.ofFloat(imageView, "translationY", -translateY, 0f)
+
+        val animatorSet = AnimatorSet().apply {
+            play(translationYUp).before(translationYDown)
+            interpolator = AccelerateDecelerateInterpolator()
+            duration = 1000
+            start()
+
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    start()
+                }
+            })
+        }
+
+        animatorSets.add(animatorSet)
+    }
+
+    private fun cancelAllAnimations() {
+        for (animatorSet in animatorSets) {
+            animatorSet.cancel()
+        }
+        animatorSets.clear()
+    }
+
     fun setClickListeners(adapterList: ArrayList<Any>, stringList: ArrayList<String>) {
+
+        startFloatingAnimation(binding.img1)
+
 
         binding.img1.setOnClickListener {
             if (binding.textImg1.text != "0") {
+                cancelAllAnimations()
+                startFloatingAnimation(binding.img1)
                 binding.rv.visibility = View.VISIBLE
                 binding.rv.adapter = adapterList[0] as RecyclerView.Adapter<*>
                 binding.rvTitle.text = stringList[0]
                 scrollToRv()
             }
         }
+
         binding.img2.setOnClickListener {
             if (binding.textImg2.text != "0") {
+                cancelAllAnimations()
+                startFloatingAnimation(binding.img2)
                 binding.rv.visibility = View.VISIBLE
                 binding.rv.adapter = adapterList[1] as RecyclerView.Adapter<*>
                 binding.rvTitle.text = stringList[1]
@@ -524,6 +587,8 @@ class DetailPageFragment : Fragment() {
 
         binding.img3.setOnClickListener {
             if (binding.textImg3.text != "0") {
+                cancelAllAnimations()
+                startFloatingAnimation(binding.img3)
                 binding.rv.visibility = View.VISIBLE
                 binding.rv.adapter = adapterList[2] as RecyclerView.Adapter<*>
                 binding.rvTitle.text = stringList[2]
@@ -533,6 +598,8 @@ class DetailPageFragment : Fragment() {
 
         binding.img4.setOnClickListener {
             if (binding.textImg4.text != "0") {
+                cancelAllAnimations()
+                startFloatingAnimation(binding.img4)
                 binding.rv.visibility = View.VISIBLE
                 binding.rv.adapter = adapterList[3] as RecyclerView.Adapter<*>
                 binding.rvTitle.text = stringList[3]

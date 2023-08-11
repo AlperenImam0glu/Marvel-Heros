@@ -3,7 +3,6 @@ package com.example.marvelheroes.view
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -41,21 +40,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAlert() {
-
-        val alerDialogBuilder = AlertDialog.Builder(this)
-        alerDialogBuilder.setTitle("Offline")
-        alerDialogBuilder.setMessage("Your network is unavaliable. Check your data or wifi connection")
-        alerDialogBuilder.setCancelable(false)
-        alerDialogBuilder.setPositiveButton("Close App") { dialog, which ->
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle(R.string.network_alert_title)
+        alertDialogBuilder.setMessage(R.string.network_alert_message)
+        alertDialogBuilder.setCancelable(false)
+        alertDialogBuilder.setPositiveButton(R.string.network_alert_negative_button) { dialog, which ->
             ActivityCompat.finishAffinity(this)
             exitProcess(0);
         }
-        alerDialogBuilder.setNegativeButton("Turn On Wifi") { dialog, which ->
+        alertDialogBuilder.setNegativeButton(R.string.network_alert_positive_button) { dialog, which ->
             val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
             this.startActivity(intent)
         }
-
-        alerDialogBuilder.show()
+        alertDialogBuilder.show()
     }
 
     private fun showToast(text:String){

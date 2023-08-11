@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
+import com.example.marvelheroes.R
 import com.example.marvelheroes.adapter.itemAdaptersForConcat.CharaterListAdapter
 import com.example.marvelheroes.adapter.itemAdaptersForConcat.ComicsListAdapter
 import com.example.marvelheroes.adapter.itemAdaptersForConcat.CreatorListAdapter
@@ -115,29 +116,27 @@ class HomePageFragment : Fragment() {
             startConnectionChecker()
         }
         observer()
-
     }
 
     private fun showAlert() {
 
         if (!isAlertShowing) {
-            var alerDialogBuilder = AlertDialog.Builder(requireContext())
+            var alertDialogBuilder = AlertDialog.Builder(requireContext())
             isAlertShowing = true
-            alerDialogBuilder.setTitle("Offline")
-            alerDialogBuilder.setMessage("Your network is unavaliable. Check your data or wifi connection")
-
-            alerDialogBuilder.setCancelable(false)
-            alerDialogBuilder.setPositiveButton("Close App") { dialog, which ->
+            alertDialogBuilder.setTitle(R.string.network_alert_title)
+            alertDialogBuilder.setMessage(R.string.network_alert_message)
+            alertDialogBuilder.setCancelable(false)
+            alertDialogBuilder.setPositiveButton("Close App") { dialog, which ->
                 ActivityCompat.finishAffinity(requireActivity())
                 System.exit(0);
             }
 
-            alerDialogBuilder.setNegativeButton("Turn On Wifi") { dialog, which ->
+            alertDialogBuilder.setNegativeButton(R.string.network_alert_positive_button) { dialog, which ->
                 val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
                 requireContext().startActivity(intent)
                 isAlertShowing = false
             }
-            alerDialogBuilder.show()
+            alertDialogBuilder.show()
         }
 
     }

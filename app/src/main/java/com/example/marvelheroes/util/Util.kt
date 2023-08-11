@@ -61,9 +61,8 @@ fun NavController.safeNavigate(currentPage: Enums, dataType: Enums) {
                     )
                 navigate(action)
             }
-
             else -> {
-                Toast.makeText(context, "Navigasyon in development stage", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Incorrect use of navigation", Toast.LENGTH_SHORT).show()
             }
         }
     } catch (e: Exception) {
