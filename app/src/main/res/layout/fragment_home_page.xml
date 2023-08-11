@@ -79,6 +79,9 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
 
+
+
+
     <TextView
         android:id="@+id/network_text"
         android:layout_width="wrap_content"

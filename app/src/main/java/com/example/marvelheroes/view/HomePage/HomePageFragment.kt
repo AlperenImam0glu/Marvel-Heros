@@ -59,7 +59,6 @@ class HomePageFragment : Fragment() {
     private lateinit var countDownTimer: CountDownTimer
     private var networkState: Boolean = false
     private lateinit var homePageListeners: HomePageListeners
-    private lateinit var connectivityObserver: ConnectivityObserver
     private var isAlertShowing = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -90,35 +89,6 @@ class HomePageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        connectivityObserver = NetworkConnectivityObserver(requireContext())
-        alerDialogBuilder = AlertDialog.Builder(requireContext())
-
-
-
-        connectivityObserver.observe().onEach {
-
-            when (it) {
-                ConnectivityObserver.Status.Available -> {
-                    fetchDataAgain()
-                }
-
-                ConnectivityObserver.Status.Unavailable -> {
-
-                }
-
-                ConnectivityObserver.Status.Losing -> {
-
-                }
-
-                ConnectivityObserver.Status.Lost -> {
-                    showAlert()
-                }
-            }
-        }.launchIn(lifecycleScope)
-
-
-
-
         startConnectionChecker()
         networkState = isInternetAvailable(requireContext())
         binding.shimmer.startShimmer()
@@ -143,24 +113,21 @@ class HomePageFragment : Fragment() {
         )
         initViewModelForHomePage.initViewModel()
 
-
         homePageListeners = HomePageListeners(binding, homePageViewModel)
         homePageListeners.setListeners()
 
         concatAdapter = ConcatAdapter()
         binding.homepageRv.adapter = concatAdapter
 
-
         observer()
-
 
     }
 
-    lateinit var alerDialogBuilder: AlertDialog.Builder
     private fun showAlert() {
 
         if (!isAlertShowing) {
-            isAlertShowing=true
+            var alerDialogBuilder = AlertDialog.Builder(requireContext())
+            isAlertShowing = true
             alerDialogBuilder.setTitle("Offline")
             alerDialogBuilder.setMessage("Your network is unavaliable. Check your data or wifi connection")
 
@@ -173,9 +140,8 @@ class HomePageFragment : Fragment() {
             alerDialogBuilder.setNegativeButton("Turn On Wifi") { dialog, which ->
                 val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
                 requireContext().startActivity(intent)
-                isAlertShowing=false
+                isAlertShowing = false
             }
-
             alerDialogBuilder.show()
         }
 
